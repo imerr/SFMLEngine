@@ -7,8 +7,10 @@
 
 #ifndef ENGINE_UTIL_MATH_HPP
 #define	ENGINE_UTIL_MATH_HPP
-namespace util {
-    const float fPI = 3.141592654f;
+namespace engine {
+    namespace util {
+        const float fPI = 3.141592654f;
+    }
 }
 
 

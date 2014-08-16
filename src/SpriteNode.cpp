@@ -8,6 +8,7 @@
 #include <string.h>
 #include "SpriteNode.hpp"
 #include "ResourceManager.hpp"
+#include "SFML/Graphics.hpp"
 
 namespace engine {
 
@@ -16,24 +17,24 @@ namespace engine {
 
     SpriteNode::SpriteNode(const SpriteNode& orig) {
         m_texture = orig.m_texture;
-        memcpy(m_vertices, orig.m_vertices, sizeof(m_vertices));
         m_textureRect = orig.m_textureRect;
+        UpdatePosition();
+        UpdateTexCoords();
     }
 
     SpriteNode::~SpriteNode() {
     }
 
-    void SpriteNode::OnDraw(sf::RenderTarget& target, sf::RenderStates states) const {
-        states.transform *= getTransform();
+    void SpriteNode::OnDraw(sf::RenderTarget& target, sf::RenderStates states) {
         states.texture = m_texture;
         target.draw(m_vertices, 4, sf::TrianglesStrip, states);
     }
 
     void SpriteNode::UpdatePosition() {
         m_vertices[0].position = sf::Vector2f(0, 0);
-        m_vertices[1].position = sf::Vector2f(0, m_textureRect.height);
-        m_vertices[2].position = sf::Vector2f(m_textureRect.width, 0);
-        m_vertices[3].position = sf::Vector2f(m_textureRect.width, m_textureRect.height);
+        m_vertices[1].position = sf::Vector2f(0, m_size.y);
+        m_vertices[2].position = sf::Vector2f(m_size.x, 0);
+        m_vertices[3].position = sf::Vector2f(m_size.x, m_size.y);
     }
 
     void SpriteNode::UpdateTexCoords() {
@@ -64,6 +65,10 @@ namespace engine {
             m_textureRect.width = m_texture->getSize().x;
             m_textureRect.top = 0;
             m_textureRect.height = m_texture->getSize().y;
+        }
+        if (!m_size.x && !m_size.y){
+            m_size.x = m_textureRect.width;
+            m_size.y = m_textureRect.height;
         }
         UpdatePosition();
         UpdateTexCoords();

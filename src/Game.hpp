@@ -9,19 +9,26 @@
 #define	ENGINE_GAME_HPP
 #include <SFML/Graphics.hpp>
 #include "Scene.hpp"
+#include <atomic>
 namespace engine {
 
     class Game {
+    public:
+        
+    protected:
+        sf::RenderWindow m_window;
+        Scene* m_scene;
+        std::atomic<bool> m_running;
+        sf::Clock m_lastLogicUpdate;
+        sf::Mutex m_lastLogicUpdateMutex;
     public:
         Game();
         Game(const Game& orig);
         virtual ~Game();
         void run();
+        void GraphicLoop();
+        void LogicLoop();
         const sf::RenderWindow* GetWindow() const;
-    protected:
-        sf::RenderWindow m_window;
-        Scene* m_scene;
-        //std::map<uint8_t, Scene> m_scenes;
     };
 
 }

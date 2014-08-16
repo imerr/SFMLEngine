@@ -114,6 +114,8 @@
         <itemPath>src/Box2D/Box2D.h</itemPath>
       </logicalFolder>
       <logicalFolder name="util" displayName="util" projectFiles="true">
+        <itemPath>src/util/Box2dDebugDraw.cpp</itemPath>
+        <itemPath>src/util/Box2dDebugDraw.hpp</itemPath>
         <itemPath>src/util/math.hpp</itemPath>
         <itemPath>src/util/misc.hpp</itemPath>
         <itemPath>src/util/singleton.hpp</itemPath>
@@ -157,6 +159,7 @@
           <standard>8</standard>
           <incDir>
             <pElem>../sfml/include</pElem>
+            <pElem>src</pElem>
           </incDir>
           <warningLevel>2</warningLevel>
         </ccTool>
@@ -572,6 +575,10 @@
       <item path="src/SpriteNode.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/SpriteNode.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/util/Box2dDebugDraw.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/util/Box2dDebugDraw.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/util/math.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -1011,6 +1018,10 @@
       <item path="src/SpriteNode.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/SpriteNode.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/util/Box2dDebugDraw.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/util/Box2dDebugDraw.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/util/math.hpp" ex="false" tool="3" flavor2="0">
       </item>

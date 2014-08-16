@@ -85,7 +85,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Node.o \
 	${OBJECTDIR}/src/ResourceManager.o \
 	${OBJECTDIR}/src/Scene.o \
-	${OBJECTDIR}/src/SpriteNode.o
+	${OBJECTDIR}/src/SpriteNode.o \
+	${OBJECTDIR}/src/util/Box2dDebugDraw.o
 
 
 # C Compiler Flags
@@ -368,6 +369,11 @@ ${OBJECTDIR}/src/SpriteNode.o: src/SpriteNode.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SpriteNode.o src/SpriteNode.cpp
+
+${OBJECTDIR}/src/util/Box2dDebugDraw.o: src/util/Box2dDebugDraw.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/util
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/util/Box2dDebugDraw.o src/util/Box2dDebugDraw.cpp
 
 # Subprojects
 .build-subprojects:

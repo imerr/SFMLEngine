@@ -6,24 +6,26 @@
  */
 
 #include "Node.hpp"
+#include "util/math.hpp"
+#include "Scene.hpp"
+#include <iostream>
 namespace engine {
 
-    Node::Node() {
-    }
-
-    Node::Node(const Node& orig) {
-        this->m_scene = orig.m_scene;
+    Node::Node() : m_scene(nullptr), m_parent(nullptr), m_body(nullptr) {
     }
 
     Node::~Node() {
     }
 
-    void Node::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    void Node::draw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
         // apply the transform
+        if (m_body) {
+            UpdateTransform(delta);
+        }
         states.transform *= getTransform();
         OnDraw(target, states);
         for (auto it = m_children.begin(); it != m_children.end(); it++) {
-            (*it)->OnDraw(target, states);
+            (*it)->draw(target, states, delta);
         }
         PostDraw(target, states);
     }
@@ -57,12 +59,30 @@ namespace engine {
         return m_parent;
     }
 
-    void Node::update(sf::Time delta) {
-        OnUpdate(delta);
+    void Node::update(sf::Time interval) {
+        if (m_body) {
+            UpdatePhysicsTransform();
+        }
+        OnUpdate(interval);
         for (auto it = m_children.begin(); it != m_children.end(); it++) {
-            (*it)->OnUpdate(delta);
+            (*it)->update(interval);
         }
     }
 
+    void Node::UpdatePhysicsTransform() {
+        std::lock_guard<std::mutex> lg(m_mutex);
+        m_physicsTransform.rot = m_body->GetAngle()*180 / util::fPI;
+        m_physicsTransform.rotVel = m_body->GetAngularVelocity()*180 / util::fPI;
+        m_physicsTransform.pos = m_body->GetPosition();
+        m_physicsTransform.pos *= m_scene->GetPixelMeterRatio();
+        m_physicsTransform.vel = m_body->GetLinearVelocity();
+        m_physicsTransform.vel *= m_scene->GetPixelMeterRatio();
+    }
+
+    void Node::UpdateTransform(float delta) {
+        std::lock_guard<std::mutex> lg(m_mutex);
+        setRotation(m_physicsTransform.rot + delta * m_physicsTransform.rotVel);
+        setPosition(m_physicsTransform.pos.x + delta * m_physicsTransform.vel.x, m_physicsTransform.pos.y + delta * m_physicsTransform.vel.y);
+    }
 }
 

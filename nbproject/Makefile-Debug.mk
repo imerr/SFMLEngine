@@ -85,7 +85,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Node.o \
 	${OBJECTDIR}/src/ResourceManager.o \
 	${OBJECTDIR}/src/Scene.o \
-	${OBJECTDIR}/src/SpriteNode.o
+	${OBJECTDIR}/src/SpriteNode.o \
+	${OBJECTDIR}/src/util/Box2dDebugDraw.o
 
 
 # C Compiler Flags
@@ -117,257 +118,262 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libengine.a: ${OBJECTFILES}
 ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2ChainShape.o: src/Box2D/Collision/Shapes/b2ChainShape.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision/Shapes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2ChainShape.o src/Box2D/Collision/Shapes/b2ChainShape.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2ChainShape.o src/Box2D/Collision/Shapes/b2ChainShape.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2CircleShape.o: src/Box2D/Collision/Shapes/b2CircleShape.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision/Shapes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2CircleShape.o src/Box2D/Collision/Shapes/b2CircleShape.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2CircleShape.o src/Box2D/Collision/Shapes/b2CircleShape.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2EdgeShape.o: src/Box2D/Collision/Shapes/b2EdgeShape.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision/Shapes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2EdgeShape.o src/Box2D/Collision/Shapes/b2EdgeShape.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2EdgeShape.o src/Box2D/Collision/Shapes/b2EdgeShape.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2PolygonShape.o: src/Box2D/Collision/Shapes/b2PolygonShape.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision/Shapes
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2PolygonShape.o src/Box2D/Collision/Shapes/b2PolygonShape.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/Shapes/b2PolygonShape.o src/Box2D/Collision/Shapes/b2PolygonShape.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/b2BroadPhase.o: src/Box2D/Collision/b2BroadPhase.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2BroadPhase.o src/Box2D/Collision/b2BroadPhase.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2BroadPhase.o src/Box2D/Collision/b2BroadPhase.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/b2CollideCircle.o: src/Box2D/Collision/b2CollideCircle.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2CollideCircle.o src/Box2D/Collision/b2CollideCircle.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2CollideCircle.o src/Box2D/Collision/b2CollideCircle.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/b2CollideEdge.o: src/Box2D/Collision/b2CollideEdge.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2CollideEdge.o src/Box2D/Collision/b2CollideEdge.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2CollideEdge.o src/Box2D/Collision/b2CollideEdge.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/b2CollidePolygon.o: src/Box2D/Collision/b2CollidePolygon.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2CollidePolygon.o src/Box2D/Collision/b2CollidePolygon.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2CollidePolygon.o src/Box2D/Collision/b2CollidePolygon.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/b2Collision.o: src/Box2D/Collision/b2Collision.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2Collision.o src/Box2D/Collision/b2Collision.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2Collision.o src/Box2D/Collision/b2Collision.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/b2Distance.o: src/Box2D/Collision/b2Distance.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2Distance.o src/Box2D/Collision/b2Distance.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2Distance.o src/Box2D/Collision/b2Distance.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/b2DynamicTree.o: src/Box2D/Collision/b2DynamicTree.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2DynamicTree.o src/Box2D/Collision/b2DynamicTree.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2DynamicTree.o src/Box2D/Collision/b2DynamicTree.cpp
 
 ${OBJECTDIR}/src/Box2D/Collision/b2TimeOfImpact.o: src/Box2D/Collision/b2TimeOfImpact.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Collision
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2TimeOfImpact.o src/Box2D/Collision/b2TimeOfImpact.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Collision/b2TimeOfImpact.o src/Box2D/Collision/b2TimeOfImpact.cpp
 
 ${OBJECTDIR}/src/Box2D/Common/b2BlockAllocator.o: src/Box2D/Common/b2BlockAllocator.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Common
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2BlockAllocator.o src/Box2D/Common/b2BlockAllocator.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2BlockAllocator.o src/Box2D/Common/b2BlockAllocator.cpp
 
 ${OBJECTDIR}/src/Box2D/Common/b2Draw.o: src/Box2D/Common/b2Draw.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Common
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2Draw.o src/Box2D/Common/b2Draw.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2Draw.o src/Box2D/Common/b2Draw.cpp
 
 ${OBJECTDIR}/src/Box2D/Common/b2Math.o: src/Box2D/Common/b2Math.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Common
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2Math.o src/Box2D/Common/b2Math.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2Math.o src/Box2D/Common/b2Math.cpp
 
 ${OBJECTDIR}/src/Box2D/Common/b2Settings.o: src/Box2D/Common/b2Settings.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Common
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2Settings.o src/Box2D/Common/b2Settings.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2Settings.o src/Box2D/Common/b2Settings.cpp
 
 ${OBJECTDIR}/src/Box2D/Common/b2StackAllocator.o: src/Box2D/Common/b2StackAllocator.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Common
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2StackAllocator.o src/Box2D/Common/b2StackAllocator.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2StackAllocator.o src/Box2D/Common/b2StackAllocator.cpp
 
 ${OBJECTDIR}/src/Box2D/Common/b2Timer.o: src/Box2D/Common/b2Timer.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Common
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2Timer.o src/Box2D/Common/b2Timer.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Common/b2Timer.o src/Box2D/Common/b2Timer.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.o: src/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Contacts
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.o src/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.o src/Box2D/Dynamics/Contacts/b2ChainAndCircleContact.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.o: src/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Contacts
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.o src/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.o src/Box2D/Dynamics/Contacts/b2ChainAndPolygonContact.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2CircleContact.o: src/Box2D/Dynamics/Contacts/b2CircleContact.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Contacts
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2CircleContact.o src/Box2D/Dynamics/Contacts/b2CircleContact.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2CircleContact.o src/Box2D/Dynamics/Contacts/b2CircleContact.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2Contact.o: src/Box2D/Dynamics/Contacts/b2Contact.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Contacts
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2Contact.o src/Box2D/Dynamics/Contacts/b2Contact.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2Contact.o src/Box2D/Dynamics/Contacts/b2Contact.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2ContactSolver.o: src/Box2D/Dynamics/Contacts/b2ContactSolver.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Contacts
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2ContactSolver.o src/Box2D/Dynamics/Contacts/b2ContactSolver.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2ContactSolver.o src/Box2D/Dynamics/Contacts/b2ContactSolver.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.o: src/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Contacts
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.o src/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.o src/Box2D/Dynamics/Contacts/b2EdgeAndCircleContact.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.o: src/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Contacts
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.o src/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.o src/Box2D/Dynamics/Contacts/b2EdgeAndPolygonContact.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.o: src/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Contacts
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.o src/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.o src/Box2D/Dynamics/Contacts/b2PolygonAndCircleContact.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2PolygonContact.o: src/Box2D/Dynamics/Contacts/b2PolygonContact.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Contacts
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2PolygonContact.o src/Box2D/Dynamics/Contacts/b2PolygonContact.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Contacts/b2PolygonContact.o src/Box2D/Dynamics/Contacts/b2PolygonContact.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2DistanceJoint.o: src/Box2D/Dynamics/Joints/b2DistanceJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2DistanceJoint.o src/Box2D/Dynamics/Joints/b2DistanceJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2DistanceJoint.o src/Box2D/Dynamics/Joints/b2DistanceJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2FrictionJoint.o: src/Box2D/Dynamics/Joints/b2FrictionJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2FrictionJoint.o src/Box2D/Dynamics/Joints/b2FrictionJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2FrictionJoint.o src/Box2D/Dynamics/Joints/b2FrictionJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2GearJoint.o: src/Box2D/Dynamics/Joints/b2GearJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2GearJoint.o src/Box2D/Dynamics/Joints/b2GearJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2GearJoint.o src/Box2D/Dynamics/Joints/b2GearJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2Joint.o: src/Box2D/Dynamics/Joints/b2Joint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2Joint.o src/Box2D/Dynamics/Joints/b2Joint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2Joint.o src/Box2D/Dynamics/Joints/b2Joint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2MotorJoint.o: src/Box2D/Dynamics/Joints/b2MotorJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2MotorJoint.o src/Box2D/Dynamics/Joints/b2MotorJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2MotorJoint.o src/Box2D/Dynamics/Joints/b2MotorJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2MouseJoint.o: src/Box2D/Dynamics/Joints/b2MouseJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2MouseJoint.o src/Box2D/Dynamics/Joints/b2MouseJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2MouseJoint.o src/Box2D/Dynamics/Joints/b2MouseJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2PrismaticJoint.o: src/Box2D/Dynamics/Joints/b2PrismaticJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2PrismaticJoint.o src/Box2D/Dynamics/Joints/b2PrismaticJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2PrismaticJoint.o src/Box2D/Dynamics/Joints/b2PrismaticJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2PulleyJoint.o: src/Box2D/Dynamics/Joints/b2PulleyJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2PulleyJoint.o src/Box2D/Dynamics/Joints/b2PulleyJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2PulleyJoint.o src/Box2D/Dynamics/Joints/b2PulleyJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2RevoluteJoint.o: src/Box2D/Dynamics/Joints/b2RevoluteJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2RevoluteJoint.o src/Box2D/Dynamics/Joints/b2RevoluteJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2RevoluteJoint.o src/Box2D/Dynamics/Joints/b2RevoluteJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2RopeJoint.o: src/Box2D/Dynamics/Joints/b2RopeJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2RopeJoint.o src/Box2D/Dynamics/Joints/b2RopeJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2RopeJoint.o src/Box2D/Dynamics/Joints/b2RopeJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2WeldJoint.o: src/Box2D/Dynamics/Joints/b2WeldJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2WeldJoint.o src/Box2D/Dynamics/Joints/b2WeldJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2WeldJoint.o src/Box2D/Dynamics/Joints/b2WeldJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2WheelJoint.o: src/Box2D/Dynamics/Joints/b2WheelJoint.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics/Joints
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2WheelJoint.o src/Box2D/Dynamics/Joints/b2WheelJoint.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/Joints/b2WheelJoint.o src/Box2D/Dynamics/Joints/b2WheelJoint.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/b2Body.o: src/Box2D/Dynamics/b2Body.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2Body.o src/Box2D/Dynamics/b2Body.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2Body.o src/Box2D/Dynamics/b2Body.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/b2ContactManager.o: src/Box2D/Dynamics/b2ContactManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2ContactManager.o src/Box2D/Dynamics/b2ContactManager.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2ContactManager.o src/Box2D/Dynamics/b2ContactManager.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/b2Fixture.o: src/Box2D/Dynamics/b2Fixture.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2Fixture.o src/Box2D/Dynamics/b2Fixture.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2Fixture.o src/Box2D/Dynamics/b2Fixture.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/b2Island.o: src/Box2D/Dynamics/b2Island.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2Island.o src/Box2D/Dynamics/b2Island.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2Island.o src/Box2D/Dynamics/b2Island.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/b2World.o: src/Box2D/Dynamics/b2World.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2World.o src/Box2D/Dynamics/b2World.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2World.o src/Box2D/Dynamics/b2World.cpp
 
 ${OBJECTDIR}/src/Box2D/Dynamics/b2WorldCallbacks.o: src/Box2D/Dynamics/b2WorldCallbacks.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Dynamics
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2WorldCallbacks.o src/Box2D/Dynamics/b2WorldCallbacks.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Dynamics/b2WorldCallbacks.o src/Box2D/Dynamics/b2WorldCallbacks.cpp
 
 ${OBJECTDIR}/src/Box2D/Rope/b2Rope.o: src/Box2D/Rope/b2Rope.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Box2D/Rope
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Rope/b2Rope.o src/Box2D/Rope/b2Rope.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Box2D/Rope/b2Rope.o src/Box2D/Rope/b2Rope.cpp
 
 ${OBJECTDIR}/src/Game.o: src/Game.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Game.o src/Game.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Game.o src/Game.cpp
 
 ${OBJECTDIR}/src/Node.o: src/Node.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Node.o src/Node.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Node.o src/Node.cpp
 
 ${OBJECTDIR}/src/ResourceManager.o: src/ResourceManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ResourceManager.o src/ResourceManager.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ResourceManager.o src/ResourceManager.cpp
 
 ${OBJECTDIR}/src/Scene.o: src/Scene.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Scene.o src/Scene.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Scene.o src/Scene.cpp
 
 ${OBJECTDIR}/src/SpriteNode.o: src/SpriteNode.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SpriteNode.o src/SpriteNode.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SpriteNode.o src/SpriteNode.cpp
+
+${OBJECTDIR}/src/util/Box2dDebugDraw.o: src/util/Box2dDebugDraw.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/util
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/util/Box2dDebugDraw.o src/util/Box2dDebugDraw.cpp
 
 # Subprojects
 .build-subprojects:
