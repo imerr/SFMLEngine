@@ -52,7 +52,7 @@ namespace engine {
             sf::ConvexShape s;
             s.setPointCount(vertexCount);
             for (int32 i = 0; i < vertexCount; i++) {
-                s.setPoint(i, sf::Vector2f(m_scene->PixelToMeters(vertices[i].x), m_scene->PixelToMeters(vertices[i].y)));
+                s.setPoint(i, sf::Vector2f(m_scene->MeterToPixel(vertices[i].x), m_scene->MeterToPixel(vertices[i].y)));
             }
             s.setOutlineThickness(5);
             s.setOutlineColor(FromB2Color(color));
@@ -63,7 +63,7 @@ namespace engine {
             sf::ConvexShape s;
             s.setPointCount(vertexCount);
             for (int32 i = 0; i < vertexCount; i++) {
-                s.setPoint(i, sf::Vector2f(m_scene->PixelToMeters(vertices[i].x), m_scene->PixelToMeters(vertices[i].y)));
+                s.setPoint(i, sf::Vector2f(m_scene->MeterToPixel(vertices[i].x), m_scene->MeterToPixel(vertices[i].y)));
             }
             s.setFillColor(FromB2Color(color));
             m_texture.draw(s);
@@ -71,32 +71,29 @@ namespace engine {
 
         void Box2dDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color) {
             sf::CircleShape s;
-            s.setRadius(m_scene->PixelToMeters(radius));
+            s.setRadius(m_scene->MeterToPixel(radius));
             s.setFillColor(sf::Color(0, 0, 0, 0));
             s.setOutlineThickness(5);
             s.setOutlineColor(FromB2Color(color));
-            s.setPosition(m_scene->PixelToMeters(center.x), m_scene->PixelToMeters(center.y));
+            s.setPosition(m_scene->MeterToPixel(center.x), m_scene->MeterToPixel(center.y));
         }
 
         void Box2dDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color) {
             sf::CircleShape s;
-            s.setRadius(m_scene->PixelToMeters(radius));
+            s.setRadius(m_scene->MeterToPixel(radius));
             s.setFillColor(FromB2Color(color));
-            s.setPosition(m_scene->PixelToMeters(center.x), m_scene->PixelToMeters(center.y));
+            s.setPosition(m_scene->MeterToPixel(center.x), m_scene->MeterToPixel(center.y));
         }
 
         void Box2dDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) {
             incVertVec(2);
             for (int i = 0; i < 2; i++) {
-                m_vertices[i].color.a = color.a;
-                m_vertices[i].color.r = color.r;
-                m_vertices[i].color.g = color.g;
-                m_vertices[i].color.b = color.b;
+                m_vertices[i].color = FromB2Color(color);
             }
-            m_vertices[0].position.x = m_scene->PixelToMeters(p1.x);
-            m_vertices[0].position.y = m_scene->PixelToMeters(p1.y);
-            m_vertices[1].position.x = m_scene->PixelToMeters(p2.x);
-            m_vertices[1].position.y = m_scene->PixelToMeters(p2.y);
+            m_vertices[0].position.x = m_scene->MeterToPixel(p1.x);
+            m_vertices[0].position.y = m_scene->MeterToPixel(p1.y);
+            m_vertices[1].position.x = m_scene->MeterToPixel(p2.x);
+            m_vertices[1].position.y = m_scene->MeterToPixel(p2.y);
             m_texture.draw(m_vertices.data(), 2, sf::Lines);
         }
 

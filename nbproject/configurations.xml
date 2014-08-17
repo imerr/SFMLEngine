@@ -122,6 +122,10 @@
       </logicalFolder>
       <itemPath>src/Game.cpp</itemPath>
       <itemPath>src/Game.hpp</itemPath>
+      <itemPath>src/Light.cpp</itemPath>
+      <itemPath>src/Light.hpp</itemPath>
+      <itemPath>src/LightSystem.cpp</itemPath>
+      <itemPath>src/LightSystem.hpp</itemPath>
       <itemPath>src/Node.cpp</itemPath>
       <itemPath>src/Node.hpp</itemPath>
       <itemPath>src/ResourceManager.cpp</itemPath>
@@ -559,6 +563,14 @@
       <item path="src/Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Game.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Light.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Light.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/LightSystem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/LightSystem.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Node.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -1002,6 +1014,14 @@
       <item path="src/Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Game.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Light.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Light.hpp" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/LightSystem.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/LightSystem.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Node.cpp" ex="false" tool="1" flavor2="0">
       </item>

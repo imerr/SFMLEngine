@@ -13,7 +13,6 @@
 namespace engine {
 
     Game::Game() : m_window(sf::VideoMode(1024, 576), "SFML works!"), m_scene(nullptr), m_running(true) {
-
     }
 
     Game::Game(const Game& orig) {
@@ -38,7 +37,7 @@ namespace engine {
             sf::Color clearColor(15, 235, 165);
             m_window.clear(clearColor);
             if (m_scene) {
-               m_scene->draw(m_window, sf::RenderStates::Default, delta.asSeconds());
+                m_scene->draw(m_window, sf::RenderStates::Default, delta.asSeconds());
             }
             m_window.display();
         }
@@ -63,6 +62,7 @@ namespace engine {
             m_scene->update(interval);
             sf::Time delta = timer.restart();
             if (delta < interval) {
+                std::cout << "Sleeping " << (interval - delta).asSeconds() << "/" << interval.asSeconds() << " = " << (interval - delta).asSeconds() / interval.asSeconds() << "%" << std::endl;
                 sf::sleep(interval - delta);
             }
 

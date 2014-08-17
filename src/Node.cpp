@@ -59,6 +59,17 @@ namespace engine {
         return m_parent;
     }
 
+    sf::Transform Node::GetGlobalTransform() {
+        if (m_parent) {
+            return m_parent->GetGlobalTransform() * getTransform();
+        }
+        return getTransform();
+    }
+
+    sf::Vector2f Node::GetGlobalPosition() {
+        return GetGlobalTransform().transformPoint(0, 0);
+    }
+
     void Node::update(sf::Time interval) {
         if (m_body) {
             UpdatePhysicsTransform();

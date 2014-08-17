@@ -47,6 +47,8 @@ namespace engine {
         void SetScene(Scene* scene);
         Scene* GetScene() const;
         Node* GetParent() const;
+        sf::Transform GetGlobalTransform();
+        sf::Vector2f GetGlobalPosition();
         virtual void update(sf::Time interval);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states, float delta);
     protected:

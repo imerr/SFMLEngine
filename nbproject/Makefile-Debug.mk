@@ -82,6 +82,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Box2D/Dynamics/b2WorldCallbacks.o \
 	${OBJECTDIR}/src/Box2D/Rope/b2Rope.o \
 	${OBJECTDIR}/src/Game.o \
+	${OBJECTDIR}/src/Light.o \
+	${OBJECTDIR}/src/LightSystem.o \
 	${OBJECTDIR}/src/Node.o \
 	${OBJECTDIR}/src/ResourceManager.o \
 	${OBJECTDIR}/src/Scene.o \
@@ -349,6 +351,16 @@ ${OBJECTDIR}/src/Game.o: src/Game.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Game.o src/Game.cpp
+
+${OBJECTDIR}/src/Light.o: src/Light.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Light.o src/Light.cpp
+
+${OBJECTDIR}/src/LightSystem.o: src/LightSystem.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/LightSystem.o src/LightSystem.cpp
 
 ${OBJECTDIR}/src/Node.o: src/Node.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
