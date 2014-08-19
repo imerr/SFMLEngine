@@ -24,6 +24,7 @@ namespace engine {
         util::Box2dDebugDraw m_debugDraw;
         std::mutex m_mutexDebug;
         LightSystem m_lightSystem;
+        bool m_debug;
     public:
         Scene(Game* game);
         virtual ~Scene();
@@ -35,6 +36,8 @@ namespace engine {
         void AddLight(Light* light);
         void RemoveLight(Light* light);
         LightSystem* GetLightSystem();
+        void SetDebug(bool debug);
+        bool IsDebug() const;
     private:
         virtual void OnUpdate(sf::Time interval);
         virtual void PostDraw(sf::RenderTarget& target, sf::RenderStates states);

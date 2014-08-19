@@ -13,6 +13,14 @@
 namespace engine {
 
     class Light : public Node, public b2RayCastCallback {
+
+        class CenterQuery : public b2QueryCallback {
+        public:
+            bool hit;
+            b2Vec2 pos;
+            CenterQuery(float x, float y);
+            virtual bool ReportFixture(b2Fixture* fixture);
+        };
     protected:
         bool m_active;
         sf::Color m_lightColor;
@@ -20,8 +28,9 @@ namespace engine {
         std::vector<sf::Vertex> m_vertices;
         size_t m_rayCount;
         size_t m_currentVert;
+        bool m_blocked;
     public:
-        Light();
+        Light(Scene* scene);
         virtual ~Light();
         void SetActive(bool active);
         bool IsActive() const;

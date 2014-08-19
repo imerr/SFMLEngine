@@ -11,7 +11,7 @@
 #include <iostream>
 namespace engine {
 
-    Node::Node() : m_scene(nullptr), m_parent(nullptr), m_body(nullptr) {
+    Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr) {
     }
 
     Node::~Node() {
@@ -92,8 +92,8 @@ namespace engine {
 
     void Node::UpdateTransform(float delta) {
         std::lock_guard<std::mutex> lg(m_mutex);
-        setRotation(m_physicsTransform.rot + delta * m_physicsTransform.rotVel);
-        setPosition(m_physicsTransform.pos.x + delta * m_physicsTransform.vel.x, m_physicsTransform.pos.y + delta * m_physicsTransform.vel.y);
+        setRotation(m_physicsTransform.rot);
+        setPosition(m_physicsTransform.pos.x, m_physicsTransform.pos.y);
     }
 }
 

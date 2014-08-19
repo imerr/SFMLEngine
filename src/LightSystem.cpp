@@ -30,13 +30,14 @@ namespace engine {
         auto size = m_scene->GetGame()->GetWindow()->getSize();
         m_buffer.create(size.x, size.y);
         m_pingPongBuffer.create(size.x, size.y);
+        m_buffer.setActive(false);
+        m_pingPongBuffer.setActive(false);
     }
 
     LightSystem::~LightSystem() {
     }
 
     void LightSystem::update(sf::Time interval) {
-
         m_needsUpdate = true;
     }
 
@@ -49,7 +50,6 @@ namespace engine {
             std::for_each(m_lights.begin(), m_lights.end(), [this, &states](Light * light) {
                 light->DrawLight(m_buffer, states);
             });
-            //m_blurShader.setParameter("sigma", 3.0f);
             m_buffer.display();
             auto textureSize = m_buffer.getSize();
             for (size_t i = 0; i < blurPasses; i++) {

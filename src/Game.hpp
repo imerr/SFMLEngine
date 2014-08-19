@@ -21,6 +21,9 @@ namespace engine {
         std::atomic<bool> m_running;
         sf::Clock m_lastLogicUpdate;
         sf::Mutex m_lastLogicUpdateMutex;
+        // stats
+        std::atomic<int> m_fps;
+        int m_tps;
     public:
         Game();
         Game(const Game& orig);

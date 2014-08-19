@@ -13,7 +13,7 @@
 namespace engine {
     class Scene;
     class LightSystem : public sf::NonCopyable {
-        const static size_t blurPasses=2;
+        const static size_t blurPasses=1;
     protected:
         Scene* m_scene;
         sf::RenderTexture m_buffer;

@@ -40,7 +40,7 @@ namespace engine {
         physicsTransform m_physicsTransform;
 
     public:
-        Node();
+        Node(Scene* scene);
         virtual ~Node();
         void AddNode(Node* node);
         void RemoveNode(Node* node);

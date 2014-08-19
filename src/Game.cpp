@@ -8,11 +8,11 @@
 #include <iostream>
 #include <thread>
 #include "Game.hpp"
-
+#include <sstream>
 
 namespace engine {
 
-    Game::Game() : m_window(sf::VideoMode(1024, 576), "SFML works!"), m_scene(nullptr), m_running(true) {
+    Game::Game() : m_window(sf::VideoMode(1024, 576), "SFML works!"), m_scene(nullptr), m_running(true), m_fps(0), m_tps(0) {
     }
 
     Game::Game(const Game& orig) {
@@ -40,12 +40,15 @@ namespace engine {
                 m_scene->draw(m_window, sf::RenderStates::Default, delta.asSeconds());
             }
             m_window.display();
+            m_fps++;
+
         }
     }
 
     void Game::LogicLoop() {
         sf::Time interval = sf::seconds(1.0f / 60.0f); // 60cycles/s
         sf::Clock timer;
+        float sec=0;
         timer.restart();
         while (m_running) {
             m_lastLogicUpdateMutex.lock();
@@ -62,10 +65,22 @@ namespace engine {
             m_scene->update(interval);
             sf::Time delta = timer.restart();
             if (delta < interval) {
-                std::cout << "Sleeping " << (interval - delta).asSeconds() << "/" << interval.asSeconds() << " = " << (interval - delta).asSeconds() / interval.asSeconds() << "%" << std::endl;
+                //std::cout << "Sleeping " << (interval - delta).asSeconds() << "/" << interval.asSeconds() << " = " << ((interval - delta).asSeconds() / interval.asSeconds())*100 << "%" << std::endl;
                 sf::sleep(interval - delta);
+                sec+=interval.asSeconds();
+            }else{
+                sec+=delta.asSeconds();
             }
-
+            
+            m_tps++;
+            if (sec > 1){
+                std::ostringstream ss;
+                ss << m_fps << " FPS " << m_tps << " TPS";
+                m_window.setTitle(ss.str());
+                m_fps=0;
+                m_tps=0;
+                sec=0;
+            }
         }
     }
 

@@ -6,11 +6,12 @@
             <name>Engine</name>
             <c-extensions/>
             <cpp-extensions>cpp</cpp-extensions>
-            <header-extensions>h,hpp</header-extensions>
+            <header-extensions>frag,hpp,vert</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>src</sourceRootElem>
+                <sourceRootElem>assets</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

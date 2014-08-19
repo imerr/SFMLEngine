@@ -19,8 +19,7 @@ namespace engine {
         sf::IntRect m_textureRect;
         sf::Vector2f m_size;
     public:
-        SpriteNode();
-        SpriteNode(const SpriteNode& orig);
+        SpriteNode(Scene* scene);
         virtual ~SpriteNode();
         void SetTexture(std::string path, const sf::IntRect* rect = nullptr);
         void SetTexture(sf::Texture* texture, const sf::IntRect* rect = nullptr);

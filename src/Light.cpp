@@ -11,7 +11,7 @@
 #include <iostream>
 namespace engine {
 
-    Light::Light() : m_active(true), m_lightColor(sf::Color::White), m_radius(10), m_rayCount(256) {
+    Light::Light(Scene* scene) : Node::Node(scene), m_active(true), m_lightColor(sf::Color::White), m_radius(10), m_rayCount(256), m_currentVert(0), m_blocked(false) {
         m_vertices.resize(m_rayCount + 2);
     }
 
@@ -49,19 +49,35 @@ namespace engine {
     void Light::OnUpdate(sf::Time interval) {
         std::lock_guard<std::mutex> lg(m_mutex);
         sf::Vector2f pos = GetGlobalPosition();
-        for (m_currentVert = 1; m_currentVert < m_rayCount + 2; m_currentVert++) {
-            float t = 2 * util::fPI * static_cast<float> (m_currentVert - 1) / static_cast<float> (m_rayCount - 1);
-            float x = cosf(t) * m_radius;
-            float y = sinf(t) * m_radius;
-            m_vertices[m_currentVert].position.x = x;
-            m_vertices[m_currentVert].position.y = y;
-            m_vertices[m_currentVert].color = sf::Color::Black;
-            GetScene()->GetWorld()->RayCast(this, b2Vec2(pos.x / m_scene->GetPixelMeterRatio(), pos.y / m_scene->GetPixelMeterRatio()), b2Vec2((pos.x + x) / m_scene->GetPixelMeterRatio(), (pos.y + y) / m_scene->GetPixelMeterRatio()));
+        b2AABB center;
+        center.lowerBound.x = pos.x / m_scene->GetPixelMeterRatio();
+        center.lowerBound.y = pos.y / m_scene->GetPixelMeterRatio();
+        float onep = (1.f / m_scene->GetPixelMeterRatio());
+        center.upperBound.x = center.lowerBound.x + onep;
+        center.upperBound.y = center.lowerBound.y + onep;
+        CenterQuery cq(center.lowerBound.x, center.lowerBound.y);
+        GetScene()->GetWorld()->QueryAABB(&cq, center);
+        if (cq.hit) {
+            m_blocked = true;
+        } else {
+            m_blocked = false;
+            for (m_currentVert = 1; m_currentVert < m_rayCount + 2; m_currentVert++) {
+                float t = 2 * util::fPI * static_cast<float> (m_currentVert - 1) / static_cast<float> (m_rayCount - 1);
+                float x = cosf(t) * m_radius;
+                float y = sinf(t) * m_radius;
+                m_vertices[m_currentVert].position.x = x;
+                m_vertices[m_currentVert].position.y = y;
+                m_vertices[m_currentVert].color = sf::Color::Black;
+                GetScene()->GetWorld()->RayCast(this, b2Vec2(pos.x / m_scene->GetPixelMeterRatio(), pos.y / m_scene->GetPixelMeterRatio()), b2Vec2((pos.x + x) / m_scene->GetPixelMeterRatio(), (pos.y + y) / m_scene->GetPixelMeterRatio()));
+            }
         }
     }
 
     void Light::DrawLight(sf::RenderTarget& target, sf::RenderStates states) {
         std::lock_guard<std::mutex> lg(m_mutex);
+        if (m_blocked) {
+            return;
+        }
         states.transform *= getTransform();
         target.draw(m_vertices.data(), m_rayCount + 1, sf::PrimitiveType::TrianglesFan, states);
     }
@@ -77,13 +93,24 @@ namespace engine {
     }
 
     float32 Light::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction) {
-        m_vertices[m_currentVert].position.x *=fraction;
-        m_vertices[m_currentVert].position.y *=fraction;
-        m_vertices[m_currentVert].color.r = 255 * (1-fraction);
-        m_vertices[m_currentVert].color.g = 255 * (1-fraction);
-        m_vertices[m_currentVert].color.b = 255 * (1-fraction);
+        m_vertices[m_currentVert].position.x *= fraction;
+        m_vertices[m_currentVert].position.y *= fraction;
+        m_vertices[m_currentVert].color.r = 255 * (1 - fraction);
+        m_vertices[m_currentVert].color.g = 255 * (1 - fraction);
+        m_vertices[m_currentVert].color.b = 255 * (1 - fraction);
 
         return fraction;
+    }
+
+    Light::CenterQuery::CenterQuery(float x, float y) : hit(false), pos(x, y) {
+    }
+
+    bool Light::CenterQuery::ReportFixture(b2Fixture* fixture) {
+        if (fixture->TestPoint(pos)) {
+            hit = true;
+            return false;
+        }
+        return true;
     }
 }
 

@@ -12,16 +12,9 @@
 
 namespace engine {
 
-    SpriteNode::SpriteNode() : m_texture(0) {
+    SpriteNode::SpriteNode(Scene* scene) : Node::Node(scene), m_texture(0) {
     }
-
-    SpriteNode::SpriteNode(const SpriteNode& orig) {
-        m_texture = orig.m_texture;
-        m_textureRect = orig.m_textureRect;
-        UpdatePosition();
-        UpdateTexCoords();
-    }
-
+    
     SpriteNode::~SpriteNode() {
     }
 
