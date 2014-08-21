@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/Factory.o \
 	${OBJECTDIR}/src/Game.o \
 	${OBJECTDIR}/src/Light.o \
 	${OBJECTDIR}/src/LightSystem.o \
@@ -71,45 +72,50 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libengine.a: ${OBJECTFILES}
 	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libengine.a ${OBJECTFILES} 
 	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libengine.a
 
+${OBJECTDIR}/src/Factory.o: src/Factory.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -I../extern/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Factory.o src/Factory.cpp
+
 ${OBJECTDIR}/src/Game.o: src/Game.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Game.o src/Game.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -I../extern/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Game.o src/Game.cpp
 
 ${OBJECTDIR}/src/Light.o: src/Light.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Light.o src/Light.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -I../extern/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Light.o src/Light.cpp
 
 ${OBJECTDIR}/src/LightSystem.o: src/LightSystem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/LightSystem.o src/LightSystem.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -I../extern/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/LightSystem.o src/LightSystem.cpp
 
 ${OBJECTDIR}/src/Node.o: src/Node.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Node.o src/Node.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -I../extern/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Node.o src/Node.cpp
 
 ${OBJECTDIR}/src/ResourceManager.o: src/ResourceManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ResourceManager.o src/ResourceManager.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -I../extern/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ResourceManager.o src/ResourceManager.cpp
 
 ${OBJECTDIR}/src/Scene.o: src/Scene.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Scene.o src/Scene.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -I../extern/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Scene.o src/Scene.cpp
 
 ${OBJECTDIR}/src/SpriteNode.o: src/SpriteNode.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SpriteNode.o src/SpriteNode.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -I../extern/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SpriteNode.o src/SpriteNode.cpp
 
 ${OBJECTDIR}/src/util/Box2dDebugDraw.o: src/util/Box2dDebugDraw.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/util
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/util/Box2dDebugDraw.o src/util/Box2dDebugDraw.cpp
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -I../extern/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/util/Box2dDebugDraw.o src/util/Box2dDebugDraw.cpp
 
 # Subprojects
 .build-subprojects:

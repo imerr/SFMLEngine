@@ -38,6 +38,7 @@ namespace engine {
         LightSystem* GetLightSystem();
         void SetDebug(bool debug);
         bool IsDebug() const;
+        virtual uint8_t GetType() const;
     private:
         virtual void OnUpdate(sf::Time interval);
         virtual void PostDraw(sf::RenderTarget& target, sf::RenderStates states);

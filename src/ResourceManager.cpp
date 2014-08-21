@@ -29,8 +29,10 @@ namespace engine {
             }
         }
         if (!m_textureMissing.loadFromImage(missing)){
-            std::cout << "Couldn't loadFromImage missing texture" << std::endl; 
+            std::cerr << "Couldn't loadFromImage missing texture" << std::endl; 
         }
+        m_textureMissing.setRepeated(true);
+        m_textureMissing.setSmooth(false);
     }
 
     sf::Texture* ResourceManager::GetTexture(std::string path) {

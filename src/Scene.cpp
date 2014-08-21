@@ -78,6 +78,8 @@ namespace engine {
         }
         m_lightSystem.update(interval);
     }
-
+    uint8_t Scene::GetType() const {
+        return NT_SCENE;
+    }
 }
 

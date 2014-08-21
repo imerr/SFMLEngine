@@ -11,7 +11,7 @@
 #include <iostream>
 namespace engine {
 
-    Light::Light(Scene* scene) : Node::Node(scene), m_active(true), m_lightColor(sf::Color::White), m_radius(10), m_rayCount(256), m_currentVert(0), m_blocked(false) {
+    Light::Light(Scene* scene) : Node::Node(scene), m_active(true), m_lightColor(sf::Color::White), m_radius(10), m_rayCount(256), m_blocked(false), m_raycastFraction(1.0f) {
         m_vertices.resize(m_rayCount + 2);
     }
 
@@ -61,14 +61,22 @@ namespace engine {
             m_blocked = true;
         } else {
             m_blocked = false;
-            for (m_currentVert = 1; m_currentVert < m_rayCount + 2; m_currentVert++) {
-                float t = 2 * util::fPI * static_cast<float> (m_currentVert - 1) / static_cast<float> (m_rayCount - 1);
+            for (size_t i = 1; i < m_rayCount + 2; i++) {
+                float t = 2 * util::fPI * static_cast<float> (i - 1) / static_cast<float> (m_rayCount - 1);
                 float x = cosf(t) * m_radius;
                 float y = sinf(t) * m_radius;
-                m_vertices[m_currentVert].position.x = x;
-                m_vertices[m_currentVert].position.y = y;
-                m_vertices[m_currentVert].color = sf::Color::Black;
+                m_vertices[i].position.x = x;
+                m_vertices[i].position.y = y;
+                m_vertices[i].color = sf::Color::Black;
+                m_raycastFraction = 1.0f;
                 GetScene()->GetWorld()->RayCast(this, b2Vec2(pos.x / m_scene->GetPixelMeterRatio(), pos.y / m_scene->GetPixelMeterRatio()), b2Vec2((pos.x + x) / m_scene->GetPixelMeterRatio(), (pos.y + y) / m_scene->GetPixelMeterRatio()));
+                if (m_raycastFraction < 1.0f) {
+                    m_vertices[i].position.x *= m_raycastFraction;
+                    m_vertices[i].position.y *= m_raycastFraction;
+                    m_vertices[i].color.r = 255 * (1 - m_raycastFraction);
+                    m_vertices[i].color.g = 255 * (1 - m_raycastFraction);
+                    m_vertices[i].color.b = 255 * (1 - m_raycastFraction);
+                }
             }
         }
     }
@@ -93,20 +101,19 @@ namespace engine {
     }
 
     float32 Light::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction) {
-        m_vertices[m_currentVert].position.x *= fraction;
-        m_vertices[m_currentVert].position.y *= fraction;
-        m_vertices[m_currentVert].color.r = 255 * (1 - fraction);
-        m_vertices[m_currentVert].color.g = 255 * (1 - fraction);
-        m_vertices[m_currentVert].color.b = 255 * (1 - fraction);
-
-        return fraction;
+        Node* n = static_cast<Node*>(fixture->GetBody()->GetUserData());
+        if ((!n || !n->IsOpaque()) && fraction < m_raycastFraction) {
+            m_raycastFraction = fraction;
+        }
+        return m_raycastFraction;
     }
 
     Light::CenterQuery::CenterQuery(float x, float y) : hit(false), pos(x, y) {
     }
 
     bool Light::CenterQuery::ReportFixture(b2Fixture* fixture) {
-        if (fixture->TestPoint(pos)) {
+        Node* n = static_cast<Node*>(fixture->GetBody()->GetUserData());
+        if ((!n || !n->IsOpaque()) && fixture->TestPoint(pos)) {
             hit = true;
             return false;
         }

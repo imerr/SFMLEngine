@@ -65,7 +65,6 @@ namespace engine {
             m_scene->update(interval);
             sf::Time delta = timer.restart();
             if (delta < interval) {
-                //std::cout << "Sleeping " << (interval - delta).asSeconds() << "/" << interval.asSeconds() << " = " << ((interval - delta).asSeconds() / interval.asSeconds())*100 << "%" << std::endl;
                 sf::sleep(interval - delta);
                 sec+=interval.asSeconds();
             }else{
@@ -86,5 +85,8 @@ namespace engine {
 
     const sf::RenderWindow* Game::GetWindow() const {
         return &m_window;
+    }
+    sf::Vector2f Game::GetMousePosition(){
+        return m_window.mapPixelToCoords(sf::Mouse::getPosition(m_window));
     }
 }

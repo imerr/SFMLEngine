@@ -15,6 +15,7 @@
 #include "SFML/Graphics/RenderStates.hpp"
 #include "SFML/System/Time.hpp"
 #include "Box2D/Box2D.h"
+#include <json/json.h>
 namespace engine {
     class Scene;
 
@@ -28,7 +29,12 @@ namespace engine {
         physicsTransform() : pos(0, 0), vel(0, 0), rot(0), rotVel(0) {
         }
     };
-
+    enum NodeType{
+        NT_NONE,
+        NT_SPRITE,
+        NT_SCENE,
+        NT_END
+    };
     class Node : public sf::Transformable, public sf::NonCopyable {
     protected:
         // mutex for locking things accessed in the graphics and logic thread, mainly when copying over position info and such
@@ -38,7 +44,8 @@ namespace engine {
         Node* m_parent;
         b2Body* m_body;
         physicsTransform m_physicsTransform;
-
+        sf::Vector2f m_size;
+        bool m_opaque;
     public:
         Node(Scene* scene);
         virtual ~Node();
@@ -51,6 +58,11 @@ namespace engine {
         sf::Vector2f GetGlobalPosition();
         virtual void update(sf::Time interval);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states, float delta);
+        virtual bool initialize(Json::Value& root);
+        virtual uint8_t GetType() const;
+        void SetOpaque(bool lightBlocker);
+        bool IsOpaque() const;
+        
     protected:
         void SetParent(Node* parent);
     private:

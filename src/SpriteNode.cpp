@@ -9,12 +9,13 @@
 #include "SpriteNode.hpp"
 #include "ResourceManager.hpp"
 #include "SFML/Graphics.hpp"
+#include "Factory.hpp"
 
 namespace engine {
 
     SpriteNode::SpriteNode(Scene* scene) : Node::Node(scene), m_texture(0) {
     }
-    
+
     SpriteNode::~SpriteNode() {
     }
 
@@ -44,10 +45,12 @@ namespace engine {
 
     void SpriteNode::SetTexture(std::string path, const sf::IntRect* rect) {
         sf::Texture* t = engine::ResourceManager::instance()->GetTexture(path);
+        t->setRepeated(true);
         SetTexture(t, rect);
     }
-    void SpriteNode::SetTexture(sf::Texture* texture, const sf::IntRect* rect){
-        m_texture=texture;
+
+    void SpriteNode::SetTexture(sf::Texture* texture, const sf::IntRect* rect) {
+        m_texture = texture;
         if (rect) {
             m_textureRect.left = rect->left;
             m_textureRect.width = rect->width;
@@ -59,11 +62,57 @@ namespace engine {
             m_textureRect.top = 0;
             m_textureRect.height = m_texture->getSize().y;
         }
-        if (!m_size.x && !m_size.y){
+        if (!m_size.x && !m_size.y) {
             m_size.x = m_textureRect.width;
             m_size.y = m_textureRect.height;
         }
         UpdatePosition();
         UpdateTexCoords();
+    }
+
+    bool SpriteNode::initialize(Json::Value& root) {
+        if (!Node::initialize(root)) {
+            return false;
+        }
+        if (root.isMember("sprite")) {
+            auto sprite = root["sprite"];
+            if (sprite.isMember("texture")) {
+                std::cout << "single texture" << std::endl;
+                if (sprite.isMember("rect")) {
+                    std::cout << "Rect" << std::endl;
+                    sf::IntRect rect;
+                    rect.left = sprite["rect"].get("left", 0).asInt();
+                    rect.top = sprite["rect"].get("top", 0).asInt();
+                    rect.width = sprite["rect"].get("width", 0).asInt();
+                    rect.height = sprite["rect"].get("height", 0).asInt();
+                    SetTexture(sprite["texture"].asString(), &rect);
+                } else {
+                    SetTexture(sprite["texture"].asString());
+                }
+            } else if (sprite.isMember("sheet")) {
+                // TODO: Move this elsewhere&save?
+                Json::Value sheet;
+                if (Factory::LoadJson(sprite["sheet"].asString(), sheet)) {
+                    auto tex = sheet["sprites"][sprite.get("index", 0).asInt()];
+                    if (tex.empty() || tex.isNull()) {
+                        std::cerr << "Empty/Nonexistant sprite index " << sprite.get("index", 0) << std::endl;
+                    } else {
+                        sf::IntRect rect;
+                        rect.left = tex.get("left", 0).asInt();
+                        rect.top = tex.get("top", 0).asInt();
+                        rect.width = tex.get("width", 0).asInt();
+                        rect.height = tex.get("height", 0).asInt();
+                        SetTexture(sheet["texture"].asString(), &rect);
+                    }
+                } else {
+                    std::cerr << "Loading spritesheet json failed." << std::endl;
+                }
+            }
+        }
+        return true;
+    }
+
+    uint8_t SpriteNode::GetType() const{
+        return NT_SPRITE;
     }
 }

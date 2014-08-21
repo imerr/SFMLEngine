@@ -10,6 +10,7 @@
 #include "util/singleton.hpp"
 #include <map>
 #include "SFML/Graphics/Texture.hpp"
+#include <json/value.h>
 namespace engine{
 
     class ResourceManager : public util::singleton<ResourceManager> {

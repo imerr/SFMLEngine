@@ -27,8 +27,8 @@ namespace engine {
         float m_radius;
         std::vector<sf::Vertex> m_vertices;
         size_t m_rayCount;
-        size_t m_currentVert;
         bool m_blocked;
+        float m_raycastFraction;
     public:
         Light(Scene* scene);
         virtual ~Light();
