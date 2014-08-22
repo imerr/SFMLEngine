@@ -48,6 +48,8 @@ namespace engine {
         physicsTransform m_physicsTransform;
         sf::Vector2f m_size;
         bool m_opaque;
+        // Update and render it
+        bool m_active;
     public:
         Node(Scene* scene);
         virtual ~Node();
@@ -67,6 +69,8 @@ namespace engine {
         void SetPosition(float x, float y);
         b2Body* GetBody() const;
         b2Joint* GetParentJoint() const;
+        void SetActive(bool active);
+        bool IsActive() const;
     protected:
         friend Factory;
         void SetParent(Node* parent);

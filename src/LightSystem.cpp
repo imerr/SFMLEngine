@@ -9,6 +9,7 @@
 #include "Scene.hpp"
 #include "Game.hpp"
 #include <iostream>
+#include <winerror.h>
 
 namespace engine {
 
@@ -42,7 +43,7 @@ namespace engine {
     }
 
     void LightSystem::draw(sf::RenderTarget& target, sf::RenderStates states) {
-        if (!m_enabled){
+        if (!m_enabled) {
             return;
         }
         sf::Sprite s;
@@ -65,6 +66,10 @@ namespace engine {
                 m_buffer.display();
             }
         }
+        sf::Transformable tr;
+        auto window = m_scene->GetGame()->GetWindow();
+        tr.setPosition(window->getView().getCenter().x - (window->getView().getSize().x / 2), window->getView().getCenter().y - (window->getView().getSize().y / 2));
+        states.transform *= tr.getTransform();
         states.blendMode = sf::BlendMultiply;
         s.setTexture(m_buffer.getTexture());
         target.draw(s, states);

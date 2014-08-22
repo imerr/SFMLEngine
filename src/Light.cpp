@@ -10,6 +10,7 @@
 #include "util/math.hpp"
 #include "util/misc.hpp"
 #include <iostream>
+#include "Game.hpp"
 namespace engine {
 
     Light::Light(Scene* scene) : Node::Node(scene), m_active(true), m_lightColor(sf::Color::White), m_radius(200), m_rayCount(256), m_blocked(false), m_raycastFraction(1.0f), m_angle(0), m_openingAngle(util::fPI * 2) {
@@ -89,7 +90,11 @@ namespace engine {
         if (m_blocked) {
             return;
         }
+        sf::Transformable tr;
+        auto window = m_scene->GetGame()->GetWindow();
+        tr.setPosition(-window->getView().getCenter().x + (window->getView().getSize().x / 2), -window->getView().getCenter().y + (window->getView().getSize().y / 2));
         states.transform *= getTransform();
+        states.transform *= tr.getTransform();
         target.draw(m_vertices.data(), m_rayCount + 1, sf::PrimitiveType::TrianglesFan, states);
     }
 
@@ -157,7 +162,7 @@ namespace engine {
         // min prevents overdrawing
         m_openingAngle = util::min(root.get("openingAngle", 360).asFloat() * util::fPI / 180, util::fPI * 2);
         // Set dynamic raycount
-        SetRayCount(m_radius/5 * m_openingAngle);
+        SetRayCount(m_radius / 5 * m_openingAngle);
         return true;
     }
 }

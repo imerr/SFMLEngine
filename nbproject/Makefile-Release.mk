@@ -40,6 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Light.o \
 	${OBJECTDIR}/src/LightSystem.o \
 	${OBJECTDIR}/src/Node.o \
+	${OBJECTDIR}/src/ParticleSystem.o \
 	${OBJECTDIR}/src/ResourceManager.o \
 	${OBJECTDIR}/src/Scene.o \
 	${OBJECTDIR}/src/SpriteNode.o \
@@ -96,6 +97,11 @@ ${OBJECTDIR}/src/Node.o: src/Node.cpp
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Node.o src/Node.cpp
+
+${OBJECTDIR}/src/ParticleSystem.o: src/ParticleSystem.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/ParticleSystem.o src/ParticleSystem.cpp
 
 ${OBJECTDIR}/src/ResourceManager.o: src/ResourceManager.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

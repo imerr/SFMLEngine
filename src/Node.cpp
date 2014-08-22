@@ -11,7 +11,7 @@
 #include <iostream>
 namespace engine {
 
-    Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_size(0, 0), m_opaque(true) {
+    Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_size(0, 0), m_opaque(true), m_active(true) {
     }
 
     Node::~Node() {
@@ -19,9 +19,16 @@ namespace engine {
             m_scene->GetWorld()->DestroyBody(m_body);
             m_body = nullptr;
         }
+        m_parent->RemoveNode(this);
+        while (m_children.size()){
+            delete m_children.front();
+        }
     }
 
     void Node::draw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
+        if (!m_active) {
+            return;
+        }
         // apply the transform
         if (m_body) {
             UpdateTransform(delta);
@@ -76,6 +83,9 @@ namespace engine {
     }
 
     void Node::update(sf::Time interval) {
+        if (!m_active) {
+            return;
+        }
         if (m_body) {
             UpdatePhysicsTransform();
         }
@@ -239,14 +249,14 @@ namespace engine {
                                 if (points[0u].isArray()) {
                                     a.x = points[0u].get(0u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                                     a.y = points[0u].get(1u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
-                                } else if (points[0u].isObject()){
+                                } else if (points[0u].isObject()) {
                                     a.x = points[0u].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                                     a.y = points[0u].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                                 }
                                 if (points[1u].isArray()) {
                                     b.x = points[1u].get(0u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                                     b.y = points[1u].get(1u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
-                                } else if (points[1u].isObject()){
+                                } else if (points[1u].isObject()) {
                                     b.x = points[1u].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                                     b.y = points[1u].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                                 }
@@ -359,6 +369,17 @@ namespace engine {
 
     b2Joint* Node::GetParentJoint() const {
         return m_parentJoint;
+    }
+
+    void Node::SetActive(bool active) {
+        m_active = active;
+        if (m_body) {
+            m_body->SetActive(active);
+        }
+    }
+
+    bool Node::IsActive() const {
+        return m_active;
     }
 }
 
