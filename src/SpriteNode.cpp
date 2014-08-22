@@ -77,9 +77,7 @@ namespace engine {
         if (root.isMember("sprite")) {
             auto sprite = root["sprite"];
             if (sprite.isMember("texture")) {
-                std::cout << "single texture" << std::endl;
                 if (sprite.isMember("rect")) {
-                    std::cout << "Rect" << std::endl;
                     sf::IntRect rect;
                     rect.left = sprite["rect"].get("left", 0).asInt();
                     rect.top = sprite["rect"].get("top", 0).asInt();
@@ -90,9 +88,13 @@ namespace engine {
                     SetTexture(sprite["texture"].asString());
                 }
             } else if (sprite.isMember("sheet")) {
-                // TODO: Move this elsewhere&save?
                 Json::Value sheet;
-                if (Factory::LoadJson(sprite["sheet"].asString(), sheet)) {
+                if (sprite["sheet"].isString() && !Factory::LoadJson(sprite["sheet"].asString(), sheet)) {
+                    std::cerr << "Loading spritesheet json failed." << std::endl;
+                } else if (sprite["sheet"].isObject()) {
+                    sheet = sprite["sheet"];
+                }
+                if (!sheet.isNull() && !sheet.empty()) {
                     auto tex = sheet["sprites"][sprite.get("index", 0).asInt()];
                     if (tex.empty() || tex.isNull()) {
                         std::cerr << "Empty/Nonexistant sprite index " << sprite.get("index", 0) << std::endl;
@@ -104,15 +106,13 @@ namespace engine {
                         rect.height = tex.get("height", 0).asInt();
                         SetTexture(sheet["texture"].asString(), &rect);
                     }
-                } else {
-                    std::cerr << "Loading spritesheet json failed." << std::endl;
                 }
             }
         }
         return true;
     }
 
-    uint8_t SpriteNode::GetType() const{
+    uint8_t SpriteNode::GetType() const {
         return NT_SPRITE;
     }
 }

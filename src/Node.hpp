@@ -16,9 +16,10 @@
 #include "SFML/System/Time.hpp"
 #include "Box2D/Box2D.h"
 #include <json/json.h>
+
 namespace engine {
     class Scene;
-
+    class Factory;
     struct physicsTransform {
     public:
         b2Vec2 pos;
@@ -43,6 +44,7 @@ namespace engine {
         Scene* m_scene;
         Node* m_parent;
         b2Body* m_body;
+        b2Joint* m_parentJoint;
         physicsTransform m_physicsTransform;
         sf::Vector2f m_size;
         bool m_opaque;
@@ -62,8 +64,11 @@ namespace engine {
         virtual uint8_t GetType() const;
         void SetOpaque(bool lightBlocker);
         bool IsOpaque() const;
-        
+        void SetPosition(float x, float y);
+        b2Body* GetBody() const;
+        b2Joint* GetParentJoint() const;
     protected:
+        friend Factory;
         void SetParent(Node* parent);
     private:
 

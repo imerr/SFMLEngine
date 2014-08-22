@@ -78,8 +78,29 @@ namespace engine {
         }
         m_lightSystem.update(interval);
     }
+
     uint8_t Scene::GetType() const {
         return NT_SCENE;
+    }
+
+    bool Scene::initialize(Json::Value& root) {
+        if (root["gravity"].isArray()) {
+            m_world->SetGravity(b2Vec2(root["gravity"].get(0u, 0).asFloat(), root["gravity"].get(1u, 0).asFloat()));
+        } else if (root["gravity"].isObject()) {
+            m_world->SetGravity(b2Vec2(root["gravity"].get("x", 0).asFloat(), root["gravity"].get("y", 0).asFloat()));
+        }
+        m_debug = root.get("debug", false).asBool();
+        auto light = root["light"];
+        if (!light.empty() && !light.isNull()) {
+            m_lightSystem.SetEnabled(light.get("enabled", true).asBool());
+            if (light["ambient"].isArray()) {
+                m_lightSystem.SetAmbientColor(sf::Color(light["ambient"].get(0u, 255).asInt(), light["ambient"].get(1u, 255).asInt(), light["ambient"].get(2u, 255).asInt(), light["ambient"].get(3u, 255).asInt()));
+            } else if (light["ambient"].isInt()) {
+                unsigned int lc = light["ambient"].asInt();
+                m_lightSystem.SetAmbientColor(sf::Color(lc & 0xFF0000, lc & 0xFF00, lc & 0xFF, lc & 0xFF000000));
+            }
+        }
+        return true;
     }
 }
 

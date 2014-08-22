@@ -34,8 +34,7 @@ namespace engine {
             m_lastLogicUpdateMutex.lock();
             sf::Time delta = m_lastLogicUpdate.getElapsedTime();
             m_lastLogicUpdateMutex.unlock();
-            sf::Color clearColor(15, 235, 165);
-            m_window.clear(clearColor);
+            m_window.clear(sf::Color::White);
             if (m_scene) {
                 m_scene->draw(m_window, sf::RenderStates::Default, delta.asSeconds());
             }

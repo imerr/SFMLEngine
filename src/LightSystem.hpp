@@ -22,6 +22,7 @@ namespace engine {
         std::list<Light*> m_lights;
         sf::Color m_ambientColor;
         std::atomic<bool> m_needsUpdate;
+        bool m_enabled;
     public:
         LightSystem(Scene*);
         virtual ~LightSystem();
@@ -31,6 +32,8 @@ namespace engine {
         virtual void draw(sf::RenderTarget& target, sf::RenderStates state);
         void SetAmbientColor(sf::Color ambientColor);
         sf::Color GetAmbientColor() const;
+        void SetEnabled(bool enabled);
+        bool IsEnabled() const;
     private:
 
     };

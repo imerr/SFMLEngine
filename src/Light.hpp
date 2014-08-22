@@ -29,6 +29,8 @@ namespace engine {
         size_t m_rayCount;
         bool m_blocked;
         float m_raycastFraction;
+        float m_angle;
+        float m_openingAngle;
     public:
         Light(Scene* scene);
         virtual ~Light();
@@ -42,6 +44,12 @@ namespace engine {
         virtual void DrawLight(sf::RenderTarget& target, sf::RenderStates states);
         void SetRayCount(size_t rayCount);
         size_t GetRayCount() const;
+        void SetAngle(float angle);
+        float GetAngle() const;
+        void SetOpeningAngle(float openingAngle);
+        float GetOpeningAngle() const;
+        virtual bool initialize(Json::Value& root);
+
     protected: // Prevent it being called directly
         virtual float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction);
 

@@ -39,6 +39,7 @@ namespace engine {
         void SetDebug(bool debug);
         bool IsDebug() const;
         virtual uint8_t GetType() const;
+        virtual bool initialize(Json::Value& root);
     private:
         virtual void OnUpdate(sf::Time interval);
         virtual void PostDraw(sf::RenderTarget& target, sf::RenderStates states);

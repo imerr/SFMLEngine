@@ -8,11 +8,14 @@
 #include "Light.hpp"
 #include "Scene.hpp"
 #include "util/math.hpp"
+#include "util/misc.hpp"
 #include <iostream>
 namespace engine {
 
-    Light::Light(Scene* scene) : Node::Node(scene), m_active(true), m_lightColor(sf::Color::White), m_radius(10), m_rayCount(256), m_blocked(false), m_raycastFraction(1.0f) {
+    Light::Light(Scene* scene) : Node::Node(scene), m_active(true), m_lightColor(sf::Color::White), m_radius(200), m_rayCount(256), m_blocked(false), m_raycastFraction(1.0f), m_angle(0), m_openingAngle(util::fPI * 2) {
         m_vertices.resize(m_rayCount + 2);
+        scene->GetLightSystem()->AddLight(this);
+        m_opaque = true;
     }
 
     void Light::SetActive(bool active) {
@@ -62,7 +65,7 @@ namespace engine {
         } else {
             m_blocked = false;
             for (size_t i = 1; i < m_rayCount + 2; i++) {
-                float t = 2 * util::fPI * static_cast<float> (i - 1) / static_cast<float> (m_rayCount - 1);
+                float t = m_angle + (m_openingAngle * static_cast<float> (i - 1) / static_cast<float> (m_rayCount - 1));
                 float x = cosf(t) * m_radius;
                 float y = sinf(t) * m_radius;
                 m_vertices[i].position.x = x;
@@ -73,9 +76,9 @@ namespace engine {
                 if (m_raycastFraction < 1.0f) {
                     m_vertices[i].position.x *= m_raycastFraction;
                     m_vertices[i].position.y *= m_raycastFraction;
-                    m_vertices[i].color.r = 255 * (1 - m_raycastFraction);
-                    m_vertices[i].color.g = 255 * (1 - m_raycastFraction);
-                    m_vertices[i].color.b = 255 * (1 - m_raycastFraction);
+                    m_vertices[i].color.r = m_lightColor.r * (1 - m_raycastFraction);
+                    m_vertices[i].color.g = m_lightColor.g * (1 - m_raycastFraction);
+                    m_vertices[i].color.b = m_lightColor.b * (1 - m_raycastFraction);
                 }
             }
         }
@@ -92,6 +95,7 @@ namespace engine {
 
     void Light::SetRayCount(size_t rayCount) {
         m_rayCount = rayCount;
+        m_vertices.clear();
         m_vertices.resize(m_rayCount + 2);
         SetLightColor(m_lightColor); // lazy
     }
@@ -100,8 +104,24 @@ namespace engine {
         return m_rayCount;
     }
 
+    void Light::SetAngle(float angle) {
+        m_angle = angle;
+    }
+
+    float Light::GetAngle() const {
+        return m_angle;
+    }
+
+    void Light::SetOpeningAngle(float openingAngle) {
+        m_openingAngle = openingAngle;
+    }
+
+    float Light::GetOpeningAngle() const {
+        return m_openingAngle;
+    }
+
     float32 Light::ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction) {
-        Node* n = static_cast<Node*>(fixture->GetBody()->GetUserData());
+        Node* n = static_cast<Node*> (fixture->GetBody()->GetUserData());
         if ((!n || !n->IsOpaque()) && fraction < m_raycastFraction) {
             m_raycastFraction = fraction;
         }
@@ -112,11 +132,32 @@ namespace engine {
     }
 
     bool Light::CenterQuery::ReportFixture(b2Fixture* fixture) {
-        Node* n = static_cast<Node*>(fixture->GetBody()->GetUserData());
+        Node* n = static_cast<Node*> (fixture->GetBody()->GetUserData());
         if ((!n || !n->IsOpaque()) && fixture->TestPoint(pos)) {
             hit = true;
             return false;
         }
+        return true;
+    }
+
+    bool Light::initialize(Json::Value& root) {
+        Node::initialize(root);
+        if (root["color"].isArray()) {
+            m_lightColor.r = root["color"].get(0u, 255).asInt();
+            m_lightColor.g = root["color"].get(1u, 255).asInt();
+            m_lightColor.b = root["color"].get(2u, 255).asInt();
+            m_lightColor.a = root["color"].get(3u, 255).asInt();
+            SetLightColor(m_lightColor);
+        } else if (root["color"].isInt()) {
+            unsigned int lc = root["color"].asInt();
+            m_lightColor = sf::Color(lc & 0xFF0000, lc & 0xFF00, lc & 0xFF, lc & 0xFF000000);
+        }
+        m_radius = root.get("radius", 200).asFloat();
+        m_angle = root.get("angle", 0).asFloat() * util::fPI / 180;
+        // min prevents overdrawing
+        m_openingAngle = util::min(root.get("openingAngle", 360).asFloat() * util::fPI / 180, util::fPI * 2);
+        // Set dynamic raycount
+        SetRayCount(m_radius/5 * m_openingAngle);
         return true;
     }
 }

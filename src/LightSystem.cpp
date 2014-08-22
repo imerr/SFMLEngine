@@ -25,7 +25,7 @@ namespace engine {
         output.draw(vertices, states);
     }
 
-    LightSystem::LightSystem(Scene* scene) : m_scene(scene), m_ambientColor(50, 50, 40), m_needsUpdate(true) {
+    LightSystem::LightSystem(Scene* scene) : m_scene(scene), m_ambientColor(sf::Color::White), m_needsUpdate(true), m_enabled(true) {
         m_blurShader.loadFromFile("assets/shader/fullpass.vert", "assets/shader/blur.frag");
         auto size = m_scene->GetGame()->GetWindow()->getSize();
         m_buffer.create(size.x, size.y);
@@ -42,6 +42,9 @@ namespace engine {
     }
 
     void LightSystem::draw(sf::RenderTarget& target, sf::RenderStates states) {
+        if (!m_enabled){
+            return;
+        }
         sf::Sprite s;
         if (m_needsUpdate) {
             m_needsUpdate = false;
@@ -75,6 +78,14 @@ namespace engine {
     sf::Color LightSystem::GetAmbientColor() const {
 
         return m_ambientColor;
+    }
+
+    void LightSystem::SetEnabled(bool enabled) {
+        m_enabled = enabled;
+    }
+
+    bool LightSystem::IsEnabled() const {
+        return m_enabled;
     }
 
     void LightSystem::AddLight(Light* light) {

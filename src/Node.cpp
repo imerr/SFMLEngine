@@ -11,13 +11,13 @@
 #include <iostream>
 namespace engine {
 
-    Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_size(0, 0), m_opaque(true) {
+    Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_size(0, 0), m_opaque(true) {
     }
 
     Node::~Node() {
-        if (m_body){
+        if (m_body) {
             m_scene->GetWorld()->DestroyBody(m_body);
-            m_body=nullptr;
+            m_body = nullptr;
         }
     }
 
@@ -25,6 +25,7 @@ namespace engine {
         // apply the transform
         if (m_body) {
             UpdateTransform(delta);
+            states = sf::RenderStates::Default;
         }
         states.transform *= getTransform();
         OnDraw(target, states);
@@ -112,6 +113,7 @@ namespace engine {
                 m_size.y = size.get("y", 0).asFloat();
             }
         }
+
         if (root.isMember("origin")) {
             auto origin = root["origin"];
             if (origin.isArray()) {
@@ -137,6 +139,13 @@ namespace engine {
                 }
             }
         }
+        if (root.isMember("position") && root.isMember("body")) {
+            root["body"]["position"] = root["position"];
+        } else if (root["position"].isArray()) {
+            setPosition(root["position"].get(0u, 0).asFloat(), root["position"].get(1u, 0).asFloat());
+        } else if (root["position"].isObject()) {
+            setPosition(root["position"].get("x", 0).asFloat(), root["position"].get("y", 0).asFloat());
+        }
         if (root.isMember("body")) {
             auto jbody = root["body"];
             b2BodyDef body;
@@ -152,17 +161,20 @@ namespace engine {
             body.linearDamping = jbody.get("linearDamping", 0.0f).asFloat();
             if (jbody.isMember("linearVelocity")) {
                 auto velocity = jbody["linearVelocity"];
-                body.linearVelocity.x = velocity.get("x", 0.0f).asFloat();
-                body.linearVelocity.y = velocity.get("y", 0.0f).asFloat();
+                body.linearVelocity.x = velocity.get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                body.linearVelocity.y = velocity.get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
             }
             if (jbody.isMember("position")) {
                 auto pos = jbody["position"];
+                if ((pos.isArray() || pos.isObject()) && m_parent && m_parent->GetBody()) {
+                    body.position = m_parent->GetBody()->GetPosition();
+                }
                 if (pos.isArray()) {
-                    body.position.x = pos.get(0u, 0.0f).asFloat();
-                    body.position.y = pos.get(1u, 0.0f).asFloat();
+                    body.position.x += pos.get(0u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                    body.position.y += pos.get(1u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                 } else {
-                    body.position.x = pos.get("x", 0.0f).asFloat();
-                    body.position.y = pos.get("y", 0.0f).asFloat();
+                    body.position.x += pos.get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                    body.position.y += pos.get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                 }
             }
             body.userData = this;
@@ -190,8 +202,8 @@ namespace engine {
                         def.restitution = shapes[i].get("restitution", 0.0f).asFloat();
                         def.isSensor = shapes[i].get("isSensor", false).asFloat();
                         if (shapeType == "box") {
-                            float width = shapes[i].get("width", 1.0f).asFloat() / 2;
-                            float height = shapes[i].get("height", 1.0f).asFloat() / 2;
+                            float width = shapes[i].get("width", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();
+                            float height = shapes[i].get("height", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();
                             poly.SetAsBox(width, height, b2Vec2(0, 0), shapes[i].get("angle", 0.0f).asFloat() * util::fPI / 180);
                             def.shape = &poly;
                         } else if (shapeType == "polygon") {
@@ -203,8 +215,8 @@ namespace engine {
                                 }
                                 b2Vec2 b2points[b2_maxPolygonVertices];
                                 for (size_t o = 0; o < points.size(); o++) {
-                                    b2points[o].x = points[o].get(0u, 0.0f).asFloat();
-                                    b2points[o].y = points[o].get(1u, 0.0f).asFloat();
+                                    b2points[o].x = points[o].get(0u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                    b2points[o].y = points[o].get(1u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                                 }
                                 poly.Set(b2points, points.size());
                                 def.shape = &poly;
@@ -215,15 +227,15 @@ namespace engine {
                             }
 
                         } else if (shapeType == "circle") {
-                            circle.m_p.x = shapes[i].get("x", 0.0f).asFloat();
-                            circle.m_p.y = shapes[i].get("y", 0.0f).asFloat();
+                            circle.m_p.x = shapes[i].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                            circle.m_p.y = shapes[i].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                             circle.m_radius = shapes[i].get("radius", .5f).asFloat();
                             def.shape = &circle;
                         } else if (shapeType == "edge") {
 
                             auto points = shapes[i]["points"];
                             if (points.isArray() && points.size() == 2) {
-                                edge.Set(b2Vec2(points[0u].get("x", 0.0f).asFloat(), points[0u].get("y", 0.0f).asFloat()), b2Vec2(points[1u].get("x", 0.0f).asFloat(), points[1u].get("y", 0.0f).asFloat()));
+                                edge.Set(b2Vec2(points[0u].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio(), points[0u].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio()), b2Vec2(points[1u].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio(), points[1u].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio()));
                             } else {
                                 std::cerr << "Did not provide 2 points for edge shape" << std::endl;
                                 continue;
@@ -231,13 +243,13 @@ namespace engine {
                             // ghost vert
                             if (!shapes[i]["prev"].empty()) {
                                 edge.m_hasVertex0 = true;
-                                edge.m_vertex0.x = shapes[i]["prev"].get("x", 0.0f).asFloat();
-                                edge.m_vertex0.y = shapes[i]["prev"].get("y", 0.0f).asFloat();
+                                edge.m_vertex0.x = shapes[i]["prev"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                edge.m_vertex0.y = shapes[i]["prev"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                             }
                             if (!shapes[i]["next"].empty()) {
                                 edge.m_hasVertex3 = true;
-                                edge.m_vertex3.x = shapes[i]["next"].get("x", 0.0f).asFloat();
-                                edge.m_vertex3.y = shapes[i]["next"].get("y", 0.0f).asFloat();
+                                edge.m_vertex3.x = shapes[i]["next"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                edge.m_vertex3.y = shapes[i]["next"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                             }
                             def.shape = &edge;
                         } else if (shapeType == "chain") {
@@ -245,17 +257,17 @@ namespace engine {
                                 auto p = shapes[i]["points"];
                                 b2Vec2* points = new b2Vec2[p.size()];
                                 for (unsigned int o = 0; o < p.size(); o++) {
-                                    points[o].x = p[o].get("x", 0.0f).asFloat();
-                                    points[o].y = p[o].get("y", 0.0f).asFloat();
+                                    points[o].x = p[o].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                    points[o].y = p[o].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                                 }
 
                                 chain.CreateChain(points, p.size());
                                 // ghost vert
                                 if (!shapes[i]["prev"].empty()) {
-                                    chain.SetPrevVertex(b2Vec2(shapes[i]["prev"].get("x", 0.0f).asFloat(), shapes[i]["prev"].get("y", 0.0f).asFloat()));
+                                    chain.SetPrevVertex(b2Vec2(shapes[i]["prev"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio(), shapes[i]["prev"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio()));
                                 }
                                 if (!shapes[i]["next"].empty()) {
-                                    chain.SetPrevVertex(b2Vec2(shapes[i]["next"].get("x", 0.0f).asFloat(), shapes[i]["next"].get("y", 0.0f).asFloat()));
+                                    chain.SetPrevVertex(b2Vec2(shapes[i]["next"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio(), shapes[i]["next"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio()));
                                 }
                                 delete points;
                             } else {
@@ -266,13 +278,46 @@ namespace engine {
                             std::cerr << "Unknown shape type" << std::endl;
                         }
                         m_body->CreateFixture(&def);
+                        if (m_parent && m_parent->GetBody()) { // Create joint
+                            std::cout << "Creating parented joint" << std::endl;
+                            auto joint = jbody["joint"];
+                            std::string jtype = joint.get("type", "revolute").asString();
+                            b2Vec2 anchorA = m_parent->GetBody()->GetPosition();
+                            b2Vec2 anchorB = m_body->GetPosition();
+                            if (joint["anchor"].isArray() && joint["anchor"].size() == 2 && (joint["anchor"][0u].isArray() || joint["anchor"][0u].isObject())) {
+                                anchorA.x = m_parent->GetBody()->GetPosition().x + joint["anchor"][0u].get(0u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+                                anchorA.y = m_parent->GetBody()->GetPosition().y + joint["anchor"][0u].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+                                anchorB.x = m_body->GetPosition().x + joint["anchor"][1u].get(0u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+                                anchorB.y = m_body->GetPosition().y + joint["anchor"][1u].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+                            } else {
+                                anchorA.x = m_parent->GetBody()->GetPosition().x + joint["anchor"].get(0u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+                                anchorA.y = m_parent->GetBody()->GetPosition().y + joint["anchor"].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+                            }
+                            // TODO: Expand on this as needed
+                            if (jtype == "revolute") {
+                                b2RevoluteJointDef rev;
+                                rev.Initialize(m_parent->GetBody(), m_body, anchorA);
+                                m_parentJoint = m_scene->GetWorld()->CreateJoint(&rev);
+                            } else if (jtype == "distance") {
+                                b2DistanceJointDef dist;
+                                dist.Initialize(m_parent->GetBody(), m_body, anchorA, anchorB);
+                                m_parentJoint = m_scene->GetWorld()->CreateJoint(&dist);
+                            } else if (jtype == "weld") {
+                                b2WeldJointDef weld;
+                                weld.Initialize(m_parent->GetBody(), m_body, anchorA);
+                                m_parentJoint = m_scene->GetWorld()->CreateJoint(&weld);
+                                
+                            }
+                        }
                     }
                 }
             }
         }
+
         return true;
     }
-    uint8_t Node::GetType() const{
+
+    uint8_t Node::GetType() const {
         return NT_NONE;
     }
 
@@ -284,5 +329,21 @@ namespace engine {
         return m_opaque;
     }
 
+    void Node::SetPosition(float x, float y) {
+        std::lock_guard<std::mutex> lg(m_mutex);
+        if (m_body) {
+            m_body->SetTransform(b2Vec2(x, y), m_body->GetAngle());
+        } else {
+            setPosition(x, y);
+        }
+    }
+
+    b2Body* Node::GetBody() const {
+        return m_body;
+    }
+
+    b2Joint* Node::GetParentJoint() const {
+        return m_parentJoint;
+    }
 }
 
