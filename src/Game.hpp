@@ -31,7 +31,7 @@ namespace engine {
         void run();
         void GraphicLoop();
         void LogicLoop();
-        const sf::RenderWindow* GetWindow() const;
+        sf::RenderWindow* GetWindow();
         // Helper
         sf::Vector2f GetMousePosition();
     };

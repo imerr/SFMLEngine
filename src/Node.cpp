@@ -235,7 +235,22 @@ namespace engine {
 
                             auto points = shapes[i]["points"];
                             if (points.isArray() && points.size() == 2) {
-                                edge.Set(b2Vec2(points[0u].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio(), points[0u].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio()), b2Vec2(points[1u].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio(), points[1u].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio()));
+                                b2Vec2 a, b;
+                                if (points[0u].isArray()) {
+                                    a.x = points[0u].get(0u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                    a.y = points[0u].get(1u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                } else if (points[0u].isObject()){
+                                    a.x = points[0u].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                    a.y = points[0u].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                }
+                                if (points[1u].isArray()) {
+                                    b.x = points[1u].get(0u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                    b.y = points[1u].get(1u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                } else if (points[1u].isObject()){
+                                    b.x = points[1u].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                    b.y = points[1u].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                }
+                                edge.Set(a, b);
                             } else {
                                 std::cerr << "Did not provide 2 points for edge shape" << std::endl;
                                 continue;
@@ -306,7 +321,7 @@ namespace engine {
                                 b2WeldJointDef weld;
                                 weld.Initialize(m_parent->GetBody(), m_body, anchorA);
                                 m_parentJoint = m_scene->GetWorld()->CreateJoint(&weld);
-                                
+
                             }
                         }
                     }

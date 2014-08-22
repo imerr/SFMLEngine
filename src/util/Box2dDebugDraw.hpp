@@ -17,7 +17,7 @@ namespace engine {
         protected:
             Scene* m_scene;
             sf::RenderTexture m_texture;
-            std::vector<sf::Vertex> m_vertices;
+            sf::Vertex m_vertices[2];
             bool m_isInitialized;
         public:
             Box2dDebugDraw(Scene* scene);
@@ -27,7 +27,6 @@ namespace engine {
             bool IsInitialized() const;
             virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
         private:
-            void incVertVec(size_t c);
             /// Draw a closed polygon provided in CCW order.
             virtual void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);
 

@@ -82,7 +82,7 @@ namespace engine {
         }
     }
 
-    const sf::RenderWindow* Game::GetWindow() const {
+    sf::RenderWindow* Game::GetWindow() {
         return &m_window;
     }
     sf::Vector2f Game::GetMousePosition(){

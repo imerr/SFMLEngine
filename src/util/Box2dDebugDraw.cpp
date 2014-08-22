@@ -16,7 +16,7 @@ namespace engine {
     namespace util {
 
         sf::Color FromB2Color(b2Color c) {
-            return sf::Color(minmax<float>(0, c.r * 255, 255), minmax<float>(0, c.g * 255, 255), minmax<float>(0, c.b * 255, 255), minmax<float>(0, c.a * 128, 255));
+            return sf::Color(minmax<float>(0, c.r * 255, 255), minmax<float>(0, c.g * 255, 255), minmax<float>(0, c.b * 255, 255), minmax<float>(0, c.a * 255, 255));
         }
 
         Box2dDebugDraw::Box2dDebugDraw(Scene* scene) : m_scene(scene), m_isInitialized(false) {
@@ -60,6 +60,7 @@ namespace engine {
         }
 
         void Box2dDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) {
+            return;
             sf::ConvexShape s;
             s.setPointCount(vertexCount);
             for (int32 i = 0; i < vertexCount; i++) {
@@ -86,7 +87,6 @@ namespace engine {
         }
 
         void Box2dDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) {
-            incVertVec(2);
             for (int i = 0; i < 2; i++) {
                 m_vertices[i].color = FromB2Color(color);
             }
@@ -94,16 +94,11 @@ namespace engine {
             m_vertices[0].position.y = m_scene->MeterToPixel(p1.y);
             m_vertices[1].position.x = m_scene->MeterToPixel(p2.x);
             m_vertices[1].position.y = m_scene->MeterToPixel(p2.y);
-            m_texture.draw(m_vertices.data(), 2, sf::Lines);
+            m_texture.draw(m_vertices, 2, sf::Lines);
         }
 
         void Box2dDebugDraw::DrawTransform(const b2Transform& xf) {
         }
 
-        void Box2dDebugDraw::incVertVec(size_t c) {
-            if (m_vertices.size() < c) {
-                m_vertices.resize(c);
-            }
-        }
     }
 }
