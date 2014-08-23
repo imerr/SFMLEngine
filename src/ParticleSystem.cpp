@@ -17,6 +17,10 @@ namespace engine {
     }
 
     ParticleSystem::~ParticleSystem() {
+        for (size_t i=0; i< m_particles.size();i++){
+            delete m_particles[i];
+        }
+        m_particles.clear();
     }
 
     void ParticleSystem::SetSpread(float spread) {

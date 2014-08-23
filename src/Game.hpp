@@ -8,8 +8,10 @@
 #ifndef ENGINE_GAME_HPP
 #define	ENGINE_GAME_HPP
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 #include "Scene.hpp"
 #include <atomic>
+#include "util/Event.hpp"
 namespace engine {
 
     class Game {
@@ -24,6 +26,10 @@ namespace engine {
         // stats
         std::atomic<int> m_fps;
         int m_tps;
+        std::atomic<bool> m_focus;
+    public:
+        util::Event<const sf::Event::KeyEvent&> OnKeyDown;
+        util::Event<const sf::Event::MouseButtonEvent&> OnMouseClick;
     public:
         Game();
         Game(const Game& orig);
@@ -34,6 +40,8 @@ namespace engine {
         sf::RenderWindow* GetWindow();
         // Helper
         sf::Vector2f GetMousePosition();
+        bool IsFocus() const;
+        Scene* GetScene() const;
     };
 
 }

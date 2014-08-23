@@ -49,7 +49,7 @@ namespace engine {
     void Animation::Update(float delta) {
         m_currentTime += delta;
         if (m_currentTime > m_speed) {
-            
+
             m_currentFrame++;
             if (m_currentFrame >= m_frames.size()) {
                 if (m_looping) {
@@ -72,11 +72,11 @@ namespace engine {
         return m_currentTime > m_speed;
     }
 
-    SpriteNode::SpriteNode(Scene* scene) : Node::Node(scene), m_texture(0), m_currentAnimation("default"), m_animated(false) {
+    SpriteNode::SpriteNode(Scene* scene) : Node::Node(scene), m_texture(0), m_currentAnimation("default"), m_animated(false), m_flipped(false) {
     }
 
     SpriteNode::~SpriteNode() {
-        for (auto it=m_animations.begin(); it != m_animations.end();) {
+        for (auto it = m_animations.begin(); it != m_animations.end();) {
             Animation* a = it->second;
             delete a;
             m_animations.erase(it++);
@@ -84,14 +84,14 @@ namespace engine {
     }
 
     void SpriteNode::OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
-        if (m_animated){
+        if (m_animated) {
             std::lock_guard<std::mutex> lg(m_mutex);
             auto it = m_animations.find(m_currentAnimation);
-            if (it != m_animations.end()){
+            if (it != m_animations.end()) {
                 it->second->Update(delta);
-                if (it->second->IsOver() && m_animationWhenDone != ""){
+                if (it->second->IsOver() && m_animationWhenDone != "") {
                     PlayAnimation(m_animationWhenDone);
-                }else{
+                } else {
                     m_textureRect = it->second->GetCurrentTexture();
                     UpdateTexCoords();
                 }
@@ -114,11 +114,19 @@ namespace engine {
         float right = left + m_textureRect.width;
         float top = static_cast<float> (m_textureRect.top);
         float bottom = top + m_textureRect.height;
+        if (m_flipped) {
+            m_vertices[0].texCoords = sf::Vector2f(right, top);
+            m_vertices[1].texCoords = sf::Vector2f(right, bottom);
+            m_vertices[2].texCoords = sf::Vector2f(left, top);
+            m_vertices[3].texCoords = sf::Vector2f(left, bottom);
 
-        m_vertices[0].texCoords = sf::Vector2f(left, top);
-        m_vertices[1].texCoords = sf::Vector2f(left, bottom);
-        m_vertices[2].texCoords = sf::Vector2f(right, top);
-        m_vertices[3].texCoords = sf::Vector2f(right, bottom);
+        } else {
+            m_vertices[0].texCoords = sf::Vector2f(left, top);
+            m_vertices[1].texCoords = sf::Vector2f(left, bottom);
+            m_vertices[2].texCoords = sf::Vector2f(right, top);
+            m_vertices[3].texCoords = sf::Vector2f(right, bottom);
+
+        }
     }
 
     void SpriteNode::SetTexture(std::string path, const sf::IntRect* rect) {
@@ -198,7 +206,7 @@ namespace engine {
                             a->SetLooping(anim.get("looping", true).asBool());
                             for (size_t o = 0; o < anim["frames"].size(); o++) {
                                 auto text = sheet["sprites"][anim["frames"][o].asInt()];
-                                if (text.isNull()){
+                                if (text.isNull()) {
                                     std::cerr << "Invalid frame in sheet" << std::endl;
                                     continue;
                                 }
@@ -222,14 +230,15 @@ namespace engine {
     uint8_t SpriteNode::GetType() const {
         return NT_SPRITE;
     }
-    void SpriteNode::PlayAnimation(std::string name, std::string after){
+
+    void SpriteNode::PlayAnimation(std::string name, std::string after) {
         std::lock_guard<std::mutex> lg(m_mutex);
-        m_animationWhenDone=after;
+        m_animationWhenDone = after;
         auto it = m_animations.find(name);
-        if (it == m_animations.end()){
+        if (it == m_animations.end()) {
             std::cerr << "Animation could not be found";
         }
         it->second->Reset();
-        m_currentAnimation=name;
+        m_currentAnimation = name;
     }
 }

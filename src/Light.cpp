@@ -46,7 +46,7 @@ namespace engine {
 
     Light::~Light() {
         if (m_scene) {
-            m_scene->GetLightSystem()->RemoveLight(this);
+        //    m_scene->GetLightSystem()->RemoveLight(this);
         }
     }
 

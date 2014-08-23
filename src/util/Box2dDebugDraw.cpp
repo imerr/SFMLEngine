@@ -75,14 +75,17 @@ namespace engine {
             s.setFillColor(sf::Color(0, 0, 0, 0));
             s.setOutlineThickness(5);
             s.setOutlineColor(FromB2Color(color));
-            s.setPosition(m_scene->MeterToPixel(center.x), m_scene->MeterToPixel(center.y));
+            s.setPosition(m_scene->MeterToPixel(center.x)-m_scene->MeterToPixel(radius), m_scene->MeterToPixel(center.y)+m_scene->MeterToPixel(radius));
+            m_texture.draw(s);
         }
 
         void Box2dDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color) {
             sf::CircleShape s;
             s.setRadius(m_scene->MeterToPixel(radius));
+            s.setOrigin(m_scene->MeterToPixel(radius),m_scene->MeterToPixel(radius));
             s.setFillColor(FromB2Color(color));
             s.setPosition(m_scene->MeterToPixel(center.x), m_scene->MeterToPixel(center.y));
+            m_texture.draw(s);
         }
 
         void Box2dDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) {

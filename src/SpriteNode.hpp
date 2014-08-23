@@ -42,6 +42,7 @@ namespace engine {
         std::string m_currentAnimation;
         bool m_animated;
         std::string m_animationWhenDone;
+        bool m_flipped;
     public:
         SpriteNode(Scene* scene);
         virtual ~SpriteNode();

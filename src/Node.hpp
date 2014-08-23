@@ -69,11 +69,14 @@ namespace engine {
         void SetOpaque(bool lightBlocker);
         bool IsOpaque() const;
         void SetPosition(float x, float y);
+        sf::Vector2f GetPosition() const;
         b2Body* GetBody() const;
         b2Joint* GetParentJoint() const;
         void SetActive(bool active);
         bool IsActive() const;
         std::list<Node*>& GetChildren();
+        void SetSize(sf::Vector2f size);
+        sf::Vector2f GetSize() const;
     protected:
         friend Factory;
         void SetParent(Node* parent);

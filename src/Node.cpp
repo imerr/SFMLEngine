@@ -16,11 +16,13 @@ namespace engine {
     }
 
     Node::~Node() {
-        if (m_body) {
+        if (m_body && m_scene->GetWorld() /* will be null if scene is being killed */) {
             m_scene->GetWorld()->DestroyBody(m_body);
             m_body = nullptr;
         }
-        m_parent->RemoveNode(this);
+        if (m_parent) {
+            m_parent->RemoveNode(this);
+        }
         while (m_children.size()) {
             delete m_children.front();
         }
@@ -44,6 +46,7 @@ namespace engine {
     }
 
     void Node::AddNode(Node* node) {
+        assert(std::find(m_children.begin(), m_children.end(), node) == m_children.end());
         m_children.push_back(node);
         node->SetParent(this);
         node->SetScene(m_scene);
@@ -65,6 +68,7 @@ namespace engine {
     }
 
     void Node::SetParent(Node* parent) {
+        assert(parent != this);
         m_parent = parent;
     }
 
@@ -201,6 +205,7 @@ namespace engine {
                 body.type = b2_kinematicBody;
             }
             m_body = GetScene()->GetWorld()->CreateBody(&body);
+            b2Vec2* points = nullptr;
             if (jbody.isMember("shapes")) {
                 auto shapes = jbody["shapes"];
                 if (!shapes.empty() && shapes.isArray()) {
@@ -218,7 +223,7 @@ namespace engine {
                         if (shapeType == "box") {
                             float width = shapes[i].get("width", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();
                             float height = shapes[i].get("height", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();
-                            poly.SetAsBox(width, height, b2Vec2(0, 0), shapes[i].get("angle", 0.0f).asFloat() * util::fPI / 180);
+                            poly.SetAsBox(width, height, b2Vec2(shapes[i]["origin"].get(0u, 0).asFloat(), shapes[i]["origin"].get(1u, 0).asFloat()), shapes[i].get("angle", 0.0f).asFloat() * util::fPI / 180);
                             def.shape = &poly;
                         } else if (shapeType == "polygon") {
                             auto points = shapes[i]["points"];
@@ -283,13 +288,19 @@ namespace engine {
                             def.shape = &edge;
                         } else if (shapeType == "chain") {
                             if (shapes[i]["points"].isArray() && shapes[i]["points"].size()) {
+                                std::cout << "Chain! " << std::endl;
                                 auto p = shapes[i]["points"];
-                                b2Vec2* points = new b2Vec2[p.size()];
+                                points = new b2Vec2[p.size()];
                                 for (unsigned int o = 0; o < p.size(); o++) {
-                                    points[o].x = p[o].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
-                                    points[o].y = p[o].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                    if (p[o].isArray()) {
+                                        points[o].x = p[o].get(0u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                        points[o].y = p[o].get(1u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                    } else {
+                                        points[o].x = p[o].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                        points[o].y = p[o].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                                    }
                                 }
-
+                                std::cout << p.size() << std::endl;
                                 chain.CreateChain(points, p.size());
                                 // ghost vert
                                 if (!shapes[i]["prev"].empty()) {
@@ -298,7 +309,8 @@ namespace engine {
                                 if (!shapes[i]["next"].empty()) {
                                     chain.SetPrevVertex(b2Vec2(shapes[i]["next"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio(), shapes[i]["next"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio()));
                                 }
-                                delete points;
+                                def.shape = &chain;
+
                             } else {
                                 std::cerr << "No points for chain shape provided" << std::endl;
                                 continue;
@@ -340,6 +352,9 @@ namespace engine {
                     }
                 }
             }
+            if (points) {
+                delete[] points;
+            }
         }
 
         return true;
@@ -360,9 +375,17 @@ namespace engine {
     void Node::SetPosition(float x, float y) {
         std::lock_guard<std::mutex> lg(m_mutex);
         if (m_body) {
-            m_body->SetTransform(b2Vec2(x, y), m_body->GetAngle());
+            m_body->SetTransform(b2Vec2(x / m_scene->GetPixelMeterRatio(), y / m_scene->GetPixelMeterRatio()), m_body->GetAngle());
         } else {
             setPosition(x, y);
+        }
+    }
+
+    sf::Vector2f Node::GetPosition() const {
+        if (m_body) {
+            return sf::Vector2f(m_body->GetPosition().x * m_scene->GetPixelMeterRatio(), m_body->GetPosition().y * m_scene->GetPixelMeterRatio());
+        } else {
+            return getPosition();
         }
     }
 
@@ -387,6 +410,14 @@ namespace engine {
 
     std::list<Node*>& Node::GetChildren() {
         return m_children;
+    }
+
+    void Node::SetSize(sf::Vector2f size) {
+        m_size = size;
+    }
+
+    sf::Vector2f Node::GetSize() const {
+        return m_size;
     }
 }
 

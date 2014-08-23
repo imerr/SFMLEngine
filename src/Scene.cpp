@@ -14,7 +14,7 @@
 namespace engine {
     b2Vec2 Scene::default_gravity(0, 0);
 
-    Scene::Scene(Game* game) : Node::Node(this), m_game(game), m_pixToM(20.0f), m_debugDraw(this), m_lightSystem(this), m_debug(false), m_ui(this) {
+    Scene::Scene(Game* game) : Node::Node(this), m_game(game), m_pixToM(80.0f), m_debugDraw(this), m_lightSystem(this), m_debug(false), m_ui(this) {
         m_world = new b2World(default_gravity);
         m_world->SetDebugDraw(&m_debugDraw);
         m_debugDraw.SetFlags(b2Draw::e_shapeBit);
@@ -34,6 +34,7 @@ namespace engine {
 
     Scene::~Scene() {
         delete m_world;
+        m_world=nullptr;
     }
 
     void Scene::SetGame(Game* game) {
@@ -65,6 +66,10 @@ namespace engine {
             m_mutexDebug.unlock();
         }
         m_lightSystem.draw(target, states);
+        // Keep UI in the screen
+        // Keep UI in the screen
+        auto view = m_scene->GetGame()->GetWindow()->getView();
+        m_ui.setPosition(view.getCenter().x - (view.getSize().x / 2), view.getCenter().y - (view.getSize().y / 2));
         m_ui.draw(target, states, delta);
     }
 
@@ -86,11 +91,22 @@ namespace engine {
     }
 
     bool Scene::initialize(Json::Value& root) {
+        if (root.isMember("size")) {
+            auto size = root["size"];
+            if (size.isArray()) {
+                m_size.x = size.get(0u, 0).asFloat();
+                m_size.y = size.get(1u, 0).asFloat();
+            } else {
+                m_size.x = size.get("x", 0).asFloat();
+                m_size.y = size.get("y", 0).asFloat();
+            }
+        }
         if (root["gravity"].isArray()) {
             m_world->SetGravity(b2Vec2(root["gravity"].get(0u, 0).asFloat(), root["gravity"].get(1u, 0).asFloat()));
         } else if (root["gravity"].isObject()) {
             m_world->SetGravity(b2Vec2(root["gravity"].get("x", 0).asFloat(), root["gravity"].get("y", 0).asFloat()));
         }
+        m_pixToM = root.get("pixelToMeter", 80).asFloat();
         m_debug = root.get("debug", false).asBool();
         auto light = root["light"];
         if (!light.empty() && !light.isNull()) {
