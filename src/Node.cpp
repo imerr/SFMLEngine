@@ -20,7 +20,7 @@ namespace engine {
             m_body = nullptr;
         }
         m_parent->RemoveNode(this);
-        while (m_children.size()){
+        while (m_children.size()) {
             delete m_children.front();
         }
     }
@@ -35,11 +35,11 @@ namespace engine {
             states = sf::RenderStates::Default;
         }
         states.transform *= getTransform();
-        OnDraw(target, states);
+        OnDraw(target, states, delta);
         for (auto it = m_children.begin(); it != m_children.end(); it++) {
             (*it)->draw(target, states, delta);
         }
-        PostDraw(target, states);
+        PostDraw(target, states, delta);
     }
 
     void Node::AddNode(Node* node) {
@@ -79,7 +79,10 @@ namespace engine {
     }
 
     sf::Vector2f Node::GetGlobalPosition() {
-        return GetGlobalTransform().transformPoint(0, 0);
+        if (m_parent->GetBody()) {
+            return sf::Vector2f(m_parent->GetBody()->GetPosition().x * m_scene->GetPixelMeterRatio(), m_parent->GetBody()->GetPosition().y * m_scene->GetPixelMeterRatio());
+        }
+        return GetGlobalTransform().transformPoint(getOrigin());
     }
 
     void Node::update(sf::Time interval) {
@@ -153,6 +156,7 @@ namespace engine {
             root["body"]["position"] = root["position"];
         } else if (root["position"].isArray()) {
             setPosition(root["position"].get(0u, 0).asFloat(), root["position"].get(1u, 0).asFloat());
+            std::cout << "(" <<GetGlobalPosition().x << ", " <<GetGlobalPosition().y << std::endl;
         } else if (root["position"].isObject()) {
             setPosition(root["position"].get("x", 0).asFloat(), root["position"].get("y", 0).asFloat());
         }
@@ -239,7 +243,7 @@ namespace engine {
                         } else if (shapeType == "circle") {
                             circle.m_p.x = shapes[i].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                             circle.m_p.y = shapes[i].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
-                            circle.m_radius = shapes[i].get("radius", .5f).asFloat();
+                            circle.m_radius = shapes[i].get("radius", .5f).asFloat() / m_scene->GetPixelMeterRatio();
                             def.shape = &circle;
                         } else if (shapeType == "edge") {
 
@@ -304,7 +308,6 @@ namespace engine {
                         }
                         m_body->CreateFixture(&def);
                         if (m_parent && m_parent->GetBody()) { // Create joint
-                            std::cout << "Creating parented joint" << std::endl;
                             auto joint = jbody["joint"];
                             std::string jtype = joint.get("type", "revolute").asString();
                             b2Vec2 anchorA = m_parent->GetBody()->GetPosition();
@@ -380,6 +383,10 @@ namespace engine {
 
     bool Node::IsActive() const {
         return m_active;
+    }
+
+    std::list<Node*>& Node::GetChildren() {
+        return m_children;
     }
 }
 

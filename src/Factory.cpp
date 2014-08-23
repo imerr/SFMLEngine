@@ -64,8 +64,26 @@ namespace engine {
         return c;
     }
 
+    Node * Factory::CreateChildFromFile(std::string file, Node * parent) {
+        Json::Value root;
+        if (!Factory::LoadJson(file, root)) {
+            return nullptr;
+        }
+        std::string type = root.get("type", "node").asString();
+        auto it = m_types.find(type);
+        if (it == m_types.end()) {
+            std::cerr << "Type '" << type << "' was not registered. Cant load child." << std::endl;
+            return nullptr;
+        }
+        Node* c = it->second(root, parent);
+        if (!c) {
+            return nullptr;
+        }
+        return c;
+    }
+
     void Factory::MergeJson(Json::Value& a, Json::Value& b) { // http://stackoverflow.com/a/23860017/1318435
-        if (!a.isObject() || !b.isObject()) return;
+        if (!b.isObject()) return;
 
         for (const auto& key : b.getMemberNames()) {
             if (a[key].isObject()) {

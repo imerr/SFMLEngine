@@ -34,6 +34,8 @@ namespace engine {
         NT_NONE,
         NT_SPRITE,
         NT_SCENE,
+        NT_BUTTON,
+        NT_PARTICLESYSTEM,
         NT_END
     };
     class Node : public sf::Transformable, public sf::NonCopyable {
@@ -71,6 +73,7 @@ namespace engine {
         b2Joint* GetParentJoint() const;
         void SetActive(bool active);
         bool IsActive() const;
+        std::list<Node*>& GetChildren();
     protected:
         friend Factory;
         void SetParent(Node* parent);
@@ -79,10 +82,10 @@ namespace engine {
         virtual void OnUpdate(sf::Time interval) {
         };
 
-        virtual void OnDraw(sf::RenderTarget& target, sf::RenderStates states) {
+        virtual void OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
         }
 
-        virtual void PostDraw(sf::RenderTarget& target, sf::RenderStates states) {
+        virtual void PostDraw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
         }
         void UpdatePhysicsTransform();
         void UpdateTransform(float delta);

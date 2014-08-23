@@ -29,6 +29,8 @@ namespace engine {
     }
 
     void Game::GraphicLoop() {
+        sf::Clock t;
+        t.restart();
         m_window.setActive(true);
         while (m_running) {
             m_lastLogicUpdateMutex.lock();
@@ -36,7 +38,7 @@ namespace engine {
             m_lastLogicUpdateMutex.unlock();
             m_window.clear(sf::Color::White);
             if (m_scene) {
-                m_scene->draw(m_window, sf::RenderStates::Default, delta.asSeconds());
+                m_scene->draw(m_window, sf::RenderStates::Default, t.restart().asSeconds());
             }
             m_window.display();
             m_fps++;

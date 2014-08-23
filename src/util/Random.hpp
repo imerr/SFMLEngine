@@ -10,15 +10,18 @@
 namespace engine {
     namespace util {
 
+        std::random_device rd;
+
         class RandomFloat {
-            std::random_device rd;
             std::ranlux48 gen;
             std::uniform_real_distribution<> dis;
         public:
-            RandomFloat(float min, float max): gen(rd()), dis(min, max){
-                gen.seed(time(nullptr));
+
+            RandomFloat(float min, float max) : gen(rd()), dis(min, max) {
+
             }
-            float operator ()(){
+
+            float operator()() {
                 return dis(gen);
             }
         };

@@ -13,7 +13,7 @@ namespace engine {
 
     class ParticleSystem : public Node {
     protected:
-        std::vector<SpriteNode*> m_particles;
+        std::vector<Node*> m_particles;
         size_t m_particleCount;
         size_t m_currentIndex;
         float m_rate;
@@ -43,6 +43,8 @@ namespace engine {
         void SetParticleConfig(std::string particleConfig);
         std::string GetParticleConfig() const;
         virtual bool initialize(Json::Value& root);
+        virtual uint8_t GetType() const;
+
 
         
     };

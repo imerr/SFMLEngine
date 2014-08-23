@@ -73,6 +73,7 @@ namespace engine {
             return nullptr;
         }
         static Node* CreateChild(Json::Value root, Node* parent);
+        static Node* CreateChildFromFile(std::string file, Node* parent);
         static void MergeJson(Json::Value& a, Json::Value& b);
     private:
 

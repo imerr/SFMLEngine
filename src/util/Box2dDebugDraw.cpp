@@ -60,7 +60,6 @@ namespace engine {
         }
 
         void Box2dDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) {
-            return;
             sf::ConvexShape s;
             s.setPointCount(vertexCount);
             for (int32 i = 0; i < vertexCount; i++) {

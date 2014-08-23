@@ -14,10 +14,10 @@
 namespace engine {
     b2Vec2 Scene::default_gravity(0, 0);
 
-    Scene::Scene(Game* game) : Node::Node(this), m_game(game), m_pixToM(20.0f), m_debugDraw(this), m_lightSystem(this), m_debug(false) {
+    Scene::Scene(Game* game) : Node::Node(this), m_game(game), m_pixToM(20.0f), m_debugDraw(this), m_lightSystem(this), m_debug(false), m_ui(this) {
         m_world = new b2World(default_gravity);
         m_world->SetDebugDraw(&m_debugDraw);
-        m_debugDraw.SetFlags(b2Draw::e_shapeBit | b2Draw::e_jointBit | b2Draw::e_pairBit | b2Draw::e_centerOfMassBit);
+        m_debugDraw.SetFlags(b2Draw::e_shapeBit);
     }
 
     LightSystem* Scene::GetLightSystem() {
@@ -56,7 +56,7 @@ namespace engine {
         return m_pixToM;
     }
 
-    void Scene::PostDraw(sf::RenderTarget& target, sf::RenderStates states) {
+    void Scene::PostDraw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
         if (m_debug) {
             m_mutexDebug.lock();
             if (m_debugDraw.IsInitialized()) {
@@ -65,6 +65,7 @@ namespace engine {
             m_mutexDebug.unlock();
         }
         m_lightSystem.draw(target, states);
+        m_ui.draw(target, states, delta);
     }
 
     void Scene::OnUpdate(sf::Time interval) {
@@ -77,6 +78,7 @@ namespace engine {
             m_mutexDebug.unlock();
         }
         m_lightSystem.update(interval);
+        m_ui.update(interval);
     }
 
     uint8_t Scene::GetType() const {

@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/Button.o \
 	${OBJECTDIR}/src/Factory.o \
 	${OBJECTDIR}/src/Game.o \
 	${OBJECTDIR}/src/Light.o \
@@ -72,6 +73,11 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libengine.a: ${OBJECTFILES}
 	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libengine.a
 	${AR} -rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libengine.a ${OBJECTFILES} 
 	$(RANLIB) ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libengine.a
+
+${OBJECTDIR}/src/Button.o: src/Button.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I../sfml/include -Isrc -I../box2d -I../extern/include -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Button.o src/Button.cpp
 
 ${OBJECTDIR}/src/Factory.o: src/Factory.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

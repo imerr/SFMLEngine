@@ -13,13 +13,90 @@
 
 namespace engine {
 
-    SpriteNode::SpriteNode(Scene* scene) : Node::Node(scene), m_texture(0) {
+    Animation::Animation() : m_looping(false), m_speed(0), m_currentTime(0), m_currentFrame(0) {
+
+    }
+
+    void Animation::SetLooping(bool looping) {
+        m_looping = looping;
+    }
+
+    bool Animation::IsLooping() const {
+        return m_looping;
+    }
+
+    std::vector<sf::IntRect>& Animation::GetFrames() {
+        return m_frames;
+    }
+
+    void Animation::SetSpeed(float speed) {
+        m_speed = speed;
+    }
+
+    float Animation::GetSpeed() const {
+        return m_speed;
+    }
+
+    void Animation::Reset() {
+        m_currentFrame = 0;
+        m_currentTime = 0;
+    }
+
+    void Animation::AddFrame(const sf::IntRect& frame) {
+        m_frames.push_back(frame);
+    }
+
+    void Animation::Update(float delta) {
+        m_currentTime += delta;
+        if (m_currentTime > m_speed) {
+            
+            m_currentFrame++;
+            if (m_currentFrame >= m_frames.size()) {
+                if (m_looping) {
+                    m_currentFrame = 0;
+                    m_currentTime = 0;
+                } else {
+                    m_currentFrame--;
+                }
+            } else {
+                m_currentTime = 0;
+            }
+        }
+    }
+
+    const sf::IntRect& Animation::GetCurrentTexture() {
+        return m_frames[m_currentFrame];
+    }
+
+    bool Animation::IsOver() {
+        return m_currentTime > m_speed;
+    }
+
+    SpriteNode::SpriteNode(Scene* scene) : Node::Node(scene), m_texture(0), m_currentAnimation("default"), m_animated(false) {
     }
 
     SpriteNode::~SpriteNode() {
+        for (auto it=m_animations.begin(); it != m_animations.end();) {
+            Animation* a = it->second;
+            delete a;
+            m_animations.erase(it++);
+        }
     }
 
-    void SpriteNode::OnDraw(sf::RenderTarget& target, sf::RenderStates states) {
+    void SpriteNode::OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
+        if (m_animated){
+            std::lock_guard<std::mutex> lg(m_mutex);
+            auto it = m_animations.find(m_currentAnimation);
+            if (it != m_animations.end()){
+                it->second->Update(delta);
+                if (it->second->IsOver() && m_animationWhenDone != ""){
+                    PlayAnimation(m_animationWhenDone);
+                }else{
+                    m_textureRect = it->second->GetCurrentTexture();
+                    UpdateTexCoords();
+                }
+            }
+        }
         states.texture = m_texture;
         target.draw(m_vertices, 4, sf::TrianglesStrip, states);
     }
@@ -106,6 +183,35 @@ namespace engine {
                         rect.height = tex.get("height", 0).asInt();
                         SetTexture(sheet["texture"].asString(), &rect);
                     }
+                    if (sprite["animations"].isObject()) {
+                        auto m = sprite["animations"].getMemberNames();
+                        for (size_t i = 0; i < m.size(); i++) {
+                            std::string aname = m[i];
+                            auto anim = sprite["animations"][aname];
+                            if (!anim["frames"].isArray()) {
+                                std::cerr << "Couldnt load animation, no frames" << std::endl;
+                                continue;
+                            }
+                            Animation* a = new Animation();
+                            a->SetSpeed(anim.get("speed", 1).asFloat());
+                            a->SetLooping(anim.get("looping", true).asBool());
+                            for (size_t o = 0; o < anim["frames"].size(); o++) {
+                                auto text = sheet["sprites"][anim["frames"][o].asInt()];
+                                if (text.isNull()){
+                                    std::cout << "Invalid frame in sheet" << std::endl;
+                                    continue;
+                                }
+                                sf::IntRect rect;
+                                rect.left = text.get("left", 0).asInt();
+                                rect.top = text.get("top", 0).asInt();
+                                rect.width = text.get("width", 0).asInt();
+                                rect.height = text.get("height", 0).asInt();
+                                a->AddFrame(rect);
+                            }
+                            m_animations.insert(std::make_pair(aname, a));
+                            m_animated = true;
+                        }
+                    }
                 }
             }
         }
@@ -114,5 +220,15 @@ namespace engine {
 
     uint8_t SpriteNode::GetType() const {
         return NT_SPRITE;
+    }
+    void SpriteNode::PlayAnimation(std::string name, std::string after){
+        std::lock_guard<std::mutex> lg(m_mutex);
+        m_animationWhenDone=after;
+        auto it = m_animations.find(name);
+        if (it == m_animations.end()){
+            std::cerr << "Animation could not be found";
+        }
+        it->second->Reset();
+        m_currentAnimation=name;
     }
 }

@@ -92,8 +92,7 @@ namespace engine {
         }
         sf::Transformable tr;
         auto window = m_scene->GetGame()->GetWindow();
-        tr.setPosition(-window->getView().getCenter().x + (window->getView().getSize().x / 2), -window->getView().getCenter().y + (window->getView().getSize().y / 2));
-        states.transform *= getTransform();
+        tr.setPosition(-window->getView().getCenter().x + (window->getView().getSize().x / 2)+GetGlobalPosition().x, -window->getView().getCenter().y + (window->getView().getSize().y / 2)+GetGlobalPosition().y);
         states.transform *= tr.getTransform();
         target.draw(m_vertices.data(), m_rayCount + 1, sf::PrimitiveType::TrianglesFan, states);
     }
@@ -146,7 +145,9 @@ namespace engine {
     }
 
     bool Light::initialize(Json::Value& root) {
-        Node::initialize(root);
+        if (!Node::initialize(root)){
+            return false;
+        }
         if (root["color"].isArray()) {
             m_lightColor.r = root["color"].get(0u, 255).asInt();
             m_lightColor.g = root["color"].get(1u, 255).asInt();

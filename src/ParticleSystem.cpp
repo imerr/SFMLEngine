@@ -64,8 +64,9 @@ namespace engine {
             }
         } else if (m_particleCount > m_particles.size()) {
             while (m_particleCount > m_particles.size()) {
-                SpriteNode* particle = Factory::create<SpriteNode>(m_particleConfig, m_scene);
-                this->AddNode(particle);
+
+                std::cerr << "Trying to create child" << std::endl;
+                Node* particle = Factory::CreateChildFromFile(m_particleConfig, this);
                 if (!particle) {
                     std::cerr << "Failed to create particle from config." << std::endl;
                     return;
@@ -75,6 +76,7 @@ namespace engine {
                     delete particle;
                     return;
                 }
+                this->AddNode(particle);
                 particle->GetBody()->SetTransform(b2Vec2(getPosition().x / m_scene->GetPixelMeterRatio(), getPosition().y / m_scene->GetPixelMeterRatio()), 0);
                 particle->SetActive(false);
                 m_particles.push_back(particle);
@@ -141,5 +143,8 @@ namespace engine {
             m_maxVelocity.z = root["maxVelocity"].get(1u, 0).asFloat() * util::fPI / 180;
         }
         return true;
+    }
+    uint8_t ParticleSystem::GetType() const{
+        return NT_PARTICLESYSTEM;
     }
 }

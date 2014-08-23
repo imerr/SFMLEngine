@@ -25,6 +25,7 @@ namespace engine {
         std::mutex m_mutexDebug;
         LightSystem m_lightSystem;
         bool m_debug;
+        Node m_ui;
     public:
         Scene(Game* game);
         virtual ~Scene();
@@ -42,7 +43,7 @@ namespace engine {
         virtual bool initialize(Json::Value& root);
     private:
         virtual void OnUpdate(sf::Time interval);
-        virtual void PostDraw(sf::RenderTarget& target, sf::RenderStates states);
+        virtual void PostDraw(sf::RenderTarget& target, sf::RenderStates states, float delta);
     };
 }
 

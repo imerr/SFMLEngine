@@ -24,6 +24,8 @@
         <itemPath>src/util/misc.hpp</itemPath>
         <itemPath>src/util/singleton.hpp</itemPath>
       </logicalFolder>
+      <itemPath>src/Button.cpp</itemPath>
+      <itemPath>src/Button.hpp</itemPath>
       <itemPath>src/Factory.cpp</itemPath>
       <itemPath>src/Factory.hpp</itemPath>
       <itemPath>src/Game.cpp</itemPath>
@@ -88,6 +90,10 @@
       <item path="assets/shader/blur.frag" ex="false" tool="3" flavor2="0">
       </item>
       <item path="assets/shader/fullpass.vert" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Button.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Button.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Factory.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -167,6 +173,10 @@
       <item path="assets/shader/blur.frag" ex="false" tool="3" flavor2="0">
       </item>
       <item path="assets/shader/fullpass.vert" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Button.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Button.hpp" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Factory.cpp" ex="false" tool="1" flavor2="0">
       </item>
