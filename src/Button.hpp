@@ -23,7 +23,7 @@ namespace engine {
         Button(Scene* scene);
         virtual ~Button();
         virtual uint8_t GetType() const;
-        virtual void OnClick(sf::Vector2f point);
+        std::function<void(Button*, sf::Vector2f)> OnClick;
     private:
         virtual void OnUpdate(sf::Time interval);
     };

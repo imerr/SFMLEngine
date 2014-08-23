@@ -9,9 +9,10 @@
 #include "util/math.hpp"
 #include "Scene.hpp"
 #include <iostream>
+#include "Game.hpp"
 namespace engine {
 
-    Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_size(0, 0), m_opaque(true), m_active(true) {
+    Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_opaque(true), m_active(true) {
     }
 
     Node::~Node() {
@@ -82,7 +83,7 @@ namespace engine {
         if (m_parent->GetBody()) {
             return sf::Vector2f(m_parent->GetBody()->GetPosition().x * m_scene->GetPixelMeterRatio(), m_parent->GetBody()->GetPosition().y * m_scene->GetPixelMeterRatio());
         }
-        return GetGlobalTransform().transformPoint(getOrigin());
+        return GetGlobalTransform().transformPoint(0, 0);
     }
 
     void Node::update(sf::Time interval) {
@@ -156,7 +157,6 @@ namespace engine {
             root["body"]["position"] = root["position"];
         } else if (root["position"].isArray()) {
             setPosition(root["position"].get(0u, 0).asFloat(), root["position"].get(1u, 0).asFloat());
-            std::cout << "(" <<GetGlobalPosition().x << ", " <<GetGlobalPosition().y << std::endl;
         } else if (root["position"].isObject()) {
             setPosition(root["position"].get("x", 0).asFloat(), root["position"].get("y", 0).asFloat());
         }

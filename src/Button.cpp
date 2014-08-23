@@ -12,7 +12,7 @@
 #include <iostream>
 namespace engine {
 
-    Button::Button(Scene* scene) : SpriteNode::SpriteNode(scene), m_state(BUTTON_NONE) {
+    Button::Button(Scene* scene) : SpriteNode::SpriteNode(scene), m_state(BUTTON_NONE), OnClick([](Button*, sf::Vector2f){}) {
 
     }
 
@@ -20,36 +20,30 @@ namespace engine {
     }
 
     void Button::OnUpdate(sf::Time interval) {
-        
+
         if (sf::FloatRect(GetGlobalPosition(), m_size).contains(m_scene->GetGame()->GetMousePosition().x, m_scene->GetGame()->GetMousePosition().y)) {
-            std::cout << "Contains" << std::endl;
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                m_state = BUTTON_ACTIVE;
-                std::cout << "Active" << std::endl;
-                PlayAnimation("active");
+                if (m_state != BUTTON_ACTIVE) {
+                    m_state = BUTTON_ACTIVE;
+                    PlayAnimation("active");
+                }
             } else if (m_state == BUTTON_ACTIVE) {
-                OnClick(m_scene->GetGame()->GetMousePosition());
-                std::cout << "CLICK -> HOVER" << std::endl;
+                OnClick(this, m_scene->GetGame()->GetMousePosition());
                 PlayAnimation("hover");
                 m_state = BUTTON_HOVER;
-            } else {
-                std::cout << "HOVER" << std::endl;
+            } else if (m_state != BUTTON_HOVER) {
                 m_state = BUTTON_HOVER;
                 PlayAnimation("hover");
             }
         } else if (m_state != BUTTON_NONE) {
             m_state = BUTTON_NONE;
-            std::cout << "NONE" << std::endl;
             PlayAnimation("default");
         } else {
-            std::cout << "(" << GetGlobalPosition().x << ", " << GetGlobalPosition().y << ", " << m_size.x << ", " << m_size.y << ") doesnt contain (" << m_scene->GetGame()->GetMousePosition().x << ", " << m_scene->GetGame()->GetMousePosition().y << ")" << std::endl;
+            //std::cout << "(" << GetGlobalPosition().x << ", " << GetGlobalPosition().y << ", " << m_size.x << ", " << m_size.y << ") doesnt contain (" << m_scene->GetGame()->GetMousePosition().x << ", " << m_scene->GetGame()->GetMousePosition().y << ")" << std::endl;
         }
     }
 
-    void Button::OnClick(sf::Vector2f point) {
-        std::cout << "Click" << std::endl;
-    }
-    uint8_t Button::GetType() const{
+    uint8_t Button::GetType() const {
         return NT_BUTTON;
     }
 }

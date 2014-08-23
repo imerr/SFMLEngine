@@ -10,7 +10,7 @@
 #include "ResourceManager.hpp"
 #include "SFML/Graphics.hpp"
 #include "Factory.hpp"
-
+#include "Game.hpp"
 namespace engine {
 
     Animation::Animation() : m_looping(false), m_speed(0), m_currentTime(0), m_currentFrame(0) {
@@ -99,6 +99,7 @@ namespace engine {
         }
         states.texture = m_texture;
         target.draw(m_vertices, 4, sf::TrianglesStrip, states);
+
     }
 
     void SpriteNode::UpdatePosition() {
@@ -198,7 +199,7 @@ namespace engine {
                             for (size_t o = 0; o < anim["frames"].size(); o++) {
                                 auto text = sheet["sprites"][anim["frames"][o].asInt()];
                                 if (text.isNull()){
-                                    std::cout << "Invalid frame in sheet" << std::endl;
+                                    std::cerr << "Invalid frame in sheet" << std::endl;
                                     continue;
                                 }
                                 sf::IntRect rect;
