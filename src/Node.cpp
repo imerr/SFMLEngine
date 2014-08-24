@@ -12,7 +12,7 @@
 #include "Game.hpp"
 namespace engine {
 
-    Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_opaque(true), m_active(true) {
+    Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_opaque(true), m_active(true), m_destroy(false), m_render(true) {
     }
 
     Node::~Node() {
@@ -29,6 +29,7 @@ namespace engine {
     }
 
     void Node::draw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
+        std::lock_guard<std::mutex> lg(m_deleteMutex);
         if (!m_active) {
             return;
         }
@@ -38,9 +39,11 @@ namespace engine {
             states = sf::RenderStates::Default;
         }
         states.transform *= getTransform();
-        OnDraw(target, states, delta);
-        for (auto it = m_children.begin(); it != m_children.end(); it++) {
-            (*it)->draw(target, states, delta);
+        if (m_render) {
+            OnDraw(target, states, delta);
+        }
+        for (auto it = m_children.begin(); it != m_children.end();) {
+            (*it++)->draw(target, states, delta);
         }
         PostDraw(target, states, delta);
     }
@@ -91,6 +94,11 @@ namespace engine {
     }
 
     void Node::update(sf::Time interval) {
+        if (m_destroy) {
+            std::lock_guard<std::mutex> lg(m_parent->m_deleteMutex);
+            delete this;
+            return;
+        }
         if (!m_active) {
             return;
         }
@@ -98,8 +106,8 @@ namespace engine {
             UpdatePhysicsTransform();
         }
         OnUpdate(interval);
-        for (auto it = m_children.begin(); it != m_children.end(); it++) {
-            (*it)->update(interval);
+        for (auto it = m_children.begin(); it != m_children.end();) {
+            (*it++)->update(interval);
         }
     }
 
@@ -179,8 +187,13 @@ namespace engine {
             body.linearDamping = jbody.get("linearDamping", 0.0f).asFloat();
             if (jbody.isMember("linearVelocity")) {
                 auto velocity = jbody["linearVelocity"];
-                body.linearVelocity.x = velocity.get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
-                body.linearVelocity.y = velocity.get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                if (velocity.isArray()) {
+                    body.linearVelocity.x = velocity.get(0u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                    body.linearVelocity.y = velocity.get(1u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                } else {
+                    body.linearVelocity.x = velocity.get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                    body.linearVelocity.y = velocity.get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+                }
             }
             if (jbody.isMember("position")) {
                 auto pos = jbody["position"];
@@ -414,6 +427,10 @@ namespace engine {
 
     void Node::SetSize(sf::Vector2f size) {
         m_size = size;
+    }
+
+    void Node::Delete() {
+        m_destroy = true;
     }
 
     sf::Vector2f Node::GetSize() const {

@@ -51,6 +51,9 @@ namespace engine {
         virtual bool initialize(Json::Value& root);
         virtual uint8_t GetType() const;
         void PlayAnimation(std::string name, std::string after="");
+        Animation* GetAnimation();
+        void SetFlipped(bool flipped);
+        bool IsFlipped() const;
     protected:
         void UpdatePosition();
         void UpdateTexCoords();

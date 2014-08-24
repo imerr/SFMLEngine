@@ -42,6 +42,8 @@ namespace engine {
     protected:
         // mutex for locking things accessed in the graphics and logic thread, mainly when copying over position info and such
         std::mutex m_mutex;
+        // prevent deletion while in use
+        std::mutex m_deleteMutex;
         std::list<Node*> m_children;
         Scene* m_scene;
         Node* m_parent;
@@ -52,6 +54,8 @@ namespace engine {
         bool m_opaque;
         // Update and render it
         bool m_active;
+        bool m_destroy;
+        bool m_render;
     public:
         Node(Scene* scene);
         virtual ~Node();
@@ -77,6 +81,7 @@ namespace engine {
         std::list<Node*>& GetChildren();
         void SetSize(sf::Vector2f size);
         sf::Vector2f GetSize() const;
+        void Delete();
     protected:
         friend Factory;
         void SetParent(Node* parent);

@@ -8,12 +8,22 @@
 #ifndef ENGINE_SCENE_HPP
 #define	ENGINE_SCENE_HPP
 #include "Node.hpp"
+#include "util/Event.hpp"
 #include "Box2D/Box2D.h"
 #include "util/Box2dDebugDraw.hpp"
 #include "LightSystem.hpp"
 namespace engine {
     class Game;
     class Light;
+
+    class SceneContactListener : public b2ContactListener {
+        Scene* m_scene;
+    public:
+        SceneContactListener(Scene* scene);
+        virtual void BeginContact(b2Contact* contact);
+        virtual void EndContact(b2Contact* contact);
+    };
+
     class Scene : public Node {
     public:
         static b2Vec2 default_gravity;
@@ -26,6 +36,9 @@ namespace engine {
         LightSystem m_lightSystem;
         bool m_debug;
         Node m_ui;
+        SceneContactListener m_contactListener;
+    public:
+        util::Event<b2Contact*, bool> OnContact;
     public:
         Scene(Game* game);
         virtual ~Scene();

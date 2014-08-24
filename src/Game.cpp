@@ -71,13 +71,19 @@ namespace engine {
                     if (m_focus) {
                         OnKeyDown.Fire(event.key);
                     }
-                } else if(event.type == sf::Event::MouseButtonPressed){
-                    if (m_focus){
+                } else if (event.type == sf::Event::MouseButtonPressed) {
+                    if (m_focus) {
                         OnMouseClick.Fire(event.mouseButton);
                     }
                 }
             }
             m_scene->update(interval);
+            /*m_window.clear(sf::Color::White);
+            if (m_scene) {
+                m_scene->draw(m_window, sf::RenderStates::Default, interval.asSeconds());
+            }
+            m_window.display();
+            m_fps++;*/
             sf::Time delta = timer.restart();
             if (delta < interval) {
                 sf::sleep(interval - delta);

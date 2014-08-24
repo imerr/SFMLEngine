@@ -203,7 +203,7 @@ namespace engine {
                             }
                             Animation* a = new Animation();
                             a->SetSpeed(anim.get("speed", 1).asFloat());
-                            a->SetLooping(anim.get("looping", true).asBool());
+                            a->SetLooping(anim.get("loop", true).asBool());
                             for (size_t o = 0; o < anim["frames"].size(); o++) {
                                 auto text = sheet["sprites"][anim["frames"][o].asInt()];
                                 if (text.isNull()) {
@@ -240,5 +240,20 @@ namespace engine {
         }
         it->second->Reset();
         m_currentAnimation = name;
+    }
+    Animation* SpriteNode::GetAnimation(){
+        if (m_animations.find(m_currentAnimation) != m_animations.end()){
+            return m_animations[m_currentAnimation];
+        }else{
+            return nullptr;
+        }
+    }
+
+    void SpriteNode::SetFlipped(bool flipped) {
+        m_flipped = flipped;
+    }
+
+    bool SpriteNode::IsFlipped() const {
+        return m_flipped;
     }
 }
