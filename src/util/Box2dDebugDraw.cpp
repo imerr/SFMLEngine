@@ -21,7 +21,7 @@ namespace engine {
 
         Box2dDebugDraw::Box2dDebugDraw(Scene* scene) : m_scene(scene), m_isInitialized(false) {
             auto size = m_scene->GetGame()->GetWindow()->getSize();
-            m_texture.create(size.x, size.y);
+            m_texture.create(5000, 2000);//size.x, size.y); // TODO, fix
         }
 
         Box2dDebugDraw::~Box2dDebugDraw() {

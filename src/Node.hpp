@@ -56,6 +56,7 @@ namespace engine {
         bool m_active;
         bool m_destroy;
         bool m_render;
+        std::string m_indentifier;
     public:
         Node(Scene* scene);
         virtual ~Node();
@@ -82,6 +83,9 @@ namespace engine {
         void SetSize(sf::Vector2f size);
         sf::Vector2f GetSize() const;
         void Delete();
+        void SetShouldRender(bool render);
+        void SetIndentifier(std::string indentifier);
+        std::string GetIndentifier() const;
     protected:
         friend Factory;
         void SetParent(Node* parent);

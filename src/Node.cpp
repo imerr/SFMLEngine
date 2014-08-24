@@ -88,14 +88,17 @@ namespace engine {
 
     sf::Vector2f Node::GetGlobalPosition() {
         if (m_parent->GetBody()) {
-            return sf::Vector2f(m_parent->GetBody()->GetPosition().x * m_scene->GetPixelMeterRatio(), m_parent->GetBody()->GetPosition().y * m_scene->GetPixelMeterRatio());
+            return sf::Vector2f(m_parent->GetBody()->GetPosition().x * m_scene->GetPixelMeterRatio() + getPosition().x, getPosition().y + m_parent->GetBody()->GetPosition().y * m_scene->GetPixelMeterRatio());
         }
         return GetGlobalTransform().transformPoint(0, 0);
     }
 
     void Node::update(sf::Time interval) {
         if (m_destroy) {
-            std::lock_guard<std::mutex> lg(m_parent->m_deleteMutex);
+            if (m_parent) {
+                std::lock_guard<std::mutex> lg(m_parent->m_deleteMutex);
+            }
+            m_deleteMutex.lock();
             delete this;
             return;
         }
@@ -139,7 +142,7 @@ namespace engine {
                 m_size.y = size.get("y", 0).asFloat();
             }
         }
-
+        m_indentifier = root.get("identifier", "").asString();
         if (root.isMember("origin")) {
             auto origin = root["origin"];
             if (origin.isArray()) {
@@ -301,7 +304,6 @@ namespace engine {
                             def.shape = &edge;
                         } else if (shapeType == "chain") {
                             if (shapes[i]["points"].isArray() && shapes[i]["points"].size()) {
-                                std::cout << "Chain! " << std::endl;
                                 auto p = shapes[i]["points"];
                                 points = new b2Vec2[p.size()];
                                 for (unsigned int o = 0; o < p.size(); o++) {
@@ -313,7 +315,6 @@ namespace engine {
                                         points[o].y = p[o].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                                     }
                                 }
-                                std::cout << p.size() << std::endl;
                                 chain.CreateChain(points, p.size());
                                 // ghost vert
                                 if (!shapes[i]["prev"].empty()) {
@@ -431,6 +432,18 @@ namespace engine {
 
     void Node::Delete() {
         m_destroy = true;
+    }
+
+    void Node::SetShouldRender(bool render) {
+        m_render = render;
+    }
+
+    void Node::SetIndentifier(std::string indentifier) {
+        m_indentifier = indentifier;
+    }
+
+    std::string Node::GetIndentifier() const {
+        return m_indentifier;
     }
 
     sf::Vector2f Node::GetSize() const {

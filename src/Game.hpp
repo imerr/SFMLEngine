@@ -16,7 +16,7 @@ namespace engine {
 
     class Game {
     public:
-        
+
     protected:
         sf::RenderWindow m_window;
         Scene* m_scene;
@@ -27,6 +27,7 @@ namespace engine {
         std::atomic<int> m_fps;
         int m_tps;
         std::atomic<bool> m_focus;
+
     public:
         util::Event<const sf::Event::KeyEvent&> OnKeyDown;
         util::Event<const sf::Event::MouseButtonEvent&> OnMouseClick;
@@ -42,6 +43,8 @@ namespace engine {
         sf::Vector2f GetMousePosition();
         bool IsFocus() const;
         Scene* GetScene() const;
+    protected:
+        virtual void OnUpdate(){};
     };
 
 }

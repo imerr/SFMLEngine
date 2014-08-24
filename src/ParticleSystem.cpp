@@ -17,7 +17,7 @@ namespace engine {
     }
 
     ParticleSystem::~ParticleSystem() {
-        for (size_t i=0; i< m_particles.size();i++){
+        for (size_t i = 0; i < m_particles.size(); i++) {
             delete m_particles[i];
         }
         m_particles.clear();
@@ -56,7 +56,7 @@ namespace engine {
     }
 
     void ParticleSystem::SetParticleCount(size_t particleCount) {
-        if (m_particleConfig.empty()) {
+        if (m_particleConfig.isNull()) {
             std::cerr << "Particle config not set." << std::endl;
             return;
         }
@@ -68,9 +68,7 @@ namespace engine {
             }
         } else if (m_particleCount > m_particles.size()) {
             while (m_particleCount > m_particles.size()) {
-
-                std::cerr << "Trying to create child" << std::endl;
-                Node* particle = Factory::CreateChildFromFile(m_particleConfig, this);
+                Node* particle = Factory::CreateChild(m_particleConfig, this);
                 if (!particle) {
                     std::cerr << "Failed to create particle from config." << std::endl;
                     return;
@@ -93,11 +91,7 @@ namespace engine {
     }
 
     void ParticleSystem::SetParticleConfig(std::string particleConfig) {
-        m_particleConfig = particleConfig;
-    }
-
-    std::string ParticleSystem::GetParticleConfig() const {
-        return m_particleConfig;
+        Factory::LoadJson(particleConfig, m_particleConfig);
     }
 
     void ParticleSystem::OnUpdate(sf::Time interval) {
@@ -111,7 +105,7 @@ namespace engine {
         for (m_toRelease += interval.asSeconds() * m_rate; m_toRelease >= 1; m_toRelease--) {
             float a = angle();
             m_particles[m_currentIndex]->SetActive(true);
-            m_particles[m_currentIndex]->GetBody()->SetTransform(b2Vec2(getPosition().x / m_scene->GetPixelMeterRatio(), getPosition().y / m_scene->GetPixelMeterRatio()), a);
+            m_particles[m_currentIndex]->GetBody()->SetTransform(b2Vec2(GetGlobalPosition().x / m_scene->GetPixelMeterRatio(), GetGlobalPosition().y / m_scene->GetPixelMeterRatio()), a);
             m_particles[m_currentIndex]->GetBody()->SetLinearVelocity(b2Vec2(cosf(a) * rx(), sinf(a) * ry()));
             m_particles[m_currentIndex]->GetBody()->SetAngularVelocity(rr());
             m_currentIndex++;
@@ -126,14 +120,12 @@ namespace engine {
             return false;
         }
         if (root["particleConfig"].isString()) {
-            m_particleConfig = root["particleConfig"].asString();
+            Factory::LoadJson(root["particleConfig"].asString(), m_particleConfig);
         } else {
-            std::cerr << "Particle Config not set." << std::endl;
-            return false;
+            m_particleConfig = root["particleConfig"];
         }
         SetParticleCount(root.get("particleCount", 10).asInt());
         m_rate = root.get("rate", 1).asFloat();
-        //m_burst = root.get("rate", 1).asFloat();
         m_angle = root.get("angle", 0).asFloat() * util::fPI / 180;
         m_spread = root.get("spread", 360).asFloat() * util::fPI / 180;
         if (root["minVelocity"].isArray()) {
@@ -148,7 +140,8 @@ namespace engine {
         }
         return true;
     }
-    uint8_t ParticleSystem::GetType() const{
+
+    uint8_t ParticleSystem::GetType() const {
         return NT_PARTICLESYSTEM;
     }
 }

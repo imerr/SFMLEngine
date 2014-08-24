@@ -62,10 +62,8 @@ namespace engine {
                     m_window.close();
                     m_running = false;
                 } else if (event.type == sf::Event::LostFocus) {
-                    std::cout << "Lost focus" << std::endl;
                     m_focus = false;
                 } else if (event.type == sf::Event::GainedFocus) {
-                    std::cout << "Gained focus" << std::endl;
                     m_focus = true;
                 } else if (event.type == sf::Event::KeyPressed) {
                     if (m_focus) {
@@ -84,6 +82,7 @@ namespace engine {
             }
             m_window.display();
             m_fps++;*/
+            OnUpdate();
             sf::Time delta = timer.restart();
             if (delta < interval) {
                 sf::sleep(interval - delta);

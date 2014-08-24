@@ -23,7 +23,7 @@ namespace engine {
         sf::Vector3f m_minVelocity;
         sf::Vector3f m_maxVelocity;
         float m_toRelease;
-        std::string m_particleConfig;
+        Json::Value m_particleConfig;
     public:
         ParticleSystem(Scene* scene);
         virtual ~ParticleSystem();
@@ -41,7 +41,6 @@ namespace engine {
         void SetParticleCount(size_t particleCount);
         size_t GetParticleCount() const;
         void SetParticleConfig(std::string particleConfig);
-        std::string GetParticleConfig() const;
         virtual bool initialize(Json::Value& root);
         virtual uint8_t GetType() const;
 

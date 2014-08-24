@@ -38,8 +38,6 @@ namespace engine {
         } else if (m_state != BUTTON_NONE) {
             m_state = BUTTON_NONE;
             PlayAnimation("default");
-        } else {
-            //std::cout << "(" << GetGlobalPosition().x << ", " << GetGlobalPosition().y << ", " << m_size.x << ", " << m_size.y << ") doesnt contain (" << m_scene->GetGame()->GetMousePosition().x << ", " << m_scene->GetGame()->GetMousePosition().y << ")" << std::endl;
         }
     }
 

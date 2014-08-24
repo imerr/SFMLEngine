@@ -251,6 +251,7 @@ namespace engine {
 
     void SpriteNode::SetFlipped(bool flipped) {
         m_flipped = flipped;
+        UpdateTexCoords();
     }
 
     bool SpriteNode::IsFlipped() const {
