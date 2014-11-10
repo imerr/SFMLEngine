@@ -9,7 +9,6 @@
 #include "Scene.hpp"
 #include "Game.hpp"
 #include <iostream>
-#include <winerror.h>
 
 namespace engine {
 

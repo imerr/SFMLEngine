@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "Box2dDebugDraw.hpp"
-#include "Scene.hpp"
-#include "Game.hpp"
+#include "../Scene.hpp"
+#include "../Game.hpp"
 #include <iostream>
 #include "misc.hpp"
 namespace engine {
@@ -21,7 +21,7 @@ namespace engine {
 
         Box2dDebugDraw::Box2dDebugDraw(Scene* scene) : m_scene(scene), m_isInitialized(false) {
             auto size = m_scene->GetGame()->GetWindow()->getSize();
-            m_texture.create(5000, 2000);//size.x, size.y); // TODO, fix
+            m_texture.create(size.x, size.y);
         }
 
         Box2dDebugDraw::~Box2dDebugDraw() {
@@ -44,6 +44,11 @@ namespace engine {
 
         void Box2dDebugDraw::draw(sf::RenderTarget& target, sf::RenderStates states) const {
             sf::Sprite s;
+            sf::Transformable tr;
+            auto window = m_scene->GetGame()->GetWindow();
+            tr.setPosition(window->getView().getCenter().x - (window->getView().getSize().x / 2), window->getView().getCenter().y - (window->getView().getSize().y / 2));
+            states.transform *= tr.getTransform();
+            states.blendMode = sf::BlendAdd;
             s.setTexture(m_texture.getTexture());
             target.draw(s, states);
         }
