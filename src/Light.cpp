@@ -13,7 +13,7 @@
 #include "Game.hpp"
 namespace engine {
 
-    Light::Light(Scene* scene) : Node::Node(scene), m_active(true), m_lightColor(sf::Color::White), m_radius(200), m_rayCount(256), m_blocked(false), m_raycastFraction(1.0f), m_angle(0), m_openingAngle(util::fPI * 2) {
+    Light::Light(Scene* scene) : Node(scene), m_active(true), m_lightColor(sf::Color::White), m_radius(200), m_rayCount(256), m_blocked(false), m_raycastFraction(1.0f), m_angle(0), m_openingAngle(util::fPI * 2) {
         m_vertices.resize(m_rayCount + 2);
         scene->GetLightSystem()->AddLight(this);
         m_opaque = true;

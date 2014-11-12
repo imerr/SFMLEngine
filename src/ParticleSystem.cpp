@@ -13,7 +13,7 @@
 #include "util/Random.hpp"
 namespace engine {
 
-    ParticleSystem::ParticleSystem(Scene* scene) : Node::Node(scene), m_particleCount(0), m_currentIndex(0), m_rate(0), m_burst(false), m_angle(0), m_spread(util::fPI * 2), m_minVelocity(.5, .5, 0), m_maxVelocity(1, 1, 0), m_toRelease(0) {
+    ParticleSystem::ParticleSystem(Scene* scene) : Node(scene), m_particleCount(0), m_currentIndex(0), m_rate(0), m_burst(false), m_angle(0), m_spread(util::fPI * 2), m_minVelocity(.5, .5, 0), m_maxVelocity(1, 1, 0), m_toRelease(0) {
     }
 
     ParticleSystem::~ParticleSystem() {

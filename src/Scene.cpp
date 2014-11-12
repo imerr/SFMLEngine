@@ -26,7 +26,7 @@ namespace engine {
         m_scene->OnContact.Fire(contact, false);
     }
 
-    Scene::Scene(Game* game) : Node::Node(this), m_game(game), m_pixToM(80.0f), m_debugDraw(this), m_lightSystem(this), m_debug(false), m_ui(this), m_contactListener(this) {
+    Scene::Scene(Game* game) : Node(this), m_game(game), m_pixToM(80.0f), m_debugDraw(this), m_lightSystem(this), m_debug(false), m_ui(this), m_contactListener(this) {
         m_world = new b2World(default_gravity);
         m_world->SetContactListener(&m_contactListener);
         m_world->SetDebugDraw(&m_debugDraw);

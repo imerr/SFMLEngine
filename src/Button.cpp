@@ -12,8 +12,8 @@
 #include <iostream>
 namespace engine {
 
-    Button::Button(Scene* scene) : SpriteNode::SpriteNode(scene), m_state(BUTTON_NONE), OnClick([](Button*, sf::Vector2f){}) {
-
+    Button::Button(Scene* scene) : SpriteNode(scene), m_state(BUTTON_NONE) {
+		OnClick = [](Button*, sf::Vector2f){};
     }
 
     Button::~Button() {
