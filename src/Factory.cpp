@@ -79,6 +79,7 @@ namespace engine {
         if (!c) {
             return nullptr;
         }
+		parent->AddNode(c);
         return c;
     }
 
