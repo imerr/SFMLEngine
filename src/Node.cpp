@@ -101,8 +101,10 @@ namespace engine {
         if (m_destroy) {
             if (m_parent) {
                 std::lock_guard<std::mutex> lg(m_parent->m_deleteMutex);
-            }
-            delete this;
+				delete this;
+            }else{
+				delete this;
+			}
             return;
         }
         if (!m_active) {
@@ -146,7 +148,7 @@ namespace engine {
             }
         }
 		m_render = root.get("render", true).asBool();
-        m_indentifier = root.get("identifier", "").asString();
+        m_identifier = root.get("identifier", "").asString();
         if (root.isMember("origin")) {
             auto origin = root["origin"];
             if (origin.isArray()) {
@@ -442,12 +444,12 @@ namespace engine {
         m_render = render;
     }
 
-    void Node::SetIndentifier(std::string indentifier) {
-        m_indentifier = indentifier;
+    void Node::SetIdentifier(std::string identifier) {
+        m_identifier = identifier;
     }
 
-    std::string Node::GetIndentifier() const {
-        return m_indentifier;
+    std::string Node::GetIdentifier() const {
+        return m_identifier;
     }
 
     sf::Vector2f Node::GetSize() const {

@@ -56,7 +56,7 @@ namespace engine {
         bool m_active;
         bool m_destroy;
         bool m_render;
-        std::string m_indentifier;
+        std::string m_identifier;
     public:
         Node(Scene* scene);
         virtual ~Node();
@@ -84,8 +84,8 @@ namespace engine {
         sf::Vector2f GetSize() const;
         void Delete();
         void SetShouldRender(bool render);
-        void SetIndentifier(std::string indentifier);
-        std::string GetIndentifier() const;
+        void SetIdentifier(std::string indentifier);
+        std::string GetIdentifier() const;
 
         void SetRender(bool render) {
             m_render = render;
