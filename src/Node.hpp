@@ -89,7 +89,6 @@ namespace engine {
     protected:
         friend Factory;
         void SetParent(Node* parent);
-    private:
 
         virtual void OnUpdate(sf::Time interval) {
         }

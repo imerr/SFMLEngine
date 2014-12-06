@@ -54,7 +54,7 @@ namespace engine {
         bool IsDebug() const;
         virtual uint8_t GetType() const;
         virtual bool initialize(Json::Value& root);
-    private:
+    protected:
         virtual void OnUpdate(sf::Time interval);
         virtual void PostDraw(sf::RenderTarget& target, sf::RenderStates states, float delta);
     };
