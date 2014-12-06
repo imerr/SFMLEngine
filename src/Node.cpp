@@ -16,6 +16,8 @@ namespace engine {
     }
 
     Node::~Node() {
+		// So one can clean up pointers
+		OnDelete.Fire(this);
         if (m_body && m_scene->GetWorld() /* will be null if scene is being killed */) {
             m_scene->GetWorld()->DestroyBody(m_body);
             m_body = nullptr;
@@ -235,6 +237,8 @@ namespace engine {
                         std::string shapeType = shapes[i].get("type", "box").asString();
                         b2PolygonShape poly;
                         b2FixtureDef def;
+						def.filter.categoryBits = shapes[i].get("category", 1).asInt();
+						def.filter.maskBits &= ~shapes[i].get("mask", 0).asInt();
                         b2ChainShape chain;
                         b2CircleShape circle;
                         b2EdgeShape edge;

@@ -15,6 +15,7 @@
 #include "SFML/Graphics/RenderStates.hpp"
 #include "SFML/System/Time.hpp"
 #include "Box2D/Box2D.h"
+#include "util/Event.hpp"
 #include <json/json.h>
 
 namespace engine {
@@ -94,6 +95,7 @@ namespace engine {
         bool IsRender() const {
             return m_render;
         }
+        util::Event<Node*> OnDelete;
     protected:
         friend Factory;
         void SetParent(Node* parent);
