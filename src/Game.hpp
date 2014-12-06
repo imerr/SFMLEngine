@@ -27,13 +27,12 @@ namespace engine {
         std::atomic<int> m_fps;
         int m_tps;
         std::atomic<bool> m_focus;
-
+        std::string m_windowTitle;
     public:
         util::Event<const sf::Event::KeyEvent&> OnKeyDown;
         util::Event<const sf::Event::MouseButtonEvent&> OnMouseClick;
     public:
         Game();
-        Game(const Game& orig);
         virtual ~Game();
         void run();
         void GraphicLoop();

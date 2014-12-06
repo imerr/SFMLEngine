@@ -12,10 +12,7 @@
 
 namespace engine {
 
-    Game::Game() : m_window(sf::VideoMode(1024, 576), "SFML works!"), m_scene(nullptr), m_running(true), m_fps(0), m_tps(0), m_focus(true) {
-    }
-
-    Game::Game(const Game& orig) {
+    Game::Game() : m_window(sf::VideoMode(1024, 576), "changeme"), m_scene(nullptr), m_running(true), m_fps(0), m_tps(0), m_focus(true) {
     }
 
     Game::~Game() {
@@ -94,7 +91,7 @@ namespace engine {
             m_tps++;
             if (sec > 1) {
                 std::ostringstream ss;
-                ss << m_fps << " FPS " << m_tps << " TPS";
+                ss << m_windowTitle << "   " << m_fps << " FPS " << m_tps << " TPS";
                 m_window.setTitle(ss.str());
                 m_fps = 0;
                 m_tps = 0;
