@@ -7,10 +7,11 @@
 
 #ifndef UTIL_RANDOM_HPP
 #define	UTIL_RANDOM_HPP
+#include <random>
 namespace engine {
     namespace util {
 
-        std::random_device rd;
+        extern std::random_device rd;
 
         class RandomFloat {
             std::ranlux48 gen;

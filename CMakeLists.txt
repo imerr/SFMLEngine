@@ -12,5 +12,7 @@ set(SOURCE_FILES src/Button.cpp
                  src/ResourceManager.cpp
                  src/Scene.cpp
                  src/SpriteNode.cpp
-                 src/util/Box2dDebugDraw.cpp)
+                 src/util/Box2dDebugDraw.cpp
+                 src/util/Random.cpp
+)
 add_library(SFMLEngine STATIC ${SOURCE_FILES})
