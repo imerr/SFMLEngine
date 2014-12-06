@@ -51,7 +51,7 @@ namespace engine {
         m_rate = rate;
     }
 
-    int ParticleSystem::GetRate() const {
+    float ParticleSystem::GetRate() const {
         return m_rate;
     }
 

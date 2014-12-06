@@ -37,7 +37,7 @@ namespace engine {
         void SetBurst(bool bust);
         bool IsBurst() const;
         void SetRate(int rate);
-        int GetRate() const;
+        float GetRate() const;
         void SetParticleCount(size_t particleCount);
         size_t GetParticleCount() const;
         void SetParticleConfig(std::string particleConfig);
