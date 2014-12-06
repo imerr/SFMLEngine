@@ -10,6 +10,8 @@
 
 #include "Node.hpp"
 #include "SFML/Graphics/Texture.hpp"
+#include <functional>
+
 namespace engine {
 
     class Animation {
@@ -31,6 +33,7 @@ namespace engine {
         void Update(float delta);
         const sf::IntRect& GetCurrentTexture();
         bool IsOver();
+        std::function<void(void)> OnOver;
     };
 
     class SpriteNode : public Node {
