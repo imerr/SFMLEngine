@@ -45,6 +45,7 @@ namespace engine {
             m_textures.insert(std::make_pair(path, texture));
             return texture;
         }
+		std::cerr << "Could not load texture from file ("<< path <<")" << std::endl;
         // Couldn't load texture, clean up and return the missing one
         delete texture;
         // also insert it so we prevent trying to load each time it gets requested
