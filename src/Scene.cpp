@@ -25,6 +25,9 @@ namespace engine {
     void SceneContactListener::EndContact(b2Contact* contact) {
         m_scene->OnContact.Fire(contact, false);
     }
+    void SceneContactListener::PostSolve(b2Contact* contact, const b2ContactImpulse* impulse){
+        m_scene->OnContactPostSolve.Fire(contact, impulse);
+    }
 
     Scene::Scene(Game* game) : Node(this), m_game(game), m_pixToM(80.0f), m_debugDraw(this), m_lightSystem(this), m_debug(false), m_ui(this), m_contactListener(this) {
         m_world = new b2World(default_gravity);

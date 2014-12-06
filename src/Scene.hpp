@@ -22,6 +22,7 @@ namespace engine {
         SceneContactListener(Scene* scene);
         virtual void BeginContact(b2Contact* contact);
         virtual void EndContact(b2Contact* contact);
+        virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse);
     };
 
     class Scene : public Node {
@@ -39,6 +40,7 @@ namespace engine {
         SceneContactListener m_contactListener;
     public:
         util::Event<b2Contact*, bool> OnContact;
+        util::Event<b2Contact*, const b2ContactImpulse*> OnContactPostSolve;
     public:
         Scene(Game* game);
         virtual ~Scene();
