@@ -57,6 +57,7 @@ namespace engine {
 
     void Node::RemoveNode(Node* node) {
         m_children.remove(node);
+		OnRemoveNode(node);
     }
 
     void Node::SetScene(Scene* scene) {

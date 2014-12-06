@@ -92,7 +92,7 @@ namespace engine {
     private:
 
         virtual void OnUpdate(sf::Time interval) {
-        };
+        }
 
         virtual void OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
         }
@@ -101,6 +101,8 @@ namespace engine {
         }
         void UpdatePhysicsTransform();
         void UpdateTransform(float delta);
+        virtual void OnRemoveNode(Node* node){
+        }
     };
 
 }
