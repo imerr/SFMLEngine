@@ -102,7 +102,6 @@ namespace engine {
             if (m_parent) {
                 std::lock_guard<std::mutex> lg(m_parent->m_deleteMutex);
             }
-            m_deleteMutex.lock();
             delete this;
             return;
         }
@@ -146,6 +145,7 @@ namespace engine {
                 m_size.y = size.get("y", 0).asFloat();
             }
         }
+		m_render = root.get("render", true).asBool();
         m_indentifier = root.get("identifier", "").asString();
         if (root.isMember("origin")) {
             auto origin = root["origin"];
@@ -182,6 +182,7 @@ namespace engine {
         if (root.isMember("body")) {
             auto jbody = root["body"];
             b2BodyDef body;
+			body.userData = this;
             body.active = jbody.get("active", true).asBool();
             body.allowSleep = jbody.get("allowSleep", true).asBool();
             body.angle = jbody.get("angle", 0.0f).asFloat() * util::fPI / 180;
@@ -215,7 +216,6 @@ namespace engine {
                     body.position.y += pos.get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
                 }
             }
-            body.userData = this;
             std::string type = jbody.get("type", "dynamic").asString();
             if (type == "static") {
                 body.type = b2_staticBody;

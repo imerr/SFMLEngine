@@ -86,6 +86,14 @@ namespace engine {
         void SetShouldRender(bool render);
         void SetIndentifier(std::string indentifier);
         std::string GetIndentifier() const;
+
+        void SetRender(bool render) {
+            m_render = render;
+        }
+
+        bool IsRender() const {
+            return m_render;
+        }
     protected:
         friend Factory;
         void SetParent(Node* parent);
