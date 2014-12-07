@@ -29,7 +29,7 @@ namespace engine {
         m_scene->OnContactPostSolve.Fire(contact, impulse);
     }
 
-    Scene::Scene(Game* game) : Node(this), m_game(game), m_pixToM(80.0f), m_debugDraw(this), m_lightSystem(this), m_debug(false), m_ui(this), m_contactListener(this) {
+    Scene::Scene(Game* game) : Node(this), m_game(game), m_pixToM(80.0f), m_debugDraw(this), m_lightSystem(this), m_debug(false), m_ui(nullptr), m_contactListener(this) {
         m_world = new b2World(default_gravity);
         m_world->SetContactListener(&m_contactListener);
         m_world->SetDebugDraw(&m_debugDraw);
@@ -89,8 +89,10 @@ namespace engine {
         // Keep UI in the screen
         // Keep UI in the screen
         auto view = m_scene->GetGame()->GetWindow()->getView();
-        m_ui.setPosition(view.getCenter().x - (view.getSize().x / 2), view.getCenter().y - (view.getSize().y / 2));
-        m_ui.draw(target, states, delta);
+		if (m_ui){
+			m_ui->SetPosition(view.getCenter().x - (view.getSize().x / 2), view.getCenter().y - (view.getSize().y / 2));
+			m_ui->draw(target, states, delta);
+		}
     }
 
     void Scene::OnUpdate(sf::Time interval) {
@@ -103,7 +105,9 @@ namespace engine {
             m_mutexDebug.unlock();
         }
         m_lightSystem.update(interval);
-        m_ui.update(interval);
+        if (m_ui) {
+			m_ui->update(interval);
+		}
     }
 
     uint8_t Scene::GetType() const {

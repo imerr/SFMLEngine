@@ -36,7 +36,7 @@ namespace engine {
         std::mutex m_mutexDebug;
         LightSystem m_lightSystem;
         bool m_debug;
-        Node m_ui;
+        Node* m_ui;
         SceneContactListener m_contactListener;
     public:
         util::Event<b2Contact*, bool> OnContact;
@@ -56,6 +56,14 @@ namespace engine {
         bool IsDebug() const;
         virtual uint8_t GetType() const;
         virtual bool initialize(Json::Value& root);
+
+        void SetUi(Node* ui) {
+            m_ui = ui;
+        }
+
+        Node* GetUi() const {
+            return m_ui;
+        }
     protected:
         virtual void OnUpdate(sf::Time interval);
         virtual void PostDraw(sf::RenderTarget& target, sf::RenderStates states, float delta);
