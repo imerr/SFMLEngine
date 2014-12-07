@@ -24,12 +24,17 @@ namespace engine{
 		if (text.isObject()){
 			m_font.loadFromFile(text.get("font", "").asString());
 			m_text.setFont(m_font);
-			m_text.setCharacterSize(text.get('size', 30).asInt());
+			m_text.setCharacterSize(text.get("size", 30).asInt());
 			auto color = text["color"];
 			if (color.isArray()){
 				m_text.setColor(sf::Color(color.get(0u, 0).asInt(), color.get(1u, 0).asInt(), color.get(2u, 0).asInt(), color.get(3u, 255).asInt()));
 			}
 			m_text.setString(text.get("text", "").asString());
+			uint32_t style;
+			if (text.get("bold", false).asBool()){
+				style |= sf::Text::Bold;
+			}
+			m_text.setStyle(style);
 		}
 		return true;
 	}

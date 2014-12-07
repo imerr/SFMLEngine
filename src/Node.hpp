@@ -37,6 +37,7 @@ namespace engine {
         NT_SCENE,
         NT_BUTTON,
         NT_PARTICLESYSTEM,
+        NT_TEXT,
         NT_END
     };
     class Node : public sf::Transformable, public sf::NonCopyable {
