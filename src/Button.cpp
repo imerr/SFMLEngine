@@ -21,7 +21,7 @@ namespace engine {
 
     void Button::OnUpdate(sf::Time interval) {
 
-        if (sf::FloatRect(GetGlobalPosition(), m_size).contains(m_scene->GetGame()->GetMousePosition().x, m_scene->GetGame()->GetMousePosition().y)) {
+        if (sf::FloatRect(GetGlobalPosition()-getOrigin(), m_size).contains(m_scene->GetGame()->GetMousePosition().x, m_scene->GetGame()->GetMousePosition().y)) {
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 if (m_state != BUTTON_ACTIVE) {
                     m_state = BUTTON_ACTIVE;
