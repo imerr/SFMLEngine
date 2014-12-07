@@ -28,6 +28,10 @@ namespace engine {
             if (!LoadJson(config, root)) {
                 return nullptr;
             }
+            return createJson<T>(root, params...);
+        }
+        
+        template<class T, typename... args>  static T* createJson(Json::Value& root, args... params){
             T* thing = new T(params...);
             if (thing->initialize(root)) {
                 if (root.isMember("children") && root["children"].isArray()) {
