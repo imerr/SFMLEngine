@@ -42,6 +42,11 @@ namespace engine {
         sf::Vector2f GetMousePosition();
         bool IsFocus() const;
         Scene* GetScene() const;
+
+        void SetScene(Scene* scene) {
+            m_scene = scene;
+        }
+
     protected:
         virtual void OnUpdate(){};
     };
