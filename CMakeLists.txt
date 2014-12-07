@@ -11,6 +11,7 @@ set(SOURCE_FILES src/Button.cpp
                  src/ParticleSystem.cpp
                  src/ResourceManager.cpp
                  src/Scene.cpp
+                 src/Text.cpp
                  src/SpriteNode.cpp
                  src/util/Box2dDebugDraw.cpp
                  src/util/Random.cpp
