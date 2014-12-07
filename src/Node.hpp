@@ -16,6 +16,7 @@
 #include "SFML/System/Time.hpp"
 #include "Box2D/Box2D.h"
 #include "util/Event.hpp"
+#include "util/math.hpp"
 #include <json/json.h>
 
 namespace engine {
@@ -107,6 +108,8 @@ namespace engine {
         std::string GetFilename() const {
             return m_filename;
         }
+        void SetRotation(float deg);
+        float GetRotation();
     protected:
         friend Factory;
         void SetParent(Node* parent);

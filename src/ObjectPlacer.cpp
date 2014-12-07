@@ -72,6 +72,15 @@ namespace engine {
 			if (e.code == sf::Keyboard::Right) {
 				obj->SetPosition(p.x + 1, p.y);
 			}
+			if (e.code == sf::Keyboard::Multiply){
+				obj->SetRotation(obj->GetRotation()+15);
+			}
+			if (e.code == sf::Keyboard::Divide){
+				obj->SetRotation(obj->GetRotation()-15);
+			}
+			if (e.code == sf::Keyboard::Comma){
+				obj->SetRotation(0);
+			}
 		}
 
 	}
@@ -110,7 +119,7 @@ namespace engine {
 	void ObjectPlacer::Remove() {
 		if (m_currentNode) {
 			m_currentNode->OnDelete.RemoveHandler(&m_deleteHandler);
-			delete m_currentNode;
+			m_currentNode->Delete();
 			m_currentNode = nullptr;
 		}
 	}
@@ -122,6 +131,9 @@ namespace engine {
 			m_root["children"][i]["childData"] = m_currentNode->GetFilename();
 			m_root["children"][i]["position"][0u] = m_currentNode->GetPosition().x;
 			m_root["children"][i]["position"][1u] = m_currentNode->GetPosition().y;
+			if (m_currentNode->GetRotation()){
+				m_root["children"][i]["rotation"] = m_currentNode->GetRotation();
+			}
 			m_currentNode->OnDelete.RemoveHandler(&m_deleteHandler);
 		}
 		Json::Value root;
