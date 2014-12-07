@@ -97,6 +97,7 @@ namespace engine {
             return m_render;
         }
         util::Event<Node*> OnDelete;
+        Node* GetChildByID(std::string);
     protected:
         friend Factory;
         void SetParent(Node* parent);

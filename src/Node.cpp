@@ -459,5 +459,13 @@ namespace engine {
     sf::Vector2f Node::GetSize() const {
         return m_size;
     }
+	Node* Node::GetChildByID(std::string id){
+		for (auto it=m_children.begin(); it!=m_children.end(); it++){
+			if ((*it)->GetIdentifier() == id){
+				return *it;
+			}
+		}
+		return nullptr;
+	}
 }
 
