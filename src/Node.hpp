@@ -97,7 +97,7 @@ namespace engine {
         bool IsRender() const {
             return m_render;
         }
-        util::Event<Node*> OnDelete;
+        util::Event<const Node*> OnDelete;
         Node* GetChildByID(std::string);
 
         void SetFilename(std::string filename) {

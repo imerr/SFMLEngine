@@ -47,6 +47,7 @@ set(SOURCE_FILES src/Button.cpp
                  src/Light.cpp
                  src/LightSystem.cpp
                  src/Node.cpp
+                 src/ObjectPlacer.cpp
                  src/ParticleSystem.cpp
                  src/ResourceManager.cpp
                  src/Scene.cpp

@@ -9,6 +9,7 @@
 #include "ParticleSystem.hpp"
 #include "Text.hpp"
 #include "Button.hpp"
+#include "ObjectPlacer.hpp"
 namespace engine {
 	std::map<std::string, std::function<Node*(Json::Value& root, Node* parent) >> Factory::m_types = {
 		std::make_pair(std::string("node"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<Node>)),
@@ -16,6 +17,7 @@ namespace engine {
 		std::make_pair(std::string("light"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<Light>)),
 		std::make_pair(std::string("text"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<Text>)),
 		std::make_pair(std::string("button"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<Button>)),
+		std::make_pair(std::string("objectPlacer"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<ObjectPlacer>)),
 		std::make_pair(std::string("particlesystem"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<ParticleSystem>))
 	};
 
