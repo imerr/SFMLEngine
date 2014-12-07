@@ -28,7 +28,11 @@ namespace engine {
             if (!LoadJson(config, root)) {
                 return nullptr;
             }
-            return createJson<T>(root, params...);
+            T* d =  createJson<T>(root, params...);
+            if (d){
+                d->SetFilename(config);
+            }
+            return d;
         }
         
         template<class T, typename... args>  static T* createJson(Json::Value& root, args... params){

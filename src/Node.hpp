@@ -59,6 +59,7 @@ namespace engine {
         bool m_destroy;
         bool m_render;
         std::string m_identifier;
+        std::string m_filename;
     public:
         Node(Scene* scene);
         virtual ~Node();
@@ -98,6 +99,14 @@ namespace engine {
         }
         util::Event<Node*> OnDelete;
         Node* GetChildByID(std::string);
+
+        void SetFilename(std::string filename) {
+            m_filename = filename;
+        }
+
+        std::string GetFilename() const {
+            return m_filename;
+        }
     protected:
         friend Factory;
         void SetParent(Node* parent);
