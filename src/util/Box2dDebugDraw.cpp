@@ -7,11 +7,11 @@
 
 #include <vector>
 
-#include "Box2dDebugDraw.hpp"
-#include "../Scene.hpp"
-#include "../Game.hpp"
+#include "util/Box2dDebugDraw.hpp"
+#include "Scene.hpp"
+#include "Game.hpp"
 #include <iostream>
-#include "misc.hpp"
+#include "util/misc.hpp"
 namespace engine {
     namespace util {
 

@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 2.8.4)
-project(SFMLEngine)
-
+project(Engine)
+set(EXTERNAL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/external" CACHE STRING "Path to external libs (SFML, Box2D, json-cpp)")
+set(SFMLENGINE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING "Path to Engine")
+message(STATUS "${EXTERNAL_PATH}")
+include("includes.cmake")
+# TODO: is this a good idea?
+include_directories(${SFMLENGINE_PATH}/include/Engine)
+message(STATUS "${INCLUDE_DIRECTORIES}")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	set(CMAKE_CXX_FLAGS "/Zm256 /Gy /GR- /W2 /wd4275 /wd4530 /wd4566 /FS")
 	set(CMAKE_CXX_FLAGS_DEBUG "/MDd /DDEBUG /RTCsu /Od /Zi")
@@ -41,6 +47,14 @@ else ()
 	endif ()
 endif ()
 
+set(JSONCPP_WITH_TESTS OFF CACHE BOOL "Dont want jsoncpp tests")
+set(JSONCPP_WITH_POST_BUILD_UNITTEST OFF CACHE BOOL "Dont want jsoncpp unit tests to be run")
+set(BOX2D_BUILD_EXAMPLES OFF CACHE BOOL "Dont want box2d examples")
+set(BOX2D_BUILD_STATIC ON CACHE BOOL "Build box2d as static lib")
+add_subdirectory(${EXTERNAL_PATH}/jsoncpp ${CMAKE_CURRENT_BINARY_DIR}/external/jsoncpp/)
+add_subdirectory(${EXTERNAL_PATH}/box2d/Box2D ${CMAKE_CURRENT_BINARY_DIR}/external/box2d/Box2D)
+add_subdirectory(${EXTERNAL_PATH}/SFML ${CMAKE_CURRENT_BINARY_DIR}/external/sfml/)
+
 set(SOURCE_FILES src/Button.cpp
                  src/Factory.cpp
                  src/Game.cpp
@@ -56,4 +70,11 @@ set(SOURCE_FILES src/Button.cpp
                  src/util/Box2dDebugDraw.cpp
                  src/util/Random.cpp
 )
-add_library(SFMLEngine STATIC ${SOURCE_FILES})
+add_library(Engine STATIC ${SOURCE_FILES})
+target_link_libraries(Engine jsoncpp_lib
+							   Box2D
+                               sfml-window
+                               sfml-audio
+                               sfml-system
+                               sfml-graphics
+                               sfml-main)
