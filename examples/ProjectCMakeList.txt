@@ -1,0 +1,18 @@
+# example cmakelist for a project
+project(ProjectName)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+# engine should be a submodule, make stuff easier
+add_subdirectory(Engine ${CMAKE_CURRENT_BINARY_DIR}/engine)
+include("Engine/includes.cmake")
+include_directories(.)
+
+set(SOURCE_FILES 
+				main.cpp
+				Asdf.cpp
+				Foo.cpp
+)
+add_executable(ProjectName ${SOURCE_FILES})
+
+target_link_libraries(ProjectName Engine)
