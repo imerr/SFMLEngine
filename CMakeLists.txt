@@ -71,7 +71,7 @@ set(SOURCE_FILES src/Button.cpp
                  src/util/Random.cpp
 )
 add_library(Engine STATIC ${SOURCE_FILES})
-target_link_libraries(Engine jsoncpp_lib
+target_link_libraries(Engine jsoncpp_lib_static
 							   Box2D
                                sfml-window
                                sfml-audio
