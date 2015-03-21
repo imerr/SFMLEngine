@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   SpriteNode.hpp
  * Author: iMer
  *
@@ -45,7 +45,6 @@ namespace engine {
         std::string m_currentAnimation;
         bool m_animated;
         std::string m_animationWhenDone;
-        bool m_flipped;
     public:
         SpriteNode(Scene* scene);
         virtual ~SpriteNode();
@@ -55,8 +54,7 @@ namespace engine {
         virtual uint8_t GetType() const;
         void PlayAnimation(std::string name, std::string after="");
         Animation* GetAnimation();
-        void SetFlipped(bool flipped);
-        bool IsFlipped() const;
+		virtual void SetFlipped(bool flipped);
     protected:
         void UpdatePosition();
         void UpdateTexCoords();

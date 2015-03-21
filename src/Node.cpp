@@ -12,7 +12,7 @@
 #include "Game.hpp"
 namespace engine {
 
-	Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_opaque(true), m_active(true), m_destroy(false), m_render(true) {
+	Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_opaque(true), m_active(true), m_destroy(false), m_render(true), m_flipped(false) {
 	}
 
 	Node::~Node() {
@@ -150,6 +150,7 @@ namespace engine {
 			}
 		}
 		m_render = root.get("render", true).asBool();
+		m_flipped = root.get("flipped", false).asBool();
 		m_identifier = root.get("identifier", "").asString();
 		if (root.isMember("origin")) {
 			auto origin = root["origin"];
@@ -256,7 +257,12 @@ namespace engine {
 						if (shapeType == "box") {
 							float width = shapes[i].get("width", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();
 							float height = shapes[i].get("height", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();
-							poly.SetAsBox(width, height, b2Vec2(shapes[i]["origin"].get(0u, 0).asFloat(), shapes[i]["origin"].get(1u, 0).asFloat()), shapes[i].get("angle", 0.0f).asFloat() * util::fPI / 180);
+							poly.SetAsBox(width, height,
+									b2Vec2(
+											shapes[i]["origin"].get(0u, 0).asFloat()/ m_scene->GetPixelMeterRatio(),
+											shapes[i]["origin"].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio()
+									),
+									shapes[i].get("angle", 0.0f).asFloat() * util::fPI / 180 * (m_flipped ? -1 : 1));
 							def.shape = &poly;
 						} else if (shapeType == "polygon") {
 							auto points = shapes[i]["points"];

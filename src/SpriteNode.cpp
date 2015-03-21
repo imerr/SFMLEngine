@@ -74,7 +74,7 @@ namespace engine {
 		return m_currentTime > m_speed;
 	}
 
-	SpriteNode::SpriteNode(Scene* scene) : Node(scene), m_texture(0), m_currentAnimation("default"), m_animated(false), m_flipped(false) {
+	SpriteNode::SpriteNode(Scene* scene) : Node(scene), m_texture(0), m_currentAnimation("default"), m_animated(false) {
 	}
 
 	SpriteNode::~SpriteNode() {
@@ -261,10 +261,6 @@ namespace engine {
 
 	void SpriteNode::SetFlipped(bool flipped) {
 		m_flipped = flipped;
-		UpdateTexCoords();
-	}
 
-	bool SpriteNode::IsFlipped() const {
-		return m_flipped;
 	}
 }

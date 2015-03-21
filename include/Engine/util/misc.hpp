@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   misc.hpp
  * Author: iMer
  *
@@ -27,7 +27,7 @@ namespace engine {
             }
             return value;
         };
-
+		
     }
 }
 #endif	/* ENGINE_UTIL_MISC_HPP */

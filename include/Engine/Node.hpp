@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Node.hpp
  * Author: iMer
  *
@@ -61,6 +61,7 @@ namespace engine {
         bool m_render;
         std::string m_identifier;
         std::string m_filename;
+		bool m_flipped;
     public:
         Node(Scene* scene);
         virtual ~Node();
@@ -110,6 +111,14 @@ namespace engine {
         }
         void SetRotation(float deg);
         float GetRotation();
+
+        virtual void SetFlipped(bool flipped) {
+        	m_flipped = flipped;
+        }
+
+        bool IsFlipped() const {
+        	return m_flipped;
+        }
     protected:
         friend Factory;
         void SetParent(Node* parent);
