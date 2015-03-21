@@ -167,10 +167,17 @@ namespace engine {
 			if (sprite.isMember("texture")) {
 				if (sprite.isMember("rect")) {
 					sf::IntRect rect;
-					rect.left = sprite["rect"].get("left", 0).asInt();
-					rect.top = sprite["rect"].get("top", 0).asInt();
-					rect.width = sprite["rect"].get("width", 0).asInt();
-					rect.height = sprite["rect"].get("height", 0).asInt();
+					if (sprite["rect"].isObject()) {
+						rect.left = sprite["rect"].get("left", 0).asInt();
+						rect.top = sprite["rect"].get("top", 0).asInt();
+						rect.width = sprite["rect"].get("width", 0).asInt();
+						rect.height = sprite["rect"].get("height", 0).asInt();
+					} else {
+						rect.left = sprite["rect"][0u].asInt();
+						rect.top = sprite["rect"][1u].asInt();
+						rect.width = sprite["rect"][2u].asInt();
+						rect.height = sprite["rect"][3u].asInt();
+					}
 					SetTexture(sprite["texture"].asString(), &rect);
 				} else {
 					SetTexture(sprite["texture"].asString());

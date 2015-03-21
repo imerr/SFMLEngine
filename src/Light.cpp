@@ -46,7 +46,7 @@ namespace engine {
 
     Light::~Light() {
         if (m_scene) {
-        //    m_scene->GetLightSystem()->RemoveLight(this);
+            m_scene->GetLightSystem()->RemoveLight(this);
         }
     }
 
@@ -156,7 +156,7 @@ namespace engine {
             SetLightColor(m_lightColor);
         } else if (root["color"].isInt()) {
             unsigned int lc = root["color"].asInt();
-            m_lightColor = sf::Color(lc & 0xFF0000, lc & 0xFF00, lc & 0xFF, lc & 0xFF000000);
+            m_lightColor = sf::Color(lc & 0xFF0000 >> 16, lc & 0xFF00 >> 8, lc & 0xFF, lc & 0xFF000000 >> 24);
         }
         m_radius = root.get("radius", 200).asFloat();
         m_angle = root.get("angle", 0).asFloat() * util::fPI / 180;

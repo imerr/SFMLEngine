@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Game.cpp
  * Author: iMer
- * 
+ *
  * Created on 2. Juli 2014, 23:50
  */
 
@@ -12,7 +12,7 @@
 
 namespace engine {
 
-    Game::Game() : m_window(sf::VideoMode(1024, 576), "changeme"), m_scene(nullptr), m_running(true), m_fps(0), m_tps(0), m_focus(true) {
+    Game::Game() : m_window(sf::VideoMode(1024, 576), "changeme"), m_scene(nullptr), m_running(true), m_fps(0), m_tps(0), m_focus(true), m_clearColor(sf::Color::White) {
     }
 
     Game::~Game() {
@@ -33,7 +33,7 @@ namespace engine {
             m_lastLogicUpdateMutex.lock();
             sf::Time delta = m_lastLogicUpdate.getElapsedTime();
             m_lastLogicUpdateMutex.unlock();
-            m_window.clear(sf::Color::White);
+            m_window.clear(m_clearColor);
             if (m_scene) {
                 m_scene->draw(m_window, sf::RenderStates::Default, t.restart().asSeconds());
             }

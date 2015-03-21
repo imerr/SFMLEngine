@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Game.hpp
  * Author: iMer
  *
@@ -28,6 +28,7 @@ namespace engine {
         int m_tps;
         std::atomic<bool> m_focus;
         std::string m_windowTitle;
+		sf::Color m_clearColor;
     public:
         util::Event<const sf::Event::KeyEvent&> OnKeyDown;
         util::Event<const sf::Event::MouseButtonEvent&> OnMouseClick;

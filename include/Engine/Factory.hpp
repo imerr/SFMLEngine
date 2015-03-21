@@ -62,7 +62,7 @@ namespace engine {
             thing->SetParent(parent);
             if (thing->initialize(root)) {
                 if (root.isMember("children")) {
-                    if (!MakeChildren(root["children"], parent)){
+                    if (!MakeChildren(root["children"], thing)){
 						std::cerr << "Failed to make children" << std::endl;
 					}
                 }

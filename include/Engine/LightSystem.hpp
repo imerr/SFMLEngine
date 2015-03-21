@@ -24,6 +24,7 @@ namespace engine {
         std::atomic<bool> m_needsUpdate;
         bool m_enabled;
 		bool m_available;
+		std::mutex m_drawLock;
     public:
         LightSystem(Scene*);
         virtual ~LightSystem();
