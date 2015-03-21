@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   LightSystem.hpp
  * Author: iMer
  *
@@ -23,6 +23,7 @@ namespace engine {
         sf::Color m_ambientColor;
         std::atomic<bool> m_needsUpdate;
         bool m_enabled;
+		bool m_available;
     public:
         LightSystem(Scene*);
         virtual ~LightSystem();
@@ -34,6 +35,10 @@ namespace engine {
         sf::Color GetAmbientColor() const;
         void SetEnabled(bool enabled);
         bool IsEnabled() const;
+
+        bool IsAvailable() const {
+        	return m_available;
+        }
     private:
 
     };

@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   LightSystem.cpp
  * Author: iMer
- * 
+ *
  * Created on 17. August 2014, 10:39
  */
 
@@ -26,6 +26,10 @@ namespace engine {
     }
 
     LightSystem::LightSystem(Scene* scene) : m_scene(scene), m_ambientColor(sf::Color::White), m_needsUpdate(true), m_enabled(true) {
+		if (!sf::Shader::isAvailable()) {
+			m_available = false;
+			return;
+		}
         m_blurShader.loadFromFile("assets/shader/fullpass.vert", "assets/shader/blur.frag");
         auto size = m_scene->GetGame()->GetWindow()->getSize();
         m_buffer.create(size.x, size.y);
@@ -42,7 +46,7 @@ namespace engine {
     }
 
     void LightSystem::draw(sf::RenderTarget& target, sf::RenderStates states) {
-        if (!m_enabled) {
+        if (!m_enabled || !m_available) {
             return;
         }
         sf::Sprite s;
@@ -93,7 +97,6 @@ namespace engine {
     }
 
     void LightSystem::AddLight(Light* light) {
-
         m_lights.push_back(light);
     }
 
