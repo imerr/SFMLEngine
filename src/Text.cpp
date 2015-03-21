@@ -61,6 +61,15 @@ namespace engine{
 			if (text.get("bold", false).asBool()){
 				style |= sf::Text::Bold;
 			}
+			if (text.get("italic", false).asBool()){
+				style |= sf::Text::Italic;
+			}
+			if (text.get("underlined", false).asBool()){
+				style |= sf::Text::Underlined;
+			}
+			if (text.get("strikethrough", false).asBool()){
+				style |= sf::Text::StrikeThrough;
+			}
 			m_text.setStyle(style);
 			SetText(text.get("text", "").asString());
 		}
