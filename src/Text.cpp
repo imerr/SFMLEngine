@@ -1,18 +1,35 @@
-/* 
+/*
  * File:   Text.cpp
  * Author: iMer
- * 
+ *
  * Created on 7. Dezember 2014, 00:48
  */
 
 #include "Text.hpp"
+#include <iostream>
 namespace engine{
-	Text::Text(Scene* scene): Node(scene) {
+	Text::Text(Scene* scene): Node(scene), m_align(ALIGN_LEFT) {
 	}
 
 	Text::~Text() {
 	}
-	
+
+	void Text::SetText(std::string text){
+		m_text.setString(text);
+		switch (m_align) {
+			case ALIGN_LEFT:
+				m_text.setOrigin(0, 0);
+				break;
+			case ALIGN_RIGHT:
+				m_text.setOrigin(m_text.getGlobalBounds().width, 0);
+				break;
+			case ALIGN_CENTER:
+				m_text.setOrigin(m_text.getGlobalBounds().width/2, 0);
+				break;
+			default:
+				std::cerr << "Unknown alignment (" << m_align << ")" << std::endl;
+		}
+	}
 	void Text::OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta){
 		target.draw(m_text, states);
 	}
@@ -29,12 +46,23 @@ namespace engine{
 			if (color.isArray()){
 				m_text.setColor(sf::Color(color.get(0u, 0).asInt(), color.get(1u, 0).asInt(), color.get(2u, 0).asInt(), color.get(3u, 255).asInt()));
 			}
-			m_text.setString(text.get("text", "").asString());
-			uint32_t style;
+			auto align = text["align"];
+			if (align.isString()) {
+				const std::string& a = align.asString();
+				if (a == "left") {
+					m_align = ALIGN_LEFT;
+				}else if (a == "center") {
+					m_align = ALIGN_CENTER;
+				}else if (a == "right") {
+					m_align = ALIGN_RIGHT;
+				}
+			}
+			uint32_t style = 0;
 			if (text.get("bold", false).asBool()){
 				style |= sf::Text::Bold;
 			}
 			m_text.setStyle(style);
+			SetText(text.get("text", "").asString());
 		}
 		return true;
 	}
