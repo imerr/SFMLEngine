@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Factory.cpp
  * Author: iMer
- * 
+ *
  * Created on 19. August 2014, 18:40
  */
 
@@ -88,6 +88,25 @@ namespace engine {
 		parent->AddNode(c);
 		return c;
 	}
+	bool Factory::MakeChildren(Json::Value& children, Node* parent) {
+		if (!children.isArray()) {
+			std::cerr << "Children is expected to be an array";
+			return false;
+		}
+		for (size_t i = 0; i < children.size(); i++) {
+			auto child = children[i];
+			if (!child.isObject()) {
+				std::cerr << "Child has to be object" << std::endl;
+				continue;
+			}
+			Node* nchild = CreateChild(child, parent->GetScene());
+			if (nchild) {
+				parent->AddNode(nchild);
+			}
+		}
+		return true;
+	}
+
 
 	void Factory::MergeJson(Json::Value& a, Json::Value& b) { // http://stackoverflow.com/a/23860017/1318435
 		if (!b.isObject()) return;

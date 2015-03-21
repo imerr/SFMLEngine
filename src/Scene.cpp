@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Scene.cpp
  * Author: iMer
- * 
+ *
  * Created on 3. Juli 2014, 01:01
  */
 
@@ -11,6 +11,7 @@
 #include <iostream>
 #include <mutex>
 #include "Light.hpp"
+#include "Engine/Factory.hpp"
 namespace engine {
     b2Vec2 Scene::default_gravity(0, 0);
 
@@ -142,6 +143,12 @@ namespace engine {
                 m_lightSystem.SetAmbientColor(sf::Color(lc & 0xFF0000, lc & 0xFF00, lc & 0xFF, lc & 0xFF000000));
             }
         }
+		// Easy way to fill the ui layer
+		auto ui = root["ui"];
+		if (ui.isArray()) {
+			m_ui = new Node(this);
+			Factory::MakeChildren(ui, m_ui);
+		}
         return true;
     }
 }
