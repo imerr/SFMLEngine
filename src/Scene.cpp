@@ -146,7 +146,9 @@ namespace engine {
 		// Easy way to fill the ui layer
 		auto ui = root["ui"];
 		if (ui.isArray()) {
-			m_ui = new Node(this);
+			if (!m_ui) {
+				m_ui = new Node(this);
+			}
 			Factory::MakeChildren(ui, m_ui);
 		}
         return true;
