@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Node.cpp
  * Author: iMer
- * 
+ *
  * Created on 3. Juli 2014, 01:00
  */
 
@@ -154,9 +154,9 @@ namespace engine {
 		if (root.isMember("origin")) {
 			auto origin = root["origin"];
 			if (origin.isArray()) {
-				setOrigin(origin.get(0u, m_size.x / 2).asInt(), origin.get(1u, m_size.y / 2).asInt());
+				setOrigin(origin.get(0u, m_size.x / 2).asFloat(), origin.get(1u, m_size.y / 2).asFloat());
 			} else if (origin.isObject()) {
-				setOrigin(origin.get("x", m_size.x / 2).asInt(), origin.get("y", m_size.y / 2).asInt());
+				setOrigin(origin.get("x", m_size.x / 2).asFloat(), origin.get("y", m_size.y / 2).asFloat());
 			} else {
 				std::string sorigin = origin.asString();
 				if (sorigin == "top-left") {
@@ -176,13 +176,13 @@ namespace engine {
 				}
 			}
 		}
-		
+
 		if (root.isMember("rotation") && root.isMember("body")) {
 			root["body"]["angle"] = root["rotation"];
 		} else {
 			setRotation(root.get("rotation", 0).asFloat());
 		}
-		
+
 		if (root.isMember("position") && root.isMember("body")) {
 			root["body"]["position"] = root["position"];
 		} else if (root["position"].isArray()) {

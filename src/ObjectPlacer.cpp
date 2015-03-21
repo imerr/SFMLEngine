@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   ObjectPlacer.cpp
  * Author: iMer
- * 
+ *
  * Created on 7. Dezember 2014, 14:38
  */
 
@@ -18,10 +18,10 @@ namespace engine {
 	void ObjectPlacer::MouseHandler::handle(const sf::Event::MouseButtonEvent& e) {
 		auto m = m_placer->GetScene()->GetGame()->GetMousePosition();
 		if (e.button == sf::Mouse::Left) {
-			// int cast due to having fractions of a pixel being stupid
-			m_placer->Place(static_cast<int> (m.x), static_cast<int> (m.y));
+			// round due to having fractions of a pixel being stupid
+			m_placer->Place(round(m.x), round(m.y));
 		} else if (e.button == sf::Mouse::Right) {
-			m_placer->New(static_cast<int> (m.x), static_cast<int> (m.y));
+			m_placer->New(round(m.x), round(m.y));
 		} else if (e.button == sf::Mouse::Middle) {
 			m_placer->Remove();
 		}
@@ -44,7 +44,7 @@ namespace engine {
 			}
 			m_placer->Remove();
 			m_placer->Next();
-			m_placer->New(static_cast<int>(p.x), static_cast<int>(p.y));
+			m_placer->New(round(p.x), round(p.y));
 		}
 		if (e.code == sf::Keyboard::Subtract) {
 			sf::Vector2f p;
@@ -55,7 +55,7 @@ namespace engine {
 			}
 			m_placer->Remove();
 			m_placer->Prev();
-			m_placer->New(static_cast<int>(p.x), static_cast<int>(p.y));
+			m_placer->New(round(p.x), round(p.y));
 		}
 		Node* obj = m_placer->GetCurrentNode();
 		if (obj) {

@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   ParticleSystem.cpp
  * Author: iMer
- * 
+ *
  * Created on 22. August 2014, 21:18
  */
 
@@ -47,7 +47,7 @@ namespace engine {
         return m_burst;
     }
 
-    void ParticleSystem::SetRate(int rate) {
+    void ParticleSystem::SetRate(float rate) {
         m_rate = rate;
     }
 

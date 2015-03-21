@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   Random.hpp
  * Author: iMer
  *
@@ -18,11 +18,11 @@ namespace engine {
             std::uniform_real_distribution<> dis;
         public:
 
-            RandomFloat(float min, float max) : gen(rd()), dis(min, max) {
+            RandomFloat(double min, double max) : gen(rd()), dis(min, max) {
 
             }
 
-            float operator()() {
+            double operator()() {
                 return dis(gen);
             }
         };

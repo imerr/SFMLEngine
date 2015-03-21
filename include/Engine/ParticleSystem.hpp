@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   ParticleSystem.hpp
  * Author: iMer
  *
@@ -36,7 +36,7 @@ namespace engine {
         float GetAngle() const;
         void SetBurst(bool bust);
         bool IsBurst() const;
-        void SetRate(int rate);
+        void SetRate(float rate);
         float GetRate() const;
         void SetParticleCount(size_t particleCount);
         size_t GetParticleCount() const;
@@ -45,7 +45,7 @@ namespace engine {
         virtual uint8_t GetType() const;
 
 
-        
+
     };
 }
 

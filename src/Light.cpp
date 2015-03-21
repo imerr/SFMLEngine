@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Light.cpp
  * Author: iMer
- * 
+ *
  * Created on 17. August 2014, 07:31
  */
 
@@ -77,9 +77,9 @@ namespace engine {
                 if (m_raycastFraction < 1.0f) {
                     m_vertices[i].position.x *= m_raycastFraction;
                     m_vertices[i].position.y *= m_raycastFraction;
-                    m_vertices[i].color.r = m_lightColor.r * (1 - m_raycastFraction);
-                    m_vertices[i].color.g = m_lightColor.g * (1 - m_raycastFraction);
-                    m_vertices[i].color.b = m_lightColor.b * (1 - m_raycastFraction);
+                    m_vertices[i].color.r = static_cast<uint8_t>(m_lightColor.r * (1 - m_raycastFraction));
+                    m_vertices[i].color.g = static_cast<uint8_t>(m_lightColor.g * (1 - m_raycastFraction));
+                    m_vertices[i].color.b = static_cast<uint8_t>(m_lightColor.b * (1 - m_raycastFraction));
                 }
             }
         }
@@ -163,7 +163,7 @@ namespace engine {
         // min prevents overdrawing
         m_openingAngle = util::min(root.get("openingAngle", 360).asFloat() * util::fPI / 180, util::fPI * 2);
         // Set dynamic raycount
-        SetRayCount(m_radius / 5 * m_openingAngle);
+        SetRayCount(static_cast<size_t>(m_radius / 5 * m_openingAngle));
         return true;
     }
 }

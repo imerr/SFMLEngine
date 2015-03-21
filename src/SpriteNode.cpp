@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   SpriteNode.cpp
  * Author: iMer
- * 
+ *
  * Created on 3. Juli 2014, 01:51
  */
 #include <iostream>
@@ -151,8 +151,8 @@ namespace engine {
 			m_textureRect.height = m_texture->getSize().y;
 		}
 		if (!m_size.x && !m_size.y) {
-			m_size.x = m_textureRect.width;
-			m_size.y = m_textureRect.height;
+			m_size.x = static_cast<float>(m_textureRect.width);
+			m_size.y = static_cast<float>(m_textureRect.height);
 		}
 		UpdatePosition();
 		UpdateTexCoords();

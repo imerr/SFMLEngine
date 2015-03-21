@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Box2dDebugDraw.cpp
  * Author: iMer
- * 
+ *
  * Created on 15. August 2014, 04:29
  */
 
@@ -16,7 +16,11 @@ namespace engine {
     namespace util {
 
         sf::Color FromB2Color(b2Color c) {
-            return sf::Color(minmax<float>(0, c.r * 255, 255), minmax<float>(0, c.g * 255, 255), minmax<float>(0, c.b * 255, 255), minmax<float>(0, c.a * 255, 255));
+            return sf::Color(
+					minmax<uint8_t>(0, static_cast<uint8_t>(c.r * 255), 255),
+					minmax<uint8_t>(0, static_cast<uint8_t>(c.g * 255), 255),
+					minmax<uint8_t>(0, static_cast<uint8_t>(c.b * 255), 255),
+					minmax<uint8_t>(0, static_cast<uint8_t>(c.a * 255), 255));
         }
 
         Box2dDebugDraw::Box2dDebugDraw(Scene* scene) : m_scene(scene), m_isInitialized(false) {
