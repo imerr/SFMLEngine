@@ -12,6 +12,7 @@
 namespace engine {
 
     ResourceManager::ResourceManager() {
+		sf::Listener::setPosition(-1, -1, 0);
         // Create missing texture (pink, black checker pattern)
         sf::Image missing;
         missing.create(110, 110, sf::Color(255, 0, 220));
@@ -34,7 +35,16 @@ namespace engine {
         m_textureMissing.setRepeated(true);
         m_textureMissing.setSmooth(false);
     }
-
+	ResourceManager::~ResourceManager() {
+		for (auto it = m_textures.begin(); it != m_textures.end(); it++) {
+			delete it->second;
+		}
+		m_textures.clear();
+		for (auto it = m_soundBuffers.begin(); it != m_soundBuffers.end(); it++) {
+			delete it->second;
+		}
+		m_soundBuffers.clear();
+	}
     sf::Texture* ResourceManager::GetTexture(std::string path) {
         auto it = m_textures.find(path);
         if (it != m_textures.end()){
@@ -52,5 +62,17 @@ namespace engine {
         m_textures.insert(std::make_pair(path, &m_textureMissing));
         return &m_textureMissing;
     }
+	
+	sf::Sound* ResourceManager::MakeSound(std::string path) {
+		auto it = m_soundBuffers.find(path);
+		if (it != m_soundBuffers.end()) {
+			return new sf::Sound(*it->second);
+		}
+		sf::SoundBuffer* sb = new sf::SoundBuffer();
+		if (!sb->loadFromFile(path)) {
+			return nullptr;
+		}
+		return new sf::Sound(*sb);
+	}
 
 }
