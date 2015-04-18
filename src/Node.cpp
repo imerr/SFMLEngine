@@ -12,7 +12,7 @@
 #include "Game.hpp"
 namespace engine {
 
-	Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_opaque(true), m_active(true), m_destroy(false), m_render(true), m_flipped(false) {
+	Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_opaque(true), m_active(true), m_destroy(false), m_render(true), m_flipped(false), m_originType(OT_NONE) {
 	}
 
 	Node::~Node() {
@@ -161,18 +161,31 @@ namespace engine {
 			} else {
 				std::string sorigin = origin.asString();
 				if (sorigin == "top-left") {
+					m_originType = OT_TOPLEFT;
 					setOrigin(0, 0);
+				} else if (sorigin == "top-center") {
+					m_originType = OT_TOPCENTER;
+					setOrigin(m_size.x/2, 0);
 				} else if (sorigin == "top-right") {
+					m_originType = OT_TOPRIGHT;
 					setOrigin(m_size.x, 0);
 				} else if (sorigin == "bottom-left") {
+					m_originType = OT_BOTTOMLEFT;
 					setOrigin(0, m_size.y);
+				} else if (sorigin == "bottom-center") {
+					m_originType = OT_BOTTOMCENTER;
+					setOrigin(m_size.x/2, m_size.y);
 				} else if (sorigin == "bottom-right") {
+					m_originType = OT_BOTTOMRIGHT;
 					setOrigin(m_size.x, m_size.y);
 				} else if (sorigin == "center-right") {
+					m_originType = OT_CENTERRIGHT;
 					setOrigin(m_size.x, m_size.y / 2);
 				} else if (sorigin == "center-left") {
+					m_originType = OT_CENTERLEFT;
 					setOrigin(m_size.x, m_size.y / 2);
 				} else { // Center
+					m_originType = OT_CENTERCENTER;
 					setOrigin(m_size.x / 2, m_size.y / 2);
 				}
 			}
@@ -450,6 +463,44 @@ namespace engine {
 	}
 
 	void Node::SetSize(sf::Vector2f size) {
+		if (m_originType != OT_NONE) {
+			auto origin = getOrigin();
+			switch (m_originType) {
+				case OT_TOPLEFT:
+				case OT_CENTERLEFT:
+				case OT_BOTTOMLEFT:
+					setOrigin(0, origin.y);
+					break;
+				case OT_TOPRIGHT:
+				case OT_CENTERRIGHT:
+				case OT_BOTTOMRIGHT:
+					setOrigin(size.x, origin.y);
+					break;
+				case OT_TOPCENTER:
+				case OT_CENTERCENTER:
+				case OT_BOTTOMCENTER:
+					setOrigin(size.x/2, origin.y);
+					break;
+			}
+			origin = getOrigin();
+			switch (m_originType) {
+				case OT_TOPLEFT:
+				case OT_TOPCENTER:
+				case OT_TOPRIGHT:
+					setOrigin(origin.x, 0);
+					break;
+				case OT_CENTERLEFT:
+				case OT_CENTERCENTER:
+				case OT_CENTERRIGHT:
+					setOrigin(origin.x, size.y/2);
+					break;
+				case OT_BOTTOMLEFT:
+				case OT_BOTTOMCENTER:
+				case OT_BOTTOMRIGHT:
+					setOrigin(origin.x, size.y);
+					break;
+			}
+		}
 		m_size = size;
 	}
 

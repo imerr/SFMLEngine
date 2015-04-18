@@ -245,7 +245,8 @@ namespace engine {
 		m_animationWhenDone = after;
 		auto it = m_animations.find(name);
 		if (it == m_animations.end()) {
-			std::cerr << "Animation could not be found";
+			std::cerr << "Animation '" << name << "'could not be found";
+			return;
 		}
 		it->second->Reset();
 		m_currentAnimation = name;
@@ -262,5 +263,9 @@ namespace engine {
 	void SpriteNode::SetFlipped(bool flipped) {
 		m_flipped = flipped;
 
+	}
+	void SpriteNode::SetSize(sf::Vector2f size) {
+		Node::SetSize(size);
+		UpdatePosition();
 	}
 }

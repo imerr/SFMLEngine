@@ -41,6 +41,18 @@ namespace engine {
         NT_TEXT,
         NT_END
     };
+	enum OriginType {
+		OT_NONE,
+		OT_TOPLEFT,
+		OT_TOPRIGHT,
+		OT_TOPCENTER,
+		OT_CENTERLEFT,
+		OT_CENTERRIGHT,
+		OT_CENTERCENTER,
+		OT_BOTTOMLEFT,
+		OT_BOTTOMRIGHT,
+		OT_BOTTOMCENTER
+	};
     class Node : public sf::Transformable, public sf::NonCopyable {
     protected:
         // mutex for locking things accessed in the graphics and logic thread, mainly when copying over position info and such
@@ -62,6 +74,8 @@ namespace engine {
         std::string m_identifier;
         std::string m_filename;
 		bool m_flipped;
+		// Update origin based on size
+		OriginType m_originType;
     public:
         Node(Scene* scene);
         virtual ~Node();
@@ -85,7 +99,7 @@ namespace engine {
         void SetActive(bool active);
         bool IsActive() const;
         std::list<Node*>& GetChildren();
-        void SetSize(sf::Vector2f size);
+        virtual void SetSize(sf::Vector2f size);
         sf::Vector2f GetSize() const;
         void Delete();
         void SetShouldRender(bool render);

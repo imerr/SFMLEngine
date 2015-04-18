@@ -55,10 +55,11 @@ namespace engine {
         void PlayAnimation(std::string name, std::string after="");
         Animation* GetAnimation();
 		virtual void SetFlipped(bool flipped);
+		virtual void SetSize(sf::Vector2f size);
     protected:
         void UpdatePosition();
         void UpdateTexCoords();
-    private:
+    protected:
         virtual void OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta);
     };
 }
