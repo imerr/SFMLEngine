@@ -56,6 +56,10 @@ namespace engine {
         Animation* GetAnimation();
 		virtual void SetFlipped(bool flipped);
 		virtual void SetSize(sf::Vector2f size);
+
+        std::string GetAnimationName() const {
+        	return m_currentAnimation;
+        }
     protected:
         void UpdatePosition();
         void UpdateTexCoords();
