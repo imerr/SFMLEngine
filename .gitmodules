@@ -1,9 +1,9 @@
 [submodule "external/SFML"]
 	path = external/SFML
-	url = git://github.com:LaurentGomila/SFML.git
+	url = git://github.com/LaurentGomila/SFML.git
 [submodule "external/jsoncpp"]
 	path = external/jsoncpp
-	url = git://github.com:open-source-parsers/jsoncpp.git
+	url = git://github.com/open-source-parsers/jsoncpp.git
 [submodule "external/box2d"]
 	path = external/box2d
-	url = git://github.com:imermcmaps/box2d.git
+	url = git://github.com/imermcmaps/box2d.git
