@@ -230,6 +230,9 @@ namespace engine {
 							m_animated = true;
 						}
 					}
+					if (sprite["animation"].isString()) {
+						PlayAnimation(sprite["animation"].asString());
+					}
 				}
 			}
 		}
