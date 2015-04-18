@@ -12,6 +12,7 @@
 #include "Scene.hpp"
 #include <atomic>
 #include "util/Event.hpp"
+#include "LoadingScene.hpp"
 namespace engine {
 
     class Game {
@@ -29,6 +30,7 @@ namespace engine {
         std::atomic<bool> m_focus;
         std::string m_windowTitle;
 		sf::Color m_clearColor;
+		LoadingScene m_loadingScene;
     public:
         util::Event<const sf::Event::KeyEvent&> OnKeyDown;
         util::Event<const sf::Event::MouseButtonEvent&> OnMouseClick;
@@ -46,6 +48,18 @@ namespace engine {
 
         void SetScene(Scene* scene) {
             m_scene = scene;
+        }
+		void SwitchScene(Scene* scene) {
+			if (!m_scene) {
+				m_scene = scene;
+				return;
+			}
+			m_loadingScene.Switch(m_scene, scene);
+			m_scene = &m_loadingScene;
+		}
+
+        LoadingScene* GetLoadingScene() {
+        	return &m_loadingScene;
         }
 
     protected:

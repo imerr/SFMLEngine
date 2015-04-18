@@ -12,7 +12,9 @@
 
 namespace engine {
 
-    Game::Game() : m_window(sf::VideoMode(1024, 576), "changeme"), m_scene(nullptr), m_running(true), m_fps(0), m_tps(0), m_focus(true), m_clearColor(sf::Color::White) {
+    Game::Game() : m_window(sf::VideoMode(1024, 576), "changeme"), 
+			m_scene(nullptr), m_running(true), m_fps(0), m_tps(0), 
+			m_focus(true), m_clearColor(sf::Color::White), m_loadingScene(this) {
     }
 
     Game::~Game() {
