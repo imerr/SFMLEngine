@@ -150,6 +150,7 @@ namespace engine {
 			}
 		}
 		m_render = root.get("render", true).asBool();
+		m_active = root.get("active", true).asBool();
 		m_flipped = root.get("flipped", false).asBool();
 		m_identifier = root.get("identifier", "").asString();
 		if (root.isMember("origin")) {

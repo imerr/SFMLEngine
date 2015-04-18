@@ -40,7 +40,6 @@ namespace engine {
         float GetRadius() const;
         void SetLightColor(sf::Color lightColor);
         sf::Color GetLightColor() const;
-        virtual void OnUpdate(sf::Time interval);
         virtual void DrawLight(sf::RenderTarget& target, sf::RenderStates states);
         void SetRayCount(size_t rayCount);
         size_t GetRayCount() const;
@@ -52,6 +51,7 @@ namespace engine {
 
     protected: // Prevent it being called directly
         virtual float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction);
+        virtual void OnUpdate(sf::Time interval);
 
     };
 }

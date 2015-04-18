@@ -24,7 +24,7 @@ namespace engine {
         virtual ~Button();
         virtual uint8_t GetType() const;
         std::function<void(Button*, sf::Vector2f)> OnClick;
-    private:
+    protected:
         virtual void OnUpdate(sf::Time interval);
     };
     

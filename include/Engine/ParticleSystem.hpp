@@ -27,7 +27,6 @@ namespace engine {
     public:
         ParticleSystem(Scene* scene);
         virtual ~ParticleSystem();
-        virtual void OnUpdate(sf::Time interval);
         void SetVelocity(sf::Vector2f velocity);
         sf::Vector2f GetVelocity() const;
         void SetSpread(float spread);
@@ -43,7 +42,8 @@ namespace engine {
         void SetParticleConfig(std::string particleConfig);
         virtual bool initialize(Json::Value& root);
         virtual uint8_t GetType() const;
-
+	protected:
+        virtual void OnUpdate(sf::Time interval);
 
 
     };
