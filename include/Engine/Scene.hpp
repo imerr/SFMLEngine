@@ -33,7 +33,7 @@ namespace engine {
         b2World* m_world;
         float m_pixToM;
         util::Box2dDebugDraw m_debugDraw;
-        std::mutex m_mutexDebug;
+        std::recursive_mutex m_mutexDebug;
         LightSystem m_lightSystem;
         bool m_debug;
         Node* m_ui;

@@ -87,7 +87,7 @@ namespace engine {
 
 	void SpriteNode::OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
 		if (m_animated) {
-			std::lock_guard<std::mutex> lg(m_mutex);
+			std::lock_guard<std::recursive_mutex> lg(m_mutex);
 			auto it = m_animations.find(m_currentAnimation);
 			if (it != m_animations.end()) {
 				it->second->Update(delta);
@@ -244,13 +244,13 @@ namespace engine {
 	}
 
 	void SpriteNode::PlayAnimation(std::string name, std::string after) {
-		std::lock_guard<std::mutex> lg(m_mutex);
-		m_animationWhenDone = after;
+		std::lock_guard<std::recursive_mutex> lg(m_mutex);
 		auto it = m_animations.find(name);
 		if (it == m_animations.end()) {
 			std::cerr << "Animation '" << name << "'could not be found";
 			return;
 		}
+		m_animationWhenDone = after;
 		it->second->Reset();
 		m_currentAnimation = name;
 	}

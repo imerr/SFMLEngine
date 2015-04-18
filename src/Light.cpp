@@ -51,7 +51,7 @@ namespace engine {
     }
 
     void Light::OnUpdate(sf::Time interval) {
-        std::lock_guard<std::mutex> lg(m_mutex);
+        std::lock_guard<std::recursive_mutex> lg(m_mutex);
         sf::Vector2f pos = GetGlobalPosition();
         b2AABB center;
         center.lowerBound.x = pos.x / m_scene->GetPixelMeterRatio();
@@ -86,7 +86,7 @@ namespace engine {
     }
 
     void Light::DrawLight(sf::RenderTarget& target, sf::RenderStates states) {
-        std::lock_guard<std::mutex> lg(m_mutex);
+        std::lock_guard<std::recursive_mutex> lg(m_mutex);
         if (m_blocked) {
             return;
         }

@@ -56,9 +56,9 @@ namespace engine {
     class Node : public sf::Transformable, public sf::NonCopyable {
     protected:
         // mutex for locking things accessed in the graphics and logic thread, mainly when copying over position info and such
-        std::mutex m_mutex;
+        std::recursive_mutex m_mutex;
         // prevent deletion while in use
-        std::mutex m_deleteMutex;
+        std::recursive_mutex m_deleteMutex;
         std::list<Node*> m_children;
         Scene* m_scene;
         Node* m_parent;

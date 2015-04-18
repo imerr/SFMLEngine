@@ -49,7 +49,7 @@ namespace engine {
         if (!m_enabled || !m_available) {
             return;
         }
-		std::lock_guard<std::mutex> lg(m_drawLock);
+		std::lock_guard<std::recursive_mutex> lg(m_drawLock);
         sf::Sprite s;
         if (m_needsUpdate) {
             m_needsUpdate = false;
@@ -103,7 +103,7 @@ namespace engine {
 
     void LightSystem::RemoveLight(Light* light) {
 		// bleh
-		std::lock_guard<std::mutex> lg(m_drawLock);
+		std::lock_guard<std::recursive_mutex> lg(m_drawLock);
         m_lights.remove(light);
     }
 }

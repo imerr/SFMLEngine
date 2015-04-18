@@ -31,7 +31,7 @@ namespace engine {
 	}
 
 	void Node::draw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
-		std::lock_guard<std::mutex> lg(m_deleteMutex);
+		std::lock_guard<std::recursive_mutex> lg(m_deleteMutex);
 		if (!m_active) {
 			return;
 		}
@@ -102,7 +102,7 @@ namespace engine {
 	void Node::update(sf::Time interval) {
 		if (m_destroy) {
 			if (m_parent) {
-				std::lock_guard<std::mutex> lg(m_parent->m_deleteMutex);
+				std::lock_guard<std::recursive_mutex> lg(m_parent->m_deleteMutex);
 				delete this;
 			} else {
 				delete this;
@@ -122,7 +122,7 @@ namespace engine {
 	}
 
 	void Node::UpdatePhysicsTransform() {
-		std::lock_guard<std::mutex> lg(m_mutex);
+		std::lock_guard<std::recursive_mutex> lg(m_mutex);
 		m_physicsTransform.rot = m_body->GetAngle()*180 / util::fPI;
 		m_physicsTransform.rotVel = m_body->GetAngularVelocity()*180 / util::fPI;
 		m_physicsTransform.pos = m_body->GetPosition();
@@ -132,7 +132,7 @@ namespace engine {
 	}
 
 	void Node::UpdateTransform(float delta) {
-		std::lock_guard<std::mutex> lg(m_mutex);
+		std::lock_guard<std::recursive_mutex> lg(m_mutex);
 		setRotation(m_physicsTransform.rot);
 		setPosition(m_physicsTransform.pos.x, m_physicsTransform.pos.y);
 	}
@@ -423,7 +423,7 @@ namespace engine {
 	}
 
 	void Node::SetPosition(float x, float y) {
-		std::lock_guard<std::mutex> lg(m_mutex);
+		std::lock_guard<std::recursive_mutex> lg(m_mutex);
 		if (m_body) {
 			m_body->SetTransform(b2Vec2(x / m_scene->GetPixelMeterRatio(), y / m_scene->GetPixelMeterRatio()), m_body->GetAngle());
 		} else {
