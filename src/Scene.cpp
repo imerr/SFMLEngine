@@ -19,6 +19,9 @@ namespace engine {
 
     }
 
+    void SceneContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold){
+        m_scene->OnContactPreSolve.Fire(contact, oldManifold);
+    }
     void SceneContactListener::BeginContact(b2Contact* contact) {
         m_scene->OnContact.Fire(contact, true);
     }
