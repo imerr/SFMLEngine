@@ -74,7 +74,8 @@ namespace engine {
 		return m_currentTime > m_speed;
 	}
 
-	SpriteNode::SpriteNode(Scene* scene) : Node(scene), m_texture(0), m_currentAnimation("default"), m_animated(false) {
+	SpriteNode::SpriteNode(Scene* scene) : Node(scene), m_texture(0), 
+			m_currentAnimation("default"), m_animated(false), m_vFlipped(false) {
 	}
 
 	SpriteNode::~SpriteNode() {
@@ -116,19 +117,11 @@ namespace engine {
 		float right = left + m_textureRect.width;
 		float top = static_cast<float> (m_textureRect.top);
 		float bottom = top + m_textureRect.height;
-		if (m_flipped) {
-			m_vertices[0].texCoords = sf::Vector2f(right, top);
-			m_vertices[1].texCoords = sf::Vector2f(right, bottom);
-			m_vertices[2].texCoords = sf::Vector2f(left, top);
-			m_vertices[3].texCoords = sf::Vector2f(left, bottom);
+		m_vertices[0].texCoords = sf::Vector2f(m_flipped?right:left , m_vFlipped?bottom:top   );
+		m_vertices[1].texCoords = sf::Vector2f(m_flipped?right:left , m_vFlipped?top   :bottom);
+		m_vertices[2].texCoords = sf::Vector2f(m_flipped?left :right, m_vFlipped?bottom:top   );
+		m_vertices[3].texCoords = sf::Vector2f(m_flipped?left :right, m_vFlipped?top   :bottom);
 
-		} else {
-			m_vertices[0].texCoords = sf::Vector2f(left, top);
-			m_vertices[1].texCoords = sf::Vector2f(left, bottom);
-			m_vertices[2].texCoords = sf::Vector2f(right, top);
-			m_vertices[3].texCoords = sf::Vector2f(right, bottom);
-
-		}
 	}
 
 	void SpriteNode::SetTexture(std::string path, const sf::IntRect* rect) {
@@ -265,7 +258,11 @@ namespace engine {
 
 	void SpriteNode::SetFlipped(bool flipped) {
 		m_flipped = flipped;
-
+		UpdateTexCoords();
+	}
+	void SpriteNode::SetVFlipped(bool flipped) {
+		m_vFlipped = flipped;
+		UpdateTexCoords();
 	}
 	void SpriteNode::SetSize(sf::Vector2f size) {
 		Node::SetSize(size);

@@ -45,6 +45,7 @@ namespace engine {
         std::string m_currentAnimation;
         bool m_animated;
         std::string m_animationWhenDone;
+		bool m_vFlipped;
     public:
         SpriteNode(Scene* scene);
         virtual ~SpriteNode();
@@ -55,10 +56,15 @@ namespace engine {
         void PlayAnimation(std::string name, std::string after="");
         Animation* GetAnimation();
 		virtual void SetFlipped(bool flipped);
+		virtual void SetVFlipped(bool flipped);
 		virtual void SetSize(sf::Vector2f size);
 
         std::string GetAnimationName() const {
         	return m_currentAnimation;
+        }
+
+        bool IsVFlipped() const {
+        	return m_vFlipped;
         }
     protected:
         void UpdatePosition();
