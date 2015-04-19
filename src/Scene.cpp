@@ -57,6 +57,7 @@ namespace engine {
             delete m_children.front();
         }
         m_children.clear();
+        delete m_ui;
         delete m_world;
         m_world = nullptr;
     }
