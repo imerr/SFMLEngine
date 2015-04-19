@@ -67,6 +67,9 @@ namespace engine {
 		if (!c) {
 			return nullptr;
 		}
+		if (root["childData"].isString()) {
+			c->SetFilename(root["childData"].asString());
+		}
 		return c;
 	}
 
