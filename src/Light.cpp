@@ -52,6 +52,7 @@ namespace engine {
 
     void Light::OnUpdate(sf::Time interval) {
         std::lock_guard<std::recursive_mutex> lg(m_mutex);
+		if (!m_render || !GetParent()->IsRender()) return;
         sf::Vector2f pos = GetGlobalPosition();
         b2AABB center;
         center.lowerBound.x = pos.x / m_scene->GetPixelMeterRatio();
@@ -90,6 +91,7 @@ namespace engine {
         if (m_blocked) {
             return;
         }
+		if (!m_render || !GetParent()->IsRender()) return;
         sf::Transformable tr;
         auto window = m_scene->GetGame()->GetWindow();
         tr.setPosition(-window->getView().getCenter().x + (window->getView().getSize().x / 2)+GetGlobalPosition().x, -window->getView().getCenter().y + (window->getView().getSize().y / 2)+GetGlobalPosition().y);
