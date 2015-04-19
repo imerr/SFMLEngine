@@ -76,6 +76,7 @@ namespace engine {
 		bool m_flipped;
 		// Update origin based on size
 		OriginType m_originType;
+		float m_despawnTime;
     public:
         Node(Scene* scene);
         virtual ~Node();

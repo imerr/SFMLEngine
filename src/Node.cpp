@@ -9,10 +9,14 @@
 #include "util/math.hpp"
 #include "Scene.hpp"
 #include <iostream>
+#include <limits>
 #include "Game.hpp"
 namespace engine {
 
-	Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr), m_parentJoint(nullptr), m_opaque(true), m_active(true), m_destroy(false), m_render(true), m_flipped(false), m_originType(OT_NONE) {
+	Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr),
+			m_parentJoint(nullptr), m_opaque(true), m_active(true), 
+			m_destroy(false), m_render(true), m_flipped(false), 
+			m_originType(OT_NONE), m_despawnTime(std::numeric_limits<float>::infinity()) {
 	}
 
 	Node::~Node() {
@@ -115,6 +119,11 @@ namespace engine {
 		if (m_body) {
 			UpdatePhysicsTransform();
 		}
+		m_despawnTime-=interval.asSeconds();
+		if (m_despawnTime < 0) {
+			Delete();
+			return;
+		}
 		OnUpdate(interval);
 		for (auto it = m_children.begin(); it != m_children.end();) {
 			(*it++)->update(interval);
@@ -149,6 +158,7 @@ namespace engine {
 				m_size.y = size.get("y", 0).asFloat();
 			}
 		}
+		m_despawnTime = root.get("despawn", std::numeric_limits<float>::infinity()).asFloat();
 		m_render = root.get("render", true).asBool();
 		m_active = root.get("active", true).asBool();
 		m_flipped = root.get("flipped", false).asBool();
