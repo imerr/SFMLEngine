@@ -88,6 +88,7 @@ namespace engine {
 		if (!c) {
 			return nullptr;
 		}
+		c->SetFilename(file);
 		parent->AddNode(c);
 		return c;
 	}
