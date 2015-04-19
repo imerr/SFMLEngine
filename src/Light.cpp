@@ -171,7 +171,7 @@ namespace engine {
         // min prevents overdrawing
         m_openingAngle = util::min(root.get("openingAngle", 360).asFloat() * util::fPI / 180, util::fPI * 2);
         // Set dynamic raycount
-        SetRayCount(static_cast<size_t>(m_radius / 5 * m_openingAngle));
+        SetRayCount(static_cast<size_t>(m_radius / 20 * m_openingAngle));
         return true;
     }
 }
