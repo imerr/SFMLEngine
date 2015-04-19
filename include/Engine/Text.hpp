@@ -54,6 +54,13 @@ namespace engine {
         uint8_t GetAlign() const {
         	return m_align;
         }
+		const sf::Color& GetColor() {
+			m_text.getColor();
+		}
+		
+		void SetColor(const sf::Color& color) {
+			m_text.setColor(color);
+		}
 
     protected:
         virtual void OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta);
