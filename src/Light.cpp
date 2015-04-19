@@ -54,6 +54,12 @@ namespace engine {
         std::lock_guard<std::recursive_mutex> lg(m_mutex);
 		if (!m_render || !GetParent()->IsRender()) return;
         sf::Vector2f pos = GetGlobalPosition();
+		const auto& v = m_scene->GetGame()->GetWindow()->getView();
+		auto vr = sf::FloatRect(v.getCenter().x-v.getSize().x/2, v.getCenter().y-v.getSize().y/2, v.getSize().x, v.getSize().y);
+		if (!vr.intersects(sf::Rect<float>(pos.x-m_radius, pos.y-m_radius, 2*m_radius, 2*m_radius))) {
+			m_blocked = true;
+			return;
+		}
         b2AABB center;
         center.lowerBound.x = pos.x / m_scene->GetPixelMeterRatio();
         center.lowerBound.y = pos.y / m_scene->GetPixelMeterRatio();
