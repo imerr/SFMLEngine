@@ -270,7 +270,7 @@ namespace engine {
 						b2PolygonShape poly;
 						b2FixtureDef def;
 						def.filter.categoryBits = shapes[i].get("category", 1).asInt();
-						def.filter.maskBits &= ~shapes[i].get("mask", 0).asInt();
+						def.filter.maskBits = ~shapes[i].get("mask", 0).asInt();
 						b2ChainShape chain;
 						b2CircleShape circle;
 						b2EdgeShape edge;
