@@ -77,5 +77,7 @@ target_link_libraries(Engine jsoncpp_lib_static
                                sfml-window
                                sfml-audio
                                sfml-system
-                               sfml-graphics
-                               sfml-main)
+                               sfml-graphics)
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+	target_link_libraries(Engine sfml-main)
+endif()
