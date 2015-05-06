@@ -7,3 +7,6 @@
 [submodule "external/box2d"]
 	path = external/box2d
 	url = git://github.com/imermcmaps/box2d.git
+[submodule "external/liquidfun"]
+	path = external/liquidfun
+	url = git://github.com/google/liquidfun.git

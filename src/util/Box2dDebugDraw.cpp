@@ -19,8 +19,7 @@ namespace engine {
             return sf::Color(
 					minmax<uint8_t>(0, static_cast<uint8_t>(c.r * 255), 255),
 					minmax<uint8_t>(0, static_cast<uint8_t>(c.g * 255), 255),
-					minmax<uint8_t>(0, static_cast<uint8_t>(c.b * 255), 255),
-					minmax<uint8_t>(0, static_cast<uint8_t>(c.a * 255), 255));
+					minmax<uint8_t>(0, static_cast<uint8_t>(c.b * 255), 255));
         }
 
         Box2dDebugDraw::Box2dDebugDraw(Scene* scene) : m_scene(scene), m_isInitialized(false) {
@@ -110,6 +109,9 @@ namespace engine {
 
         void Box2dDebugDraw::DrawTransform(const b2Transform& xf) {
         }
+		void Box2dDebugDraw::DrawParticles(const b2Vec2 *centers, float32 radius, const b2ParticleColor *colors, int32 count) {
+			// TODO
+		}
 
     }
 }

@@ -52,7 +52,7 @@ set(JSONCPP_WITH_POST_BUILD_UNITTEST OFF CACHE BOOL "Dont want jsoncpp unit test
 set(BOX2D_BUILD_EXAMPLES OFF CACHE BOOL "Dont want box2d examples")
 set(BOX2D_BUILD_STATIC ON CACHE BOOL "Build box2d as static lib")
 add_subdirectory(${EXTERNAL_PATH}/jsoncpp ${CMAKE_CURRENT_BINARY_DIR}/external/jsoncpp/)
-add_subdirectory(${EXTERNAL_PATH}/box2d/Box2D ${CMAKE_CURRENT_BINARY_DIR}/external/box2d/Box2D)
+add_subdirectory(${EXTERNAL_PATH}/liquidfun/liquidfun/Box2D ${CMAKE_CURRENT_BINARY_DIR}/external/liquidfun)
 add_subdirectory(${EXTERNAL_PATH}/SFML ${CMAKE_CURRENT_BINARY_DIR}/external/sfml/)
 
 set(SOURCE_FILES src/Button.cpp
