@@ -15,6 +15,16 @@ namespace engine {
         public:
             virtual void handle(T...)=0;
         };
+		template<typename... T> class EventHandlerWrapper: public EventHandler<T...> {
+			std::function<void (T...)> func;
+		public:
+			EventHandlerWrapper(std::function<void (T...)> t): func(t) {}
+			virtual void handle(T... args) {
+				func(args...);
+			};
+		};
+
+
 
         template<typename... T> class Event {
         protected:
@@ -24,6 +34,12 @@ namespace engine {
             void AddHandler(EventHandler<T...>* handler) {
                 m_callbacks.push_back(handler);
             }
+			template <class D>
+			EventHandler<T...>* AddHandler(D& handler) {
+				EventHandler<T...>* wrap = new EventHandlerWrapper<T...>(handler);
+				m_callbacks.push_back(wrap);
+				return wrap;
+			}
 
             void RemoveHandler(EventHandler<T...>* handler) {
                 m_callbacks.remove(handler);
