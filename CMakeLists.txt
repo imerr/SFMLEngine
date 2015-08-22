@@ -70,6 +70,7 @@ set(SOURCE_FILES src/Button.cpp
                  src/SpriteNode.cpp
                  src/util/Box2dDebugDraw.cpp
                  src/util/Random.cpp
+                 src/util/math.cpp
 )
 add_library(Engine STATIC ${SOURCE_FILES})
 target_link_libraries(Engine jsoncpp_lib_static
