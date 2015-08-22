@@ -11,6 +11,8 @@
 #include "SFML/Graphics.hpp"
 #include "Factory.hpp"
 #include "Game.hpp"
+#include "util/json.hpp"
+
 namespace engine {
 
 	Animation::Animation() : m_looping(false), m_speed(0), m_currentTime(0), m_currentFrame(0), OnOver([] {
@@ -159,18 +161,7 @@ namespace engine {
 			auto sprite = root["sprite"];
 			if (sprite.isMember("texture")) {
 				if (sprite.isMember("rect")) {
-					sf::IntRect rect;
-					if (sprite["rect"].isObject()) {
-						rect.left = sprite["rect"].get("left", 0).asInt();
-						rect.top = sprite["rect"].get("top", 0).asInt();
-						rect.width = sprite["rect"].get("width", 0).asInt();
-						rect.height = sprite["rect"].get("height", 0).asInt();
-					} else {
-						rect.left = sprite["rect"][0u].asInt();
-						rect.top = sprite["rect"][1u].asInt();
-						rect.width = sprite["rect"][2u].asInt();
-						rect.height = sprite["rect"][3u].asInt();
-					}
+					sf::IntRect rect = rectFromJson<int>(sprite["rect"]);
 					SetTexture(sprite["texture"].asString(), &rect);
 				} else {
 					SetTexture(sprite["texture"].asString());
@@ -187,11 +178,7 @@ namespace engine {
 					if (tex.empty() || tex.isNull()) {
 						std::cerr << "Empty/Nonexistant sprite index " << sprite.get("index", 0) << std::endl;
 					} else {
-						sf::IntRect rect;
-						rect.left = tex.get("left", 0).asInt();
-						rect.top = tex.get("top", 0).asInt();
-						rect.width = tex.get("width", 0).asInt();
-						rect.height = tex.get("height", 0).asInt();
+						sf::IntRect rect = rectFromJson<int>(tex);
 						SetTexture(sheet["texture"].asString(), &rect);
 					}
 					if (sprite["animations"].isObject()) {
@@ -212,11 +199,7 @@ namespace engine {
 									std::cerr << "Frame " << o << "is invalid. Frame " << anim["frames"][o].asInt() << " doesnt exist." << std::endl;
 									continue;
 								}
-								sf::IntRect rect;
-								rect.left = text.get("left", 0).asInt();
-								rect.top = text.get("top", 0).asInt();
-								rect.width = text.get("width", 0).asInt();
-								rect.height = text.get("height", 0).asInt();
+								sf::IntRect rect = rectFromJson<int>(text);
 								a->AddFrame(rect);
 							}
 							m_animations.insert(std::make_pair(aname, a));

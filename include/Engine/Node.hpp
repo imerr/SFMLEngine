@@ -101,7 +101,7 @@ namespace engine {
         bool IsActive() const;
         std::list<Node*>& GetChildren();
         virtual void SetSize(sf::Vector2f size);
-        sf::Vector2f GetSize() const;
+        const sf::Vector2f& GetSize() const;
         void Delete();
         void SetShouldRender(bool render);
         void SetIdentifier(std::string indentifier);

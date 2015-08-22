@@ -531,7 +531,7 @@ namespace engine {
 		return m_identifier;
 	}
 
-	sf::Vector2f Node::GetSize() const {
+	const sf::Vector2f& Node::GetSize() const {
 		return m_size;
 	}
 
