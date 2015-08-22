@@ -519,10 +519,6 @@ namespace engine {
 		m_destroy = true;
 	}
 
-	void Node::SetShouldRender(bool render) {
-		m_render = render;
-	}
-
 	void Node::SetIdentifier(std::string identifier) {
 		m_identifier = identifier;
 	}

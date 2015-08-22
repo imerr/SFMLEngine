@@ -62,7 +62,9 @@ namespace engine {
         std::string GetAnimationName() const {
         	return m_currentAnimation;
         }
-
+		sf::IntRect& GetTextureRect() {
+			return m_textureRect;
+		}
         bool IsVFlipped() const {
         	return m_vFlipped;
         }

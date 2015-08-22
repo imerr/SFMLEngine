@@ -103,7 +103,6 @@ namespace engine {
         virtual void SetSize(sf::Vector2f size);
         const sf::Vector2f& GetSize() const;
         void Delete();
-        void SetShouldRender(bool render);
         void SetIdentifier(std::string indentifier);
         std::string GetIdentifier() const;
 
