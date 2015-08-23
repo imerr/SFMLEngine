@@ -35,7 +35,7 @@ namespace engine {
                 m_callbacks.push_back(handler);
             }
 			template <class D>
-			EventHandler<T...>* AddHandler(D& handler) {
+			EventHandler<T...>* MakeHandler(D handler) {
 				EventHandler<T...>* wrap = new EventHandlerWrapper<T...>(handler);
 				m_callbacks.push_back(wrap);
 				return wrap;
