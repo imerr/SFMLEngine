@@ -50,6 +50,7 @@ namespace engine {
                         }
                     }
                 }
+				thing->OnInitializeDone();
                 return thing;
             }
             delete thing;

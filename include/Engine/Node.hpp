@@ -90,6 +90,8 @@ namespace engine {
         virtual void update(sf::Time interval);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states, float delta);
         virtual bool initialize(Json::Value& root);
+		// callback once initializing is done and all children are added
+        virtual void OnInitializeDone() {};
         virtual uint8_t GetType() const;
         void SetOpaque(bool lightBlocker);
         bool IsOpaque() const;

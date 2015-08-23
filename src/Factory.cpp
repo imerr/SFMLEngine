@@ -90,6 +90,7 @@ namespace engine {
 		}
 		c->SetFilename(file);
 		parent->AddNode(c);
+		c->OnInitializeDone();
 		return c;
 	}
 	bool Factory::MakeChildren(Json::Value& children, Node* parent) {
@@ -107,6 +108,7 @@ namespace engine {
 			if (nchild) {
 				parent->AddNode(nchild);
 			}
+			nchild->OnInitializeDone();
 		}
 		return true;
 	}
