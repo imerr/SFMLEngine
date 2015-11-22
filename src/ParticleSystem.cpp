@@ -142,6 +142,10 @@ namespace engine {
 		}
 		m_rate = root.get("rate", 1).asFloat();
 		m_burst = root.get("burst", false).asBool();
+		if (!m_burst) {
+			util::RandomFloat r(m_rate/2, m_rate);
+			m_toRelease = 1/r();
+		}
 		if (!m_burst || root.get("load", false).asBool()) {
 			// performance optimization if burst and the system never gets used
 			SetParticleCount(root.get("particleCount", 10).asInt());
