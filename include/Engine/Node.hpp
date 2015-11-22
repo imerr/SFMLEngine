@@ -99,7 +99,7 @@ namespace engine {
         sf::Vector2f GetPosition() const;
         b2Body* GetBody() const;
         b2Joint* GetParentJoint() const;
-        void SetActive(bool active);
+        virtual void SetActive(bool active);
         bool IsActive() const;
         std::list<Node*>& GetChildren();
         virtual void SetSize(sf::Vector2f size);
