@@ -51,8 +51,10 @@ set(JSONCPP_WITH_TESTS OFF CACHE BOOL "Dont want jsoncpp tests")
 set(JSONCPP_WITH_POST_BUILD_UNITTEST OFF CACHE BOOL "Dont want jsoncpp unit tests to be run")
 set(BOX2D_BUILD_EXAMPLES OFF CACHE BOOL "Dont want box2d examples")
 set(BOX2D_BUILD_STATIC ON CACHE BOOL "Build box2d as static lib")
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build jsoncpp as static lib" FORCE)
 add_subdirectory(${EXTERNAL_PATH}/jsoncpp ${CMAKE_CURRENT_BINARY_DIR}/external/jsoncpp/)
 add_subdirectory(${EXTERNAL_PATH}/liquidfun/liquidfun/Box2D ${CMAKE_CURRENT_BINARY_DIR}/external/liquidfun)
+set(BUILD_SHARED_LIBS ON CACHE BOOL "Build sfml as shared lib" FORCE)
 add_subdirectory(${EXTERNAL_PATH}/SFML ${CMAKE_CURRENT_BINARY_DIR}/external/sfml/)
 
 set(SOURCE_FILES src/Button.cpp

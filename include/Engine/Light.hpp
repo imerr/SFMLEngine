@@ -12,7 +12,7 @@
 
 namespace engine {
 
-    class Light : public Node, public b2RayCastCallback {
+    class Light : public Node {
 
         class CenterQuery : public b2QueryCallback {
         public:
@@ -28,15 +28,12 @@ namespace engine {
         std::vector<sf::Vertex> m_vertices;
         size_t m_rayCount;
         bool m_blocked;
-        float m_raycastFraction;
         float m_angle;
         float m_openingAngle;
     public:
         Light(Scene* scene);
         virtual ~Light();
-        void SetActive(bool active);
-        bool IsActive() const;
-        void SetRadius(float radius);
+        void SetRadius(float radius, bool setRayCount=true);
         float GetRadius() const;
         void SetLightColor(sf::Color lightColor);
         sf::Color GetLightColor() const;
@@ -48,9 +45,7 @@ namespace engine {
         void SetOpeningAngle(float openingAngle);
         float GetOpeningAngle() const;
         virtual bool initialize(Json::Value& root);
-
-    protected: // Prevent it being called directly
-        virtual float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction);
+    protected:
         virtual void OnUpdate(sf::Time interval);
 
     };
