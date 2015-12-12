@@ -35,7 +35,7 @@ namespace engine {
         util::Event<const sf::Event::KeyEvent&> OnKeyDown;
         util::Event<const sf::Event::MouseButtonEvent&> OnMouseClick;
     public:
-        Game();
+        Game(uint32_t width=1024, uint32_t height=576);
         virtual ~Game();
         void run();
         void GraphicLoop();
