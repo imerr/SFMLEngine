@@ -55,7 +55,7 @@ namespace engine {
         	return m_align;
         }
 		const sf::Color& GetColor() {
-			m_text.getColor();
+			return m_text.getColor();
 		}
 		
 		void SetColor(const sf::Color& color) {
