@@ -73,7 +73,7 @@ set(SOURCE_FILES src/Button.cpp
                  src/util/Box2dDebugDraw.cpp
                  src/util/Random.cpp
                  src/util/math.cpp
-)
+        src/util/json.cpp)
 add_library(Engine STATIC ${SOURCE_FILES})
 target_link_libraries(Engine jsoncpp_lib_static
 							   Box2D
