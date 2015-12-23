@@ -103,10 +103,10 @@ namespace engine {
 		if (!m_particleCount || m_burst && m_done) {
 			return;
 		}
-		util::RandomFloat angle(m_angle, m_angle + m_spread);
-		util::RandomFloat rx(m_minVelocity.x, m_maxVelocity.x);
-		util::RandomFloat ry(m_minVelocity.y, m_maxVelocity.y);
-		util::RandomFloat rr(m_minVelocity.z, m_maxVelocity.z);
+		util::RandomFloat<> angle(m_angle, m_angle + m_spread);
+		util::RandomFloat<> rx(m_minVelocity.x, m_maxVelocity.x);
+		util::RandomFloat<> ry(m_minVelocity.y, m_maxVelocity.y);
+		util::RandomFloat<> rr(m_minVelocity.z, m_maxVelocity.z);
 		if (m_burst) {
 			if (m_particles.size() != m_particleCount) {
 				SetParticleCount(m_particleCount);
@@ -143,7 +143,7 @@ namespace engine {
 		m_rate = root.get("rate", 1).asFloat();
 		m_burst = root.get("burst", false).asBool();
 		if (!m_burst) {
-			util::RandomFloat r(m_rate/2, m_rate);
+			util::RandomFloat<> r(m_rate/2, m_rate);
 			m_toRelease = 1/r();
 		}
 		if (!m_burst || root.get("load", false).asBool()) {

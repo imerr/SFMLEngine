@@ -6,27 +6,45 @@
  */
 
 #ifndef UTIL_RANDOM_HPP
-#define	UTIL_RANDOM_HPP
+#define    UTIL_RANDOM_HPP
+
 #include <random>
+
 namespace engine {
-    namespace util {
+namespace util {
 
-        extern std::random_device rd;
+extern std::random_device rd;
 
-        class RandomFloat {
-            std::ranlux48 gen;
-            std::uniform_real_distribution<> dis;
-        public:
+template<typename T = double>
+class RandomFloat {
+    std::ranlux48 gen;
+    std::uniform_real_distribution<T> dis;
+public:
 
-            RandomFloat(double min, double max) : gen(rd()), dis(min, max) {
+    RandomFloat(T min, T max) : gen(rd()), dis(min, max) {
 
-            }
-
-            double operator()() {
-                return dis(gen);
-            }
-        };
     }
+
+    T operator()() {
+        return dis(gen);
+    }
+};
+
+template<typename T = int>
+class RandomInt {
+    std::ranlux48 gen;
+    std::uniform_int_distribution<T> dis;
+public:
+
+    RandomInt(T min, T max) : gen(rd()), dis(min, max) {
+
+    }
+
+    T operator()() {
+        return dis(gen);
+    }
+};
+}
 }
 
 
