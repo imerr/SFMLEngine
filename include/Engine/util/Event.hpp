@@ -10,8 +10,8 @@
 #include <list>
 namespace engine {
     namespace util {
-
-        template<typename... T> class EventHandler {
+		class BaseEventHandler {};
+        template<typename... T> class EventHandler: public BaseEventHandler {
         public:
             virtual void handle(T...)=0;
         };
@@ -41,8 +41,10 @@ namespace engine {
 				return wrap;
 			}
 
-            void RemoveHandler(EventHandler<T...>* handler) {
-                m_callbacks.remove(handler);
+            void RemoveHandler(BaseEventHandler* handler) {
+				// allow passing in base class for convenience and up-cast then
+				// We dont dereference the pointer so nothing should go wrong even if bogus gets passed in
+                m_callbacks.remove(static_cast<EventHandler<T...>*>(handler));
             }
 
             void Fire(T... args) {
