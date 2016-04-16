@@ -96,6 +96,9 @@ namespace engine {
         void SetOpaque(bool lightBlocker);
         bool IsOpaque() const;
         void SetPosition(float x, float y);
+        void SetPosition(sf::Vector2f v) {
+			SetPosition(v.x, v.y);
+		};
         sf::Vector2f GetPosition() const;
         b2Body* GetBody() const;
         b2Joint* GetParentJoint() const;
