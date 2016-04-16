@@ -283,8 +283,8 @@ namespace engine {
 							float height = shapes[i].get("height", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();
 							poly.SetAsBox(width, height,
 									b2Vec2(
-											shapes[i]["origin"].get(0u, 0).asFloat()/ m_scene->GetPixelMeterRatio(),
-											shapes[i]["origin"].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio()
+											shapes[i].get("x", 0).asFloat()/ m_scene->GetPixelMeterRatio(),
+											shapes[i].get("y", 0).asFloat() / m_scene->GetPixelMeterRatio()
 									),
 									shapes[i].get("angle", 0.0f).asFloat() * util::fPI / 180 * (m_flipped ? -1 : 1));
 							def.shape = &poly;
