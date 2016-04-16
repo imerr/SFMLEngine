@@ -1,6 +1,7 @@
 #ifndef ENGINE_UTIL_MATH_HPP
 #define ENGINE_UTIL_MATH_HPP
 
+#include <SFML/System.hpp>
 #include <Box2D/Box2D.h>
 
 namespace engine {
@@ -20,6 +21,11 @@ namespace engine {
         to-=from;
         return atan2f(to.y, to.x);
     }
+
+	inline float b2Angle(sf::Vector2f from, sf::Vector2f to) {
+		to-=from;
+		return atan2f(to.y, to.x);
+	}
 }
 
 #endif	/* MATH_HPP */
