@@ -27,7 +27,7 @@ namespace engine {
         void SetText(std::string text);
 
         std::string GetText() const {
-            m_text.getString();
+            return m_text.getString();
         }
 
         sf::Text& GetSFText() {
