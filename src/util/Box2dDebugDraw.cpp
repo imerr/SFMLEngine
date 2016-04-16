@@ -59,8 +59,10 @@ namespace engine {
         void Box2dDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) {
             sf::ConvexShape s;
             s.setPointCount(vertexCount);
+			auto window = m_scene->GetGame()->GetWindow();
+			sf::Vector2f p (window->getView().getCenter().x - (window->getView().getSize().x / 2), window->getView().getCenter().y - (window->getView().getSize().y / 2));
             for (int32 i = 0; i < vertexCount; i++) {
-                s.setPoint(i, sf::Vector2f(m_scene->MeterToPixel(vertices[i].x), m_scene->MeterToPixel(vertices[i].y)));
+                s.setPoint(i, sf::Vector2f(m_scene->MeterToPixel(vertices[i].x) - p.x, m_scene->MeterToPixel(vertices[i].y) - p.y));
             }
             s.setOutlineThickness(5);
             s.setOutlineColor(FromB2Color(color));
@@ -70,8 +72,10 @@ namespace engine {
         void Box2dDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) {
             sf::ConvexShape s;
             s.setPointCount(vertexCount);
+			auto window = m_scene->GetGame()->GetWindow();
+			sf::Vector2f p (window->getView().getCenter().x - (window->getView().getSize().x / 2), window->getView().getCenter().y - (window->getView().getSize().y / 2));
             for (int32 i = 0; i < vertexCount; i++) {
-                s.setPoint(i, sf::Vector2f(m_scene->MeterToPixel(vertices[i].x), m_scene->MeterToPixel(vertices[i].y)));
+                s.setPoint(i, sf::Vector2f(m_scene->MeterToPixel(vertices[i].x) - p.x, m_scene->MeterToPixel(vertices[i].y) - p.y));
             }
             s.setFillColor(FromB2Color(color));
             m_texture.draw(s);
@@ -83,7 +87,10 @@ namespace engine {
             s.setFillColor(sf::Color(0, 0, 0, 0));
             s.setOutlineThickness(5);
             s.setOutlineColor(FromB2Color(color));
-            s.setPosition(m_scene->MeterToPixel(center.x)-m_scene->MeterToPixel(radius), m_scene->MeterToPixel(center.y)+m_scene->MeterToPixel(radius));
+
+			auto window = m_scene->GetGame()->GetWindow();
+			sf::Vector2f p (window->getView().getCenter().x - (window->getView().getSize().x / 2), window->getView().getCenter().y - (window->getView().getSize().y / 2));
+            s.setPosition(m_scene->MeterToPixel(center.x)-m_scene->MeterToPixel(radius) - p.x, m_scene->MeterToPixel(center.y)+m_scene->MeterToPixel(radius) - p.y);
             m_texture.draw(s);
         }
 
@@ -92,7 +99,10 @@ namespace engine {
             s.setRadius(m_scene->MeterToPixel(radius));
             s.setOrigin(m_scene->MeterToPixel(radius),m_scene->MeterToPixel(radius));
             s.setFillColor(FromB2Color(color));
-            s.setPosition(m_scene->MeterToPixel(center.x), m_scene->MeterToPixel(center.y));
+			auto window = m_scene->GetGame()->GetWindow();
+			sf::Vector2f p (window->getView().getCenter().x - (window->getView().getSize().x / 2), window->getView().getCenter().y - (window->getView().getSize().y / 2));
+            s.setPosition(m_scene->MeterToPixel(center.x) - p.x, m_scene->MeterToPixel(center.y) - p.y);
+
             m_texture.draw(s);
         }
 
@@ -100,10 +110,13 @@ namespace engine {
             for (int i = 0; i < 2; i++) {
                 m_vertices[i].color = FromB2Color(color);
             }
-            m_vertices[0].position.x = m_scene->MeterToPixel(p1.x);
-            m_vertices[0].position.y = m_scene->MeterToPixel(p1.y);
-            m_vertices[1].position.x = m_scene->MeterToPixel(p2.x);
-            m_vertices[1].position.y = m_scene->MeterToPixel(p2.y);
+
+			auto window = m_scene->GetGame()->GetWindow();
+			sf::Vector2f p (window->getView().getCenter().x - (window->getView().getSize().x / 2), window->getView().getCenter().y - (window->getView().getSize().y / 2));
+            m_vertices[0].position.x = m_scene->MeterToPixel(p1.x) - p.x;
+            m_vertices[0].position.y = m_scene->MeterToPixel(p1.y) - p.y;
+            m_vertices[1].position.x = m_scene->MeterToPixel(p2.x) - p.x;
+            m_vertices[1].position.y = m_scene->MeterToPixel(p2.y) - p.y;
             m_texture.draw(m_vertices, 2, sf::Lines);
         }
 
