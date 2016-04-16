@@ -6,6 +6,7 @@
  */
 #include <iostream>
 #include <string.h>
+#include <Engine/util/Random.hpp>
 #include "SpriteNode.hpp"
 #include "ResourceManager.hpp"
 #include "SFML/Graphics.hpp"
@@ -174,9 +175,14 @@ namespace engine {
 					sheet = sprite["sheet"];
 				}
 				if (!sheet.isNull() && !sheet.empty()) {
-					auto tex = sheet["sprites"][sprite.get("index", 0).asInt()];
+					int index = sprite.get("index", 0).asInt();
+					if (sprite.get("randomIndex", false).asBool()) {
+						util::RandomInt<int> r(0, sheet["sprites"].size() - 1);
+						index = r();
+					}
+					auto tex = sheet["sprites"][index];
 					if (tex.empty() || tex.isNull()) {
-						std::cerr << "Empty/Nonexistant sprite index " << sprite.get("index", 0) << std::endl;
+						std::cerr << "Empty/Nonexistant sprite index " << index << std::endl;
 					} else {
 						sf::IntRect rect = rectFromJson<int>(tex);
 						SetTexture(sheet["texture"].asString(), &rect);
