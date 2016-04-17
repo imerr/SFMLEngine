@@ -14,7 +14,7 @@
 
 namespace engine {
 
-    Light::Light(Scene *scene) : Node(scene), m_active(true), m_lightColor(sf::Color::White), m_radius(200),
+    Light::Light(Scene *scene) : Node(scene), m_lightColor(sf::Color::White), m_radius(200),
                                  m_rayCount(256), m_blocked(false), m_angle(0),
                                  m_openingAngle(util::fPI * 2) {
         m_vertices.resize(m_rayCount + 2);
@@ -58,7 +58,7 @@ namespace engine {
 
     void Light::OnUpdate(sf::Time interval) {
         std::lock_guard<std::recursive_mutex> lg(m_mutex);
-        if (!m_render || !GetParent()->IsRender()) return;
+        if (!m_active || !m_render || !GetParent()->IsRender()) return;
         sf::Vector2f pos = GetGlobalPosition();
         const auto &view = m_scene->GetGame()->GetWindow()->getView();
         auto vr = sf::FloatRect(view.getCenter().x - view.getSize().x / 2, view.getCenter().y - view.getSize().y / 2, view.getSize().x,
@@ -76,14 +76,15 @@ namespace engine {
         CenterQuery cq(center.lowerBound.x, center.lowerBound.y);
         GetScene()->GetWorld()->QueryAABB(&cq, center);
         if (cq.hit) {
+			cq.node->OnLightRay.Fire(this);
             m_blocked = true;
             return;
         }
         m_blocked = false;
         float rayDistance =
                 (2 - cosf(m_openingAngle / (m_rayCount - 1))) * m_radius / m_scene->GetPixelMeterRatio();
-        b2Vec2 basePos(GetPosition().x / m_scene->GetPixelMeterRatio(),
-                       GetPosition().y / m_scene->GetPixelMeterRatio());
+        b2Vec2 basePos(pos.x / m_scene->GetPixelMeterRatio(),
+                       pos.y / m_scene->GetPixelMeterRatio());
         struct edgeData {
             b2Vec2 pos;
             b2Fixture *fixture;
@@ -144,12 +145,13 @@ namespace engine {
         auto it = edges.begin();
         m_vertices.resize(1); // keep the center vertex
         float f = 1.0;
-
+		Node* hitNode = nullptr;
         auto rayCastCallback = MakeRayCastCallback([&](b2Fixture *fixture, const b2Vec2 &point,
                                                        const b2Vec2 &normal, float32 fraction) {
             Node *n = static_cast<Node *> (fixture->GetBody()->GetUserData());
             if (n && !n->IsOpaque() && fraction < f) {
                 f = fraction;
+				hitNode = n;
             }
             return f;
         });
@@ -162,6 +164,7 @@ namespace engine {
                                                                                  m_scene->GetPixelMeterRatio(),
                                                                                  v.position.y /
                                                                                  m_scene->GetPixelMeterRatio()));
+		if (hitNode) hitNode->OnLightRay.Fire(this);
         v.position.x *= f;
         v.position.y *= f;
         AssignLightColor(v, f, m_lightColor);
@@ -186,7 +189,8 @@ namespace engine {
                     ++it;
                     continue;
                 }
-                had = true;
+				if (hitNode) hitNode->OnLightRay.Fire(this);
+				had = true;
                 float edgeLengthPct =
                         m_scene->MeterToPixel((basePos - it->second.pos).Length()) / m_radius + (10.0f / m_radius);
                 auto addPoint = [&, this](b2Vec2 point) {
@@ -233,7 +237,8 @@ namespace engine {
                                                                                          m_scene->GetPixelMeterRatio(),
                                                                                          v.position.y /
                                                                                          m_scene->GetPixelMeterRatio()));
-                v.position.x *= f;
+				if (hitNode) hitNode->OnLightRay.Fire(this);
+				v.position.x *= f;
                 v.position.y *= f;
                 AssignLightColor(v, f, m_lightColor);
                 m_vertices.push_back(v);
@@ -243,10 +248,7 @@ namespace engine {
 
     void Light::DrawLight(sf::RenderTarget &target, sf::RenderStates states) {
         std::lock_guard<std::recursive_mutex> lg(m_mutex);
-        if (m_blocked) {
-            return;
-        }
-        if (!m_render || !GetParent()->IsRender()) return;
+        if (m_blocked || !m_active || !m_render || !GetParent()->IsRender()) return;
         sf::Transformable tr;
         auto window = m_scene->GetGame()->GetWindow();
         tr.setPosition(
@@ -290,13 +292,14 @@ namespace engine {
         return m_openingAngle;
     }
 
-    Light::CenterQuery::CenterQuery(float x, float y) : hit(false), pos(x, y) {
+    Light::CenterQuery::CenterQuery(float x, float y) : hit(false), pos(x, y), node(nullptr) {
     }
 
     bool Light::CenterQuery::ReportFixture(b2Fixture *fixture) {
         Node *n = static_cast<Node *> (fixture->GetBody()->GetUserData());
         if ((!n || !n->IsOpaque()) && fixture->TestPoint(pos)) {
             hit = true;
+			node = n;
             return false;
         }
         return true;

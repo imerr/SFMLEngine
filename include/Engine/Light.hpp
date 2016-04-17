@@ -17,12 +17,12 @@ namespace engine {
         class CenterQuery : public b2QueryCallback {
         public:
             bool hit;
+			Node* node;
             b2Vec2 pos;
             CenterQuery(float x, float y);
             virtual bool ReportFixture(b2Fixture* fixture);
         };
     protected:
-        bool m_active;
         sf::Color m_lightColor;
         float m_radius;
         std::vector<sf::Vertex> m_vertices;

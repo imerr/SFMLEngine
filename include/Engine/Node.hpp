@@ -22,6 +22,7 @@
 namespace engine {
     class Scene;
     class Factory;
+    class Light;
     struct physicsTransform {
     public:
         b2Vec2 pos;
@@ -138,7 +139,11 @@ namespace engine {
         bool IsFlipped() const {
         	return m_flipped;
         }
-    protected:
+
+		util::Event<const Light*> OnLightRay;
+
+
+	protected:
         friend Factory;
         void SetParent(Node* parent);
 
