@@ -9,6 +9,7 @@
 #include "Scene.hpp"
 #include "Game.hpp"
 #include "Factory.hpp"
+#include "util/misc.hpp"
 namespace engine {
 
 	ObjectPlacer::MouseHandler::MouseHandler(ObjectPlacer* placer) : m_placer(placer) {
@@ -32,7 +33,7 @@ namespace engine {
 	}
 
 	void ObjectPlacer::KeyHandler::handle(const sf::Event::KeyEvent& e) {
-		if (e.code == sf::Keyboard::S) {
+		if (e.code == sf::Keyboard::Numpad0) {
 			m_placer->Save();
 		}
 		if (e.code == sf::Keyboard::Add) {
@@ -95,13 +96,17 @@ namespace engine {
 		}
 	}
 
-	ObjectPlacer::ObjectPlacer(Scene* scene) : Node(scene), m_current(0), m_mouseHandler(this), m_currentNode(nullptr), m_keyHandler(this), m_deleteHandler(this) {
+	ObjectPlacer::ObjectPlacer(Scene* scene) : Node(scene), m_current(0), m_mouseHandler(this), m_currentNode(nullptr),
+											   m_keyHandler(this), m_deleteHandler(this), m_movement(true) {
 		m_root["children"] = Json::arrayValue;
 		scene->GetGame()->OnMouseClick.AddHandler(&m_mouseHandler);
 		scene->GetGame()->OnKeyDown.AddHandler(&m_keyHandler);
 	}
 
 	ObjectPlacer::~ObjectPlacer() {
+		if (m_currentNode) {
+			m_currentNode->OnDelete.RemoveHandler(&m_deleteHandler);
+		}
 		m_scene->GetGame()->OnMouseClick.RemoveHandler(&m_mouseHandler);
 		m_scene->GetGame()->OnKeyDown.RemoveHandler(&m_keyHandler);
 		Save();
@@ -129,8 +134,8 @@ namespace engine {
 			size_t i = m_root["children"].size();
 			m_root["children"][i] = Json::objectValue;
 			m_root["children"][i]["childData"] = m_currentNode->GetFilename();
-			m_root["children"][i]["position"][0u] = m_currentNode->GetPosition().x;
-			m_root["children"][i]["position"][1u] = m_currentNode->GetPosition().y;
+			m_root["children"][i]["position"][0u] = static_cast<int>(m_currentNode->GetPosition().x);
+			m_root["children"][i]["position"][1u] = static_cast<int>(m_currentNode->GetPosition().y);
 			if (m_currentNode->GetRotation()){
 				m_root["children"][i]["rotation"] = m_currentNode->GetRotation();
 			}
@@ -146,9 +151,9 @@ namespace engine {
 		}
 		p[0u] = x;
 		p[1u] = y;
-		m_currentNode = Factory::CreateChild(root, this);
+		m_currentNode = Factory::CreateChild(root, m_parent);
 		if (m_currentNode) {
-			AddNode(m_currentNode);
+			m_parent->AddNode(m_currentNode);
 			m_currentNode->SetFilename(m_objects[m_current]);
 			m_currentNode->SetPosition(x, y);
 			m_currentNode->OnDelete.AddHandler(&m_deleteHandler);
@@ -165,6 +170,7 @@ namespace engine {
 				}
 			}
 		}
+		m_movement = root.get("movement", true).asBool();
 		return true;
 	}
 
@@ -177,6 +183,45 @@ namespace engine {
 			Json::StyledWriter w;
 			d << w.write(m_root) << std::endl;
 			std::cout << "Successfully saved to out.json" << std::endl;
+		}
+	}
+	void ObjectPlacer::OnUpdate(sf::Time interval) {
+		if (m_movement) {
+			auto pos = GetPosition();
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+				pos.y -= 2;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+				pos.y += 2;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+				pos.x -= 2;
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+				pos.x += 2;
+			}
+			// Center world on placer
+			auto view = m_scene->GetGame()->GetWindow()->getView();
+			auto windowSize = m_scene->GetGame()->GetWindow()->getSize();
+			auto sceneSize = m_scene->GetSize();
+
+			pos.x = util::minmax(windowSize.x / 2.0f, pos.x, m_scene->GetSize().x - windowSize.x/2);
+			pos.y = util::minmax(windowSize.y / 2.0f, pos.y, m_scene->GetSize().y - windowSize.y/2);
+			SetPosition(pos);
+
+			sf::Vector2f center(pos);
+			if (center.x < windowSize.x / 2) {
+				center.x = windowSize.x / 2;
+			} else if (center.x > sceneSize.x - windowSize.x / 2) {
+				center.x = sceneSize.x - windowSize.x / 2;
+			}
+			if (center.y < windowSize.y / 2) {
+				center.y = windowSize.y / 2;
+			} else if (center.y > sceneSize.y - windowSize.y / 2) {
+				center.y = sceneSize.y - windowSize.y / 2;
+			}
+			view.setCenter(center);
+			m_scene->GetGame()->GetWindow()->setView(view);
 		}
 	}
 

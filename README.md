@@ -16,4 +16,16 @@ Usage
 Link the engine, SFML, Box2D and json-cpp, inherit game, create a scene and other stuff and enjoy!
 
 
+Objectplacer controls:
+==========
+ Left-Click move current object
+ Middle-Click delete current object
+ Right-Click create new object
+ NumPad 0 - Save to out.json
+ NumPad + - Next object (replaces current)
+ NumPad - - Previous object (replaces current)
+ Arrow keys: Move current object by 1px
+ Numpad *: rotate by +15°
+ Numpad /: rotate by -15°
+ Comma ,: sets rotation to °0
 More documentation coming soon(tm)

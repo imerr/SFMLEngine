@@ -48,6 +48,7 @@ namespace engine {
         Node* m_currentNode;
         KeyHandler m_keyHandler;
         DeleteHandler m_deleteHandler;
+		bool m_movement;
 
     public:
         ObjectPlacer(Scene* scene);
@@ -79,8 +80,10 @@ namespace engine {
         void SetCurrentNode(Node* currentNode) {
             m_currentNode = currentNode;
         }
-        
+
         void Save();
+	protected:
+		virtual void OnUpdate(sf::Time interval);
     };
 }
 
