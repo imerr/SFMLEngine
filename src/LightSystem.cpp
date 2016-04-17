@@ -30,6 +30,7 @@ namespace engine {
 			m_available = false;
 			return;
 		}
+		m_available = true;
         m_blurShader.loadFromFile("assets/shader/fullpass.vert", "assets/shader/blur.frag");
         auto size = m_scene->GetGame()->GetWindow()->getSize();
         m_buffer.create(size.x, size.y);
