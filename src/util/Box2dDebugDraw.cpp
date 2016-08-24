@@ -1,17 +1,11 @@
-/*
- * File:   Box2dDebugDraw.cpp
- * Author: iMer
- *
- * Created on 15. August 2014, 04:29
- */
-
-#include <vector>
-
-#include "util/Box2dDebugDraw.hpp"
 #include "Scene.hpp"
 #include "Game.hpp"
-#include <iostream>
 #include "util/misc.hpp"
+#include "util/Box2dDebugDraw.hpp"
+
+
+#include <iostream>
+#include <vector>
 namespace engine {
     namespace util {
 
@@ -23,7 +17,7 @@ namespace engine {
         }
 
         Box2dDebugDraw::Box2dDebugDraw(Scene* scene) : m_scene(scene), m_isInitialized(false) {
-            auto size = m_scene->GetGame()->GetWindow()->getSize();
+            auto size = m_scene->GetGame()->GetWindow()->getView().getSize();
             m_texture.create(size.x, size.y);
         }
 

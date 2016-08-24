@@ -31,8 +31,8 @@ namespace engine {
 			return;
 		}
 		m_available = true;
-        m_blurShader.loadFromFile("assets/shader/fullpass.vert", "assets/shader/blur.frag");
-        auto size = m_scene->GetGame()->GetWindow()->getSize();
+        m_blurShader.loadFromFile("assets/shader/fullpass.vert", "assets/sharder/blur.frag");
+        auto size = m_scene->GetGame()->GetWindow()->getView().getSize();
         m_buffer.create(size.x, size.y);
         m_pingPongBuffer.create(size.x, size.y);
         m_buffer.setActive(false);
