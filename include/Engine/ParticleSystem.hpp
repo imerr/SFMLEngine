@@ -45,6 +45,12 @@ namespace engine {
         virtual bool initialize(Json::Value& root);
         virtual uint8_t GetType() const;
 		void Reset();
+		void SetEmitterSize(const sf::Vector2f& size) {
+			m_emitterSize = size;
+		}
+		const sf::Vector2f& GetEmitterSize() {
+			return m_emitterSize;
+		}
 	protected:
         virtual void OnUpdate(sf::Time interval);
 
