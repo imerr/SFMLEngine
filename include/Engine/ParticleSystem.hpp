@@ -51,6 +51,9 @@ namespace engine {
 		const sf::Vector2f& GetEmitterSize() {
 			return m_emitterSize;
 		}
+		std::vector<Node*>& GetParticles() {
+			return m_particles;
+		}
 	protected:
         virtual void OnUpdate(sf::Time interval);
 
