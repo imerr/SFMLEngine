@@ -184,5 +184,9 @@ namespace engine {
 	}
 	void ParticleSystem::Reset() {
 		m_done = false;
+		// Reset individual particles
+		for (auto p : m_particles) {
+			p->SetActive(false);
+		}
 	}
 }
