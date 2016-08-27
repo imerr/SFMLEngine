@@ -10,6 +10,7 @@
 #include "Scene.hpp"
 #include "Factory.hpp"
 #include <random>
+#include <Engine/util/json.hpp>
 #include "util/Random.hpp"
 
 namespace engine {
@@ -103,10 +104,13 @@ namespace engine {
 		if (!m_particleCount || m_burst && m_done) {
 			return;
 		}
-		util::RandomFloat<> angle(m_angle, m_angle + m_spread);
-		util::RandomFloat<> rx(m_minVelocity.x, m_maxVelocity.x);
-		util::RandomFloat<> ry(m_minVelocity.y, m_maxVelocity.y);
-		util::RandomFloat<> rr(m_minVelocity.z, m_maxVelocity.z);
+		util::RandomFloat<float> angle(m_angle - (m_spread / 2), m_angle + (m_spread / 2));
+		util::RandomFloat<float> rx(m_minVelocity.x, m_maxVelocity.x);
+		util::RandomFloat<float> ry(m_minVelocity.y, m_maxVelocity.y);
+		util::RandomFloat<float> rr(m_minVelocity.z, m_maxVelocity.z);
+		util::RandomFloat<float> sx(-m_emitterSize.x/2, m_emitterSize.x/2);
+		util::RandomFloat<float> sy(-m_emitterSize.y/2, m_emitterSize.y/2);
+
 		if (m_burst) {
 			if (m_particles.size() != m_particleCount) {
 				SetParticleCount(m_particleCount);
@@ -120,8 +124,8 @@ namespace engine {
 			float a = angle();
 			m_particles[m_currentIndex]->SetActive(true);
 			m_particles[m_currentIndex]->GetBody()->SetTransform(
-				b2Vec2(GetGlobalPosition().x / m_scene->GetPixelMeterRatio(),
-					   GetGlobalPosition().y / m_scene->GetPixelMeterRatio()), a);
+				b2Vec2((sx() + GetGlobalPosition().x) / m_scene->GetPixelMeterRatio(),
+					   (sy() + GetGlobalPosition().y) / m_scene->GetPixelMeterRatio()), a);
 			m_particles[m_currentIndex]->GetBody()->SetLinearVelocity(b2Vec2(cosf(a) * rx(), sinf(a) * ry()));
 			m_particles[m_currentIndex]->GetBody()->SetAngularVelocity(rr());
 			m_currentIndex++;
@@ -143,30 +147,34 @@ namespace engine {
 		m_rate = root.get("rate", 1).asFloat();
 		m_burst = root.get("burst", false).asBool();
 		if (!m_burst) {
-			util::RandomFloat<> r(m_rate/2, m_rate);
+			util::RandomFloat<float> r(m_rate/2, m_rate);
 			m_toRelease = 1/r();
 		}
 		if (!m_burst || root.get("load", false).asBool()) {
 			// performance optimization if burst and the system never gets used
-			SetParticleCount(root.get("particleCount", 10).asInt());
+			SetParticleCount(root.get("particleCount", 10).asUInt());
 		} else {
-			m_particleCount = root.get("particleCount", 10).asInt();
+			m_particleCount = root.get("particleCount", 10).asUInt();
 		}
 		m_angle = root.get("angle", 0).asFloat() * util::fPI / 180;
 		m_spread = root.get("spread", 360).asFloat() * util::fPI / 180;
+		m_emitterSize = vector2FromJson<float>(root["emitterSize"]);
+
 		if (root["minVelocity"].isArray()) {
 			m_minVelocity.x = root["minVelocity"].get(0u, .5 * m_scene->GetPixelMeterRatio()).asFloat() /
 							  m_scene->GetPixelMeterRatio();
 			m_minVelocity.y = root["minVelocity"].get(1u, .5 * m_scene->GetPixelMeterRatio()).asFloat() /
 							  m_scene->GetPixelMeterRatio();
-			m_minVelocity.z = root["minVelocity"].get(1u, 0).asFloat() * util::fPI / 180;
+			m_minVelocity.z = root["minVelocity"].get(2u, 0).asFloat() * util::fPI / 180;
 		}
+
+
 		if (root["maxVelocity"].isArray()) {
 			m_maxVelocity.x = root["maxVelocity"].get(0u, 1 * m_scene->GetPixelMeterRatio()).asFloat() /
 							  m_scene->GetPixelMeterRatio();
 			m_maxVelocity.y = root["maxVelocity"].get(1u, 1 * m_scene->GetPixelMeterRatio()).asFloat() /
 							  m_scene->GetPixelMeterRatio();
-			m_maxVelocity.z = root["maxVelocity"].get(1u, 0).asFloat() * util::fPI / 180;
+			m_maxVelocity.z = root["maxVelocity"].get(2u, 0).asFloat() * util::fPI / 180;
 		}
 		return true;
 	}

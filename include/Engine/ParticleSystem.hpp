@@ -25,6 +25,7 @@ namespace engine {
         float m_toRelease;
         Json::Value m_particleConfig;
         bool m_done;
+        sf::Vector2f m_emitterSize;
     public:
         ParticleSystem(Scene* scene);
         virtual ~ParticleSystem();
