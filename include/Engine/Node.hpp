@@ -102,6 +102,9 @@ namespace engine {
 		};
         sf::Vector2f GetPosition() const;
         b2Body* GetBody() const;
+        void SetBody(b2Body* body) {
+			m_body = body;
+		};
         b2Joint* GetParentJoint() const;
         virtual void SetActive(bool active);
         bool IsActive() const;
