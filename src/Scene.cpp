@@ -37,7 +37,7 @@ namespace engine {
         m_world = new b2World(default_gravity);
         m_world->SetContactListener(&m_contactListener);
         m_world->SetDebugDraw(&m_debugDraw);
-        m_debugDraw.SetFlags(b2Draw::e_shapeBit);
+        m_debugDraw.SetFlags(b2Draw::e_shapeBit | b2Draw::e_jointBit | b2Draw::e_centerOfMassBit);
     }
 
     LightSystem* Scene::GetLightSystem() {
