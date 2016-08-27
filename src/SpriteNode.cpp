@@ -160,6 +160,13 @@ namespace engine {
 		}
 		if (root.isMember("sprite")) {
 			auto sprite = root["sprite"];
+			auto color = sprite["color"];
+			if (color.isArray()){
+				SetColor(sf::Color(static_cast<uint8_t>(color.get(0u, 0).asUInt()),
+								   static_cast<uint8_t>(color.get(1u, 0).asUInt()),
+								   static_cast<uint8_t>(color.get(2u, 0).asUInt()),
+								   static_cast<uint8_t>(color.get(3u, 255).asUInt())));
+			}
 			if (sprite.isMember("texture")) {
 				if (sprite.isMember("rect")) {
 					sf::IntRect rect = rectFromJson<int>(sprite["rect"]);
