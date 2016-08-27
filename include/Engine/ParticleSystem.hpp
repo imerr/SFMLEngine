@@ -54,6 +54,7 @@ namespace engine {
 		std::vector<Node*>& GetParticles() {
 			return m_particles;
 		}
+		void SetActive(bool active);
 	protected:
         virtual void OnUpdate(sf::Time interval);
 

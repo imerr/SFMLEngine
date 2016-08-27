@@ -189,4 +189,12 @@ namespace engine {
 			p->SetActive(false);
 		}
 	}
+	void ParticleSystem::SetActive(bool active) {
+		engine::Node::SetActive(active);
+		if (!active) {
+			for (auto p : m_particles) {
+				p->SetActive(false);
+			}
+		}
+	}
 }
