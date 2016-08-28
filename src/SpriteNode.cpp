@@ -183,9 +183,24 @@ namespace engine {
 				}
 				if (!sheet.isNull() && !sheet.empty()) {
 					int index = sprite.get("index", 0).asInt();
-					if (sprite.get("randomIndex", false).asBool()) {
+					if (sprite["randomIndex"].isBool() && sprite.get("randomIndex", false).asBool()) {
 						util::RandomInt<int> r(0, sheet["sprites"].size() - 1);
 						index = r();
+					} else if (sprite["randomIndex"].isArray()) {
+						float chance = 0;
+						for (auto r : sprite["randomIndex"]) {
+							 chance += r[1u].asFloat();
+						}
+						util::RandomFloat<float> r(0, chance);
+						float result = r();
+						chance = 0;
+						for (auto r : sprite["randomIndex"]) {
+							chance += r[1u].asFloat();
+							if (result <= chance) {
+								index = r[0u].asUInt();
+								break;
+							}
+						}
 					}
 					auto tex = sheet["sprites"][index];
 					if (tex.empty() || tex.isNull()) {
