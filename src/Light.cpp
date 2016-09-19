@@ -100,7 +100,8 @@ namespace engine {
             int i = static_cast<int>(angle / util::fPI * 180) % 360;
             auto it = edges.find(i);
             if (it == edges.end()) {
-                edgeData def{basePos + m_radius / m_scene->GetPixelMeterRatio(), nullptr, 0};
+                float r = m_radius / m_scene->GetPixelMeterRatio();
+                edgeData def{basePos + b2Vec2(r, r), nullptr, 0};
                 edges.insert(std::make_pair(i, def));
                 return &edges.find(i)->second;
             }
@@ -204,25 +205,31 @@ namespace engine {
                 float checkAngle = edgeAngle - (util::fPI / 840.f);
                 if (checkAngle > 0) {
                     f = 1.0;
-                    b2Vec2 edge = basePos +
-                                  (b2Vec2(cosf(edgeAngle - (util::fPI / 840.f)),
-                                          sinf(edgeAngle - (util::fPI / 840.f))) *
-                                   (m_radius / m_scene->GetPixelMeterRatio()));
+                    b2Vec2 edge = b2Vec2(cosf(edgeAngle - (util::fPI / 840.f)),
+                                          sinf(edgeAngle - (util::fPI / 840.f)));
+                    edge *= (m_radius / m_scene->GetPixelMeterRatio());
+                    edge += basePos;
                     m_scene->GetWorld()->RayCast(&rayCastCallback, basePos, edge);
                     if (f > edgeLengthPct) {
-                        addPoint(basePos + (basePos - edge) * -f);
+                        b2Vec2 p = (basePos - edge);
+                        p *= -f;
+                        addPoint(basePos + p);
                     }
                 }
                 addPoint(it->second.pos);
                 f = 1.0;
                 checkAngle = edgeAngle + (util::fPI / 840.f);
                 if (checkAngle < util::fPI * 2) {
-                    b2Vec2 edge = basePos +
-                                  (b2Vec2(cosf(checkAngle),
-                                          sinf(checkAngle)) * (m_radius / m_scene->GetPixelMeterRatio()));
+                    b2Vec2 edge =
+                                  b2Vec2(cosf(checkAngle),
+                                          sinf(checkAngle));
+                    edge *= (m_radius / m_scene->GetPixelMeterRatio());
+                    edge += basePos;
                     m_scene->GetWorld()->RayCast(&rayCastCallback, basePos, edge);
                     if (f > edgeLengthPct) {
-                        addPoint(basePos + (basePos - edge) * -f);
+                        b2Vec2 p = (basePos - edge);
+                        p *= -f;
+                        addPoint(basePos + p);
                     }
                 }
                 ++it;

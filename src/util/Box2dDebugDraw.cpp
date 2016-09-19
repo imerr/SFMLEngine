@@ -116,9 +116,6 @@ namespace engine {
 
         void Box2dDebugDraw::DrawTransform(const b2Transform& xf) {
         }
-		void Box2dDebugDraw::DrawParticles(const b2Vec2 *centers, float32 radius, const b2ParticleColor *colors, int32 count) {
-			// TODO
-		}
 
     }
 }

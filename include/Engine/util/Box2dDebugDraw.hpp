@@ -45,8 +45,6 @@ namespace engine {
             /// Draw a transform. Choose your own length scale.
             /// @param xf a transform.
             virtual void DrawTransform(const b2Transform& xf);
-			
-			virtual void DrawParticles(const b2Vec2 *centers, float32 radius, const b2ParticleColor *colors, int32 count);
         };
     }
 }

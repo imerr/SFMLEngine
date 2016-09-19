@@ -6,7 +6,4 @@
 	url = git://github.com/open-source-parsers/jsoncpp.git
 [submodule "external/box2d"]
 	path = external/box2d
-	url = git://github.com/imerr/box2d.git
-[submodule "external/liquidfun"]
-	path = external/liquidfun
-	url = git://github.com/imerr/liquidfun.git
+	url = git://github.com/erincatto/Box2D.git
