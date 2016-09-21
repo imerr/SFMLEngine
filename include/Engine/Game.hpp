@@ -31,11 +31,19 @@ namespace engine {
         std::string m_windowTitle;
 		sf::Color m_clearColor;
 		LoadingScene m_loadingScene;
+		bool m_multithreaded;
     public:
         util::Event<const sf::Event::KeyEvent&> OnKeyDown;
         util::Event<const sf::Event::MouseButtonEvent&> OnMouseClick;
     public:
-        Game(uint32_t width=1024, uint32_t height=576);
+        Game(uint32_t width=1024, uint32_t height=576, bool multithreaded=
+		/* TODO(imer): android crashes with a draw thread - still need to debug that*/
+#ifdef SFML_SYSTEM_ANDROID
+		false
+#else
+		true
+#endif
+		);
         virtual ~Game();
         void run();
         void GraphicLoop();

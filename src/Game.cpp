@@ -12,37 +12,46 @@
 
 namespace engine {
 
-    Game::Game(uint32_t width, uint32_t height) : m_window(sf::VideoMode(width, height), "Loading.."),
+    Game::Game(uint32_t width, uint32_t height, bool multithreaded) : m_window(sf::VideoMode(width, height), "Loading.."),
 			m_scene(nullptr), m_running(true), m_fps(0), m_tps(0), 
-			m_focus(true), m_clearColor(sf::Color::White), m_loadingScene(this) {
+			m_focus(true), m_clearColor(sf::Color::White), m_loadingScene(this), m_multithreaded(multithreaded) {
+		m_window.setVerticalSyncEnabled(true);
+		sf::View view = m_window.getDefaultView();
+		view.setSize(width, height);
+		view.setCenter(width/2, height/2);
+		m_window.setView(view);
     }
 
     Game::~Game() {
     }
 
     void Game::run() {
-        m_window.setActive(false);
-        std::thread graphics(std::bind(std::mem_fn(&Game::GraphicLoop), this));
+		std::thread* gt = nullptr;
+		if (m_multithreaded) {
+			m_window.setActive(false);
+			gt = new std::thread(std::bind(std::mem_fn(&Game::GraphicLoop), this));
+		}
         LogicLoop();
-        graphics.join(); // Prevent crash if thread is still running
+		if (gt) {
+			gt->join(); // Prevent crash if thread is still running
+			delete gt;
+		}
     }
 
     void Game::GraphicLoop() {
-        sf::Clock t;
-        t.restart();
-        m_window.setActive(true);
-        while (m_running) {
-            m_lastLogicUpdateMutex.lock();
-            sf::Time delta = m_lastLogicUpdate.getElapsedTime();
-            m_lastLogicUpdateMutex.unlock();
-            m_window.clear(m_clearColor);
-            if (m_scene) {
-                m_scene->draw(m_window, sf::RenderStates::Default, t.restart().asSeconds());
-            }
-            m_window.display();
-            m_fps++;
-
-        }
+		if (m_multithreaded) {
+			sf::Clock t;
+			t.restart();
+			m_window.setActive(true);
+			while (m_running) {
+				m_window.clear(m_clearColor);
+				if (m_scene) {
+					m_scene->draw(m_window, sf::RenderStates::Default, t.restart().asSeconds());
+				}
+				m_window.display();
+				m_fps++;
+			}
+		}
     }
 
     void Game::LogicLoop() {
@@ -75,13 +84,15 @@ namespace engine {
                 }
             }
             m_scene->update(interval);
-            /*m_window.clear(sf::Color::White);
-            if (m_scene) {
-                m_scene->draw(m_window, sf::RenderStates::Default, interval.asSeconds());
-            }
-            m_window.display();
-            m_fps++;*/
             OnUpdate();
+			if (!m_multithreaded) {
+				m_window.clear(sf::Color::White);
+				if (m_scene) {
+					m_scene->draw(m_window, sf::RenderStates::Default, interval.asSeconds());
+				}
+				m_window.display();
+				m_fps++;
+			}
             sf::Time delta = timer.restart();
             if (delta < interval) {
                 sf::sleep(interval - delta);
