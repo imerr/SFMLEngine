@@ -33,16 +33,16 @@ namespace engine {
 
 	bool Factory::LoadJson(std::string filename, Json::Value & root) {
 		Json::Reader reader;
-		std::ifstream jconfig;
-		jconfig.open(filename);
-		if (!jconfig.good()) {
+		sf::FileInputStream jconfig;
+		if (!jconfig.open(filename)) {
 			std::cerr << "Could not open config file '" << filename << "': " << strerror(errno) << std::endl;
 			return false;
 		}
-		if (!reader.parse(jconfig, root)) {
+		std::vector<char> tmp;
+		tmp.reserve(jconfig.getSize());
+		jconfig.read(tmp.data(), jconfig.getSize());
+		if (!reader.parse(tmp.data(), tmp.data()+jconfig.getSize(), root)) {
 			std::cerr << "Couldn't parse config" << std::endl << reader.getFormattedErrorMessages() << std::endl;
-			jconfig.seekg(0);
-			std::cerr << jconfig.rdbuf() << std::endl;
 			return false;
 		}
 		return true;
