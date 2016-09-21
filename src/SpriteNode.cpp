@@ -82,11 +82,10 @@ namespace engine {
 	}
 
 	SpriteNode::~SpriteNode() {
-		for (auto it = m_animations.begin(); it != m_animations.end();) {
-			Animation* a = it->second;
-			delete a;
-			m_animations.erase(it++);
+		for (auto& it : m_animations) {
+			delete it.second;
 		}
+		m_animations.clear();
 	}
 
 	void SpriteNode::OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta) {

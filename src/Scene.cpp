@@ -40,6 +40,15 @@ namespace engine {
         m_debugDraw.SetFlags(b2Draw::e_shapeBit | b2Draw::e_jointBit | b2Draw::e_centerOfMassBit);
     }
 
+    Scene::~Scene() {
+        while (m_children.size()) {
+            delete m_children.front();
+        }
+        delete m_ui;
+        delete m_world;
+        m_world = nullptr;
+    }
+
     LightSystem* Scene::GetLightSystem() {
         return &m_lightSystem;
     }
@@ -50,16 +59,6 @@ namespace engine {
 
     bool Scene::IsDebug() const {
         return m_debug;
-    }
-
-    Scene::~Scene() {
-        while (m_children.size()) {
-            delete m_children.front();
-        }
-        m_children.clear();
-        delete m_ui;
-        delete m_world;
-        m_world = nullptr;
     }
 
     void Scene::SetGame(Game* game) {
