@@ -22,6 +22,7 @@ namespace engine {
 		m_old = old;
 		m_new = new_;
 		m_done = false;
+		m_game->SetScene(this);
 	}
 }
 
