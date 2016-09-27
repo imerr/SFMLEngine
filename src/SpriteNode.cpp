@@ -248,7 +248,7 @@ namespace engine {
 		std::lock_guard<std::recursive_mutex> lg(m_mutex);
 		auto it = m_animations.find(name);
 		if (it == m_animations.end()) {
-			std::cerr << "Animation '" << name << "'could not be found";
+			std::cerr << "Animation '" << name << "' could not be found" << std::endl;
 			return;
 		}
 		m_animationWhenDone = after;
