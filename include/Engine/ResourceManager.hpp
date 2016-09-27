@@ -14,7 +14,7 @@
 #include <json/value.h>
 namespace engine{
 
-    class ResourceManager : public util::singleton<ResourceManager> {
+    class ResourceManager : public singleton<ResourceManager> {
     private:
         std::map<std::string, sf::Texture*> m_textures;
         std::map<std::string, sf::SoundBuffer*> m_soundBuffers;

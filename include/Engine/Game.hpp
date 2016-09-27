@@ -33,8 +33,8 @@ namespace engine {
 		LoadingScene m_loadingScene;
 		bool m_multithreaded;
     public:
-        util::Event<const sf::Event::KeyEvent&> OnKeyDown;
-        util::Event<const sf::Event::MouseButtonEvent&> OnMouseClick;
+        Event<const sf::Event::KeyEvent&> OnKeyDown;
+        Event<const sf::Event::MouseButtonEvent&> OnMouseClick;
     public:
         Game(uint32_t width=1024, uint32_t height=576, bool multithreaded=
 		/* TODO(imer): android crashes with a draw thread - still need to debug that*/

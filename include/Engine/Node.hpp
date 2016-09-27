@@ -60,7 +60,7 @@ namespace engine {
         std::recursive_mutex m_mutex;
         // prevent deletion while in use
         std::recursive_mutex m_deleteMutex;
-        std::list<Node*> m_children;
+        std::vector<Node*> m_children;
         Scene* m_scene;
         Node* m_parent;
         b2Body* m_body;
@@ -108,7 +108,7 @@ namespace engine {
         b2Joint* GetParentJoint() const;
         virtual void SetActive(bool active);
         bool IsActive() const;
-        std::list<Node*>& GetChildren();
+        std::vector<Node*>& GetChildren();
         virtual void SetSize(sf::Vector2f size);
         const sf::Vector2f& GetSize() const;
         void Delete();
@@ -122,7 +122,7 @@ namespace engine {
         bool IsRender() const {
             return m_render;
         }
-        util::Event<const Node*> OnDelete;
+        Event<const Node*> OnDelete;
         Node* GetChildByID(std::string);
 
         void SetFilename(std::string filename) {
@@ -143,7 +143,7 @@ namespace engine {
         	return m_flipped;
         }
 
-		util::Event<const Light*> OnLightRay;
+		Event<const Light*> OnLightRay;
 
 
 	protected:

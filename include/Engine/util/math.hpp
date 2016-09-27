@@ -5,12 +5,10 @@
 #include <Box2D/Box2D.h>
 
 namespace engine {
-    namespace util {
-        const float fPI = 3.141592654f;
+	const float fPI = 3.141592654f;
 
-        float b2AngleDeg(b2Vec2 from, b2Vec2 to);
+	float b2AngleDeg(b2Vec2 from, b2Vec2 to);
 
-    }
     inline bool floatEqual(float a, float b, float epsilon) {
         return fabsf(a - b) < epsilon;
     }

@@ -205,8 +205,8 @@ namespace engine {
 			auto windowSize = m_scene->GetGame()->GetWindow()->getSize();
 			auto sceneSize = m_scene->GetSize();
 
-			pos.x = util::minmax(windowSize.x / 2.0f, pos.x, m_scene->GetSize().x - windowSize.x/2);
-			pos.y = util::minmax(windowSize.y / 2.0f, pos.y, m_scene->GetSize().y - windowSize.y/2);
+			pos.x = clamp(windowSize.x / 2.0f, pos.x, m_scene->GetSize().x - windowSize.x/2);
+			pos.y = clamp(windowSize.y / 2.0f, pos.y, m_scene->GetSize().y - windowSize.y/2);
 			SetPosition(pos);
 
 			sf::Vector2f center(pos);

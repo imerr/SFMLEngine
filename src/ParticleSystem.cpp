@@ -16,7 +16,7 @@
 namespace engine {
 
 	ParticleSystem::ParticleSystem(Scene *scene) : Node(scene), m_particleCount(0), m_currentIndex(0), m_rate(0),
-												   m_burst(false), m_angle(0), m_spread(util::fPI * 2),
+												   m_burst(false), m_angle(0), m_spread(fPI * 2),
 												   m_minVelocity(.5, .5, 0), m_maxVelocity(1, 1, 0), m_toRelease(0),
 												   m_done(false) {
 	}
@@ -104,12 +104,12 @@ namespace engine {
 		if (!m_particleCount || m_burst && m_done) {
 			return;
 		}
-		util::RandomFloat<float> angle(m_angle - (m_spread / 2), m_angle + (m_spread / 2));
-		util::RandomFloat<float> rx(m_minVelocity.x, m_maxVelocity.x);
-		util::RandomFloat<float> ry(m_minVelocity.y, m_maxVelocity.y);
-		util::RandomFloat<float> rr(m_minVelocity.z, m_maxVelocity.z);
-		util::RandomFloat<float> sx(-m_emitterSize.x/2, m_emitterSize.x/2);
-		util::RandomFloat<float> sy(-m_emitterSize.y/2, m_emitterSize.y/2);
+		RandomFloat<float> angle(m_angle - (m_spread / 2), m_angle + (m_spread / 2));
+		RandomFloat<float> rx(m_minVelocity.x, m_maxVelocity.x);
+		RandomFloat<float> ry(m_minVelocity.y, m_maxVelocity.y);
+		RandomFloat<float> rr(m_minVelocity.z, m_maxVelocity.z);
+		RandomFloat<float> sx(-m_emitterSize.x/2, m_emitterSize.x/2);
+		RandomFloat<float> sy(-m_emitterSize.y/2, m_emitterSize.y/2);
 
 		if (m_burst) {
 			if (m_particles.size() != m_particleCount) {
@@ -147,7 +147,7 @@ namespace engine {
 		m_rate = root.get("rate", 1).asFloat();
 		m_burst = root.get("burst", false).asBool();
 		if (!m_burst) {
-			util::RandomFloat<float> r(m_rate/2, m_rate);
+			RandomFloat<float> r(m_rate/2, m_rate);
 			m_toRelease = 1/r();
 		}
 		if (!m_burst || root.get("load", false).asBool()) {
@@ -156,8 +156,8 @@ namespace engine {
 		} else {
 			m_particleCount = root.get("particleCount", 10).asUInt();
 		}
-		m_angle = root.get("angle", 0).asFloat() * util::fPI / 180;
-		m_spread = root.get("spread", 360).asFloat() * util::fPI / 180;
+		m_angle = root.get("angle", 0).asFloat() * fPI / 180;
+		m_spread = root.get("spread", 360).asFloat() * fPI / 180;
 		m_emitterSize = vector2FromJson<float>(root["emitterSize"]);
 
 		if (root["minVelocity"].isArray()) {
@@ -165,7 +165,7 @@ namespace engine {
 							  m_scene->GetPixelMeterRatio();
 			m_minVelocity.y = root["minVelocity"].get(1u, .5 * m_scene->GetPixelMeterRatio()).asFloat() /
 							  m_scene->GetPixelMeterRatio();
-			m_minVelocity.z = root["minVelocity"].get(2u, 0).asFloat() * util::fPI / 180;
+			m_minVelocity.z = root["minVelocity"].get(2u, 0).asFloat() * fPI / 180;
 		}
 
 
@@ -174,7 +174,7 @@ namespace engine {
 							  m_scene->GetPixelMeterRatio();
 			m_maxVelocity.y = root["maxVelocity"].get(1u, 1 * m_scene->GetPixelMeterRatio()).asFloat() /
 							  m_scene->GetPixelMeterRatio();
-			m_maxVelocity.z = root["maxVelocity"].get(2u, 0).asFloat() * util::fPI / 180;
+			m_maxVelocity.z = root["maxVelocity"].get(2u, 0).asFloat() * fPI / 180;
 		}
 		return true;
 	}

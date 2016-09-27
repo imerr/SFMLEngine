@@ -17,7 +17,7 @@ namespace engine {
     class ObjectPlacer : public Node {
     public:
 
-        class MouseHandler : public util::EventHandler<const sf::Event::MouseButtonEvent&> {
+        class MouseHandler : public EventHandler<const sf::Event::MouseButtonEvent&> {
         protected:
             ObjectPlacer* m_placer;
         public:
@@ -25,7 +25,7 @@ namespace engine {
             virtual void handle(const sf::Event::MouseButtonEvent&);
         };
 
-        class KeyHandler : public util::EventHandler<const sf::Event::KeyEvent&> {
+        class KeyHandler : public EventHandler<const sf::Event::KeyEvent&> {
         protected:
             ObjectPlacer* m_placer;
         public:
@@ -33,7 +33,7 @@ namespace engine {
             virtual void handle(const sf::Event::KeyEvent&);
         };
 
-        class DeleteHandler : public util::EventHandler<const Node*> {
+        class DeleteHandler : public EventHandler<const Node*> {
         protected:
             ObjectPlacer* m_placer;
         public:

@@ -48,8 +48,8 @@ namespace engine {
 		if (m_render) {
 			OnDraw(target, states, delta);
 		}
-		for (auto it = m_children.begin(); it != m_children.end();) {
-			(*it++)->draw(target, states, delta);
+		for (auto& child : m_children) {
+			child->draw(target, states, delta);
 		}
 		PostDraw(target, states, delta);
 	}
@@ -62,14 +62,19 @@ namespace engine {
 	}
 
 	void Node::RemoveNode(Node* node) {
-		m_children.remove(node);
+		auto it = std::find(m_children.begin(), m_children.end(), node);
+		if (it == m_children.end()) {
+			std::cerr << "Trying to erase non-existent node" << std::endl;
+			return;
+		}
+		m_children.erase(it);
 		OnRemoveNode(node);
 	}
 
 	void Node::SetScene(Scene* scene) {
 		m_scene = scene;
-		for (auto it = m_children.begin(); it != m_children.end(); it++) {
-			(*it)->SetScene(scene);
+		for (auto& child : m_children) {
+			child->SetScene(scene);
 		}
 	}
 
@@ -125,15 +130,15 @@ namespace engine {
 			return;
 		}
 		OnUpdate(interval);
-		for (auto it = m_children.begin(); it != m_children.end();) {
-			(*it++)->update(interval);
+		for (auto& child : m_children) {
+			child->update(interval);
 		}
 	}
 
 	void Node::UpdatePhysicsTransform() {
 		std::lock_guard<std::recursive_mutex> lg(m_mutex);
-		m_physicsTransform.rot = m_body->GetAngle()*180 / util::fPI;
-		m_physicsTransform.rotVel = m_body->GetAngularVelocity()*180 / util::fPI;
+		m_physicsTransform.rot = m_body->GetAngle()*180 / fPI;
+		m_physicsTransform.rotVel = m_body->GetAngularVelocity()*180 / fPI;
 		m_physicsTransform.pos = m_body->GetPosition();
 		m_physicsTransform.pos *= m_scene->GetPixelMeterRatio();
 		m_physicsTransform.vel = m_body->GetLinearVelocity();
@@ -221,9 +226,9 @@ namespace engine {
 			body.userData = this;
 			body.active = jbody.get("active", true).asBool();
 			body.allowSleep = jbody.get("allowSleep", true).asBool();
-			body.angle = jbody.get("angle", 0.0f).asFloat() * util::fPI / 180;
+			body.angle = jbody.get("angle", 0.0f).asFloat() * fPI / 180;
 			body.angularDamping = jbody.get("angularDamping", 0.0f).asFloat();
-			body.angularVelocity = jbody.get("angularVelocity", 0.0f).asFloat() * util::fPI / 180;
+			body.angularVelocity = jbody.get("angularVelocity", 0.0f).asFloat() * fPI / 180;
 			body.awake = jbody.get("awake", true).asBool();
 			body.bullet = jbody.get("bullet", false).asBool();
 			body.fixedRotation = jbody.get("fixedRotation", false).asBool();
@@ -286,7 +291,7 @@ namespace engine {
 											shapes[i].get("x", 0).asFloat()/ m_scene->GetPixelMeterRatio(),
 											shapes[i].get("y", 0).asFloat() / m_scene->GetPixelMeterRatio()
 									),
-									shapes[i].get("angle", 0.0f).asFloat() * util::fPI / 180 * (m_flipped ? -1 : 1));
+									shapes[i].get("angle", 0.0f).asFloat() * fPI / 180 * (m_flipped ? -1 : 1));
 							def.shape = &poly;
 						} else if (shapeType == "polygon") {
 							auto points = shapes[i]["points"];
@@ -469,7 +474,7 @@ namespace engine {
 		return m_active;
 	}
 
-	std::list<Node*>& Node::GetChildren() {
+	std::vector<Node*>& Node::GetChildren() {
 		return m_children;
 	}
 
@@ -532,9 +537,9 @@ namespace engine {
 	}
 
 	Node* Node::GetChildByID(std::string id) {
-		for (auto it = m_children.begin(); it != m_children.end(); it++) {
-			if ((*it)->GetIdentifier() == id) {
-				return *it;
+		for (auto& child : m_children) {
+			if (child->GetIdentifier() == id) {
+				return child;
 			}
 		}
 		return nullptr;
@@ -542,7 +547,7 @@ namespace engine {
 
 	void Node::SetRotation(float deg) {
 		if (m_body) {
-			m_body->SetTransform(m_body->GetPosition(), deg * util::fPI / 180);
+			m_body->SetTransform(m_body->GetPosition(), deg * fPI / 180);
 		} else {
 			setRotation(deg);
 		}
@@ -550,7 +555,7 @@ namespace engine {
 
 	float Node::GetRotation() {
 		if (m_body) {
-			return m_body->GetAngle()*180 / util::fPI;
+			return m_body->GetAngle()*180 / fPI;
 		}
 		return getRotation();
 	}

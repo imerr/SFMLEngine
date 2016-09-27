@@ -16,7 +16,7 @@ namespace engine {
 
     Light::Light(Scene *scene) : Node(scene), m_lightColor(sf::Color::White), m_radius(200),
                                  m_rayCount(256), m_blocked(false), m_angle(0),
-                                 m_openingAngle(util::fPI * 2) {
+                                 m_openingAngle(fPI * 2) {
         m_vertices.resize(m_rayCount + 2);
         scene->GetLightSystem()->AddLight(this);
         m_opaque = true;
@@ -93,11 +93,11 @@ namespace engine {
         std::map<int, edgeData> edges;
 
         auto EdgeFromPos = [&, this](const b2Vec2 &p) -> edgeData * {
-            float angle = atan2f(basePos.y - p.y, basePos.x - p.x) + engine::util::fPI;
+            float angle = atan2f(basePos.y - p.y, basePos.x - p.x) + fPI;
             if (angle > m_angle + m_openingAngle || angle < m_angle) {
                 return nullptr;
             }
-            int i = static_cast<int>(angle / util::fPI * 180) % 360;
+            int i = static_cast<int>(angle / fPI * 180) % 360;
             auto it = edges.find(i);
             if (it == edges.end()) {
                 float r = m_radius / m_scene->GetPixelMeterRatio();
@@ -175,7 +175,7 @@ namespace engine {
             bool had = false;
             while (it != edges.end()) {
                 edgeAngle = b2Angle(basePos, it->second.pos);
-                if (edgeAngle < 0) edgeAngle += util::fPI * 2;
+                if (edgeAngle < 0) edgeAngle += fPI * 2;
                 if (angle < edgeAngle || edgeAngle >= angle + step) {
                     break;
                 }
@@ -202,11 +202,11 @@ namespace engine {
                     m_vertices.push_back(v);
                 };
                 // Check surrounding edges by using half a degree differences
-                float checkAngle = edgeAngle - (util::fPI / 840.f);
+                float checkAngle = edgeAngle - (fPI / 840.f);
                 if (checkAngle > 0) {
                     f = 1.0;
-                    b2Vec2 edge = b2Vec2(cosf(edgeAngle - (util::fPI / 840.f)),
-                                          sinf(edgeAngle - (util::fPI / 840.f)));
+                    b2Vec2 edge = b2Vec2(cosf(edgeAngle - (fPI / 840.f)),
+                                          sinf(edgeAngle - (fPI / 840.f)));
                     edge *= (m_radius / m_scene->GetPixelMeterRatio());
                     edge += basePos;
                     m_scene->GetWorld()->RayCast(&rayCastCallback, basePos, edge);
@@ -218,8 +218,8 @@ namespace engine {
                 }
                 addPoint(it->second.pos);
                 f = 1.0;
-                checkAngle = edgeAngle + (util::fPI / 840.f);
-                if (checkAngle < util::fPI * 2) {
+                checkAngle = edgeAngle + (fPI / 840.f);
+                if (checkAngle < fPI * 2) {
                     b2Vec2 edge =
                                   b2Vec2(cosf(checkAngle),
                                           sinf(checkAngle));
@@ -235,7 +235,7 @@ namespace engine {
                 ++it;
             }
             // Prevent overlapping rays
-            if (!had || had && !floatEqual(edgeAngle, angle, util::fPI / 180.0f) || i == 1 ||
+            if (!had || had && !floatEqual(edgeAngle, angle, fPI / 180.0f) || i == 1 ||
                 i == m_rayCount) {
                 v.position.x = cosf(angle) * m_radius;
                 v.position.y = sinf(angle) * m_radius;
@@ -327,9 +327,9 @@ namespace engine {
             m_lightColor = sf::Color(lc & 0xFF0000 >> 16, lc & 0xFF00 >> 8, lc & 0xFF, lc & 0xFF000000 >> 24);
         }
         m_radius = root.get("radius", 200).asFloat();
-        m_angle = root.get("angle", 0).asFloat() * util::fPI / 180;
+        m_angle = root.get("angle", 0).asFloat() * fPI / 180;
         // min prevents overdrawing
-        m_openingAngle = util::min(root.get("openingAngle", 360).asFloat() * util::fPI / 180, util::fPI * 2);
+        m_openingAngle = std::min(root.get("openingAngle", 360).asFloat() * fPI / 180, fPI * 2);
         return true;
     }
 }

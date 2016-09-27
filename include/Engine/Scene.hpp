@@ -34,16 +34,16 @@ namespace engine {
         Game* m_game;
         b2World* m_world;
         float m_pixToM;
-        util::Box2dDebugDraw m_debugDraw;
+        Box2dDebugDraw m_debugDraw;
         std::recursive_mutex m_mutexDebug;
         LightSystem m_lightSystem;
         bool m_debug;
         Node* m_ui;
         SceneContactListener m_contactListener;
     public:
-        util::Event<b2Contact*, const b2Manifold*> OnContactPreSolve;
-        util::Event<b2Contact*, bool> OnContact;
-        util::Event<b2Contact*, const b2ContactImpulse*> OnContactPostSolve;
+        Event<b2Contact*, const b2Manifold*> OnContactPreSolve;
+        Event<b2Contact*, bool> OnContact;
+        Event<b2Contact*, const b2ContactImpulse*> OnContactPostSolve;
     public:
         Scene(Game* game);
         virtual ~Scene();
