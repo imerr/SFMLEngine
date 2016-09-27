@@ -3,11 +3,13 @@
 
 
 #include <Engine/SpriteNode.hpp>
+
 namespace engine {
-	class ParallaxBackground: public engine::SpriteNode {
-		public:
-			ParallaxBackground(engine::Scene* scene);
-			~ParallaxBackground();
+	class ParallaxBackground : public engine::SpriteNode {
+	public:
+		ParallaxBackground(engine::Scene* scene);
+
+		~ParallaxBackground();
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states, float delta);
 

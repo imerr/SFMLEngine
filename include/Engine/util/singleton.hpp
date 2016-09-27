@@ -6,13 +6,14 @@
  */
 
 #ifndef SINGLETON_HPP
-#define	SINGLETON_HPP
+#define    SINGLETON_HPP
 namespace engine {
-	template <typename T> class singleton {
+	template<typename T>
+	class singleton {
 	public:
-		static T * ms_singleton;
+		static T* ms_singleton;
 
-		static T *instance() {
+		static T* instance() {
 			if (!ms_singleton) {
 				ms_singleton = new T();
 			}
@@ -26,7 +27,8 @@ namespace engine {
 			}
 		}
 	};
-	template <typename T> T* singleton<T>::ms_singleton = nullptr;
+
+	template<typename T> T* singleton<T>::ms_singleton = nullptr;
 }
 
 

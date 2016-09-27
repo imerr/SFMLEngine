@@ -11,19 +11,30 @@
 #include "Button.hpp"
 #include "ObjectPlacer.hpp"
 #include "ParallaxBackground.hpp"
+
 namespace engine {
 	std::map<std::string, std::function<Node*(Json::Value& root, Node* parent) >> Factory::m_types = {
-		std::make_pair(std::string("node"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<Node>)),
-		std::make_pair(std::string("sprite"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<SpriteNode>)),
-		std::make_pair(std::string("light"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<Light>)),
-		std::make_pair(std::string("text"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<Text>)),
-		std::make_pair(std::string("button"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<Button>)),
-		std::make_pair(std::string("objectPlacer"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<ObjectPlacer>)),
-		std::make_pair(std::string("parallaxBackground"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<ParallaxBackground>)),
-		std::make_pair(std::string("particlesystem"), std::function < Node * (Json::Value& root, Node * parent) >(Factory::CreateChildNode<ParticleSystem>))
+			std::make_pair(std::string("node"),
+						   std::function<Node*(Json::Value& root, Node* parent)>(Factory::CreateChildNode<Node>)),
+			std::make_pair(std::string("sprite"),
+						   std::function<Node*(Json::Value& root, Node* parent)>(Factory::CreateChildNode<SpriteNode>)),
+			std::make_pair(std::string("light"),
+						   std::function<Node*(Json::Value& root, Node* parent)>(Factory::CreateChildNode<Light>)),
+			std::make_pair(std::string("text"),
+						   std::function<Node*(Json::Value& root, Node* parent)>(Factory::CreateChildNode<Text>)),
+			std::make_pair(std::string("button"),
+						   std::function<Node*(Json::Value& root, Node* parent)>(Factory::CreateChildNode<Button>)),
+			std::make_pair(std::string("objectPlacer"),
+						   std::function<Node*(Json::Value& root, Node* parent)>(
+								   Factory::CreateChildNode<ObjectPlacer>)),
+			std::make_pair(std::string("parallaxBackground"), std::function<Node*(Json::Value& root, Node* parent)>(
+					Factory::CreateChildNode<ParallaxBackground>)),
+			std::make_pair(std::string("particlesystem"),
+						   std::function<Node*(Json::Value& root, Node* parent)>(
+								   Factory::CreateChildNode<ParticleSystem>))
 	};
 
-	void Factory::RegisterType(std::string name, std::function<Node*(Json::Value& root, Node* parent) > callback) {
+	void Factory::RegisterType(std::string name, std::function<Node*(Json::Value& root, Node* parent)> callback) {
 		m_types.insert(std::make_pair(name, callback));
 	}
 
@@ -31,7 +42,7 @@ namespace engine {
 		m_types.erase(name);
 	}
 
-	bool Factory::LoadJson(std::string filename, Json::Value & root) {
+	bool Factory::LoadJson(std::string filename, Json::Value& root) {
 		Json::Reader reader;
 		sf::FileInputStream jconfig;
 		if (!jconfig.open(filename)) {
@@ -41,14 +52,14 @@ namespace engine {
 		std::vector<char> tmp;
 		tmp.reserve(jconfig.getSize());
 		jconfig.read(tmp.data(), jconfig.getSize());
-		if (!reader.parse(tmp.data(), tmp.data()+jconfig.getSize(), root)) {
+		if (!reader.parse(tmp.data(), tmp.data() + jconfig.getSize(), root)) {
 			std::cerr << "Couldn't parse config" << std::endl << reader.getFormattedErrorMessages() << std::endl;
 			return false;
 		}
 		return true;
 	}
 
-	Node * Factory::CreateChild(Json::Value root, Node * parent) {
+	Node* Factory::CreateChild(Json::Value root, Node* parent) {
 		Json::Value childData;
 		if (root["childData"].isString()) {
 			if (!LoadJson(root["childData"].asString(), childData)) {
@@ -75,7 +86,7 @@ namespace engine {
 		return c;
 	}
 
-	Node * Factory::CreateChildFromFile(std::string file, Node * parent) {
+	Node* Factory::CreateChildFromFile(std::string file, Node* parent) {
 		Json::Value root;
 		if (!Factory::LoadJson(file, root)) {
 			return nullptr;
@@ -95,6 +106,7 @@ namespace engine {
 		c->OnInitializeDone();
 		return c;
 	}
+
 	bool Factory::MakeChildren(Json::Value& children, Node* parent) {
 		if (!children.isArray()) {
 			std::cerr << "Children is expected to be an array";

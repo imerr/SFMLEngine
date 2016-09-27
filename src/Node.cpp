@@ -11,12 +11,13 @@
 #include <iostream>
 #include <limits>
 #include "Game.hpp"
+
 namespace engine {
 
 	Node::Node(Scene* scene) : m_scene(scene), m_parent(nullptr), m_body(nullptr),
-			m_parentJoint(nullptr), m_opaque(true), m_active(true), 
-			m_destroy(false), m_render(true), m_flipped(false), 
-			m_originType(OT_NONE), m_despawnTime(std::numeric_limits<float>::infinity()) {
+							   m_parentJoint(nullptr), m_opaque(true), m_active(true),
+							   m_destroy(false), m_render(true), m_flipped(false),
+							   m_originType(OT_NONE), m_despawnTime(std::numeric_limits<float>::infinity()) {
 	}
 
 	Node::~Node() {
@@ -100,10 +101,12 @@ namespace engine {
 
 	sf::Vector2f Node::GetGlobalPosition() {
 		if (m_body) {
-			return sf::Vector2f(m_body->GetPosition().x * m_scene->GetPixelMeterRatio(), m_body->GetPosition().y * m_scene->GetPixelMeterRatio());
+			return sf::Vector2f(m_body->GetPosition().x * m_scene->GetPixelMeterRatio(),
+								m_body->GetPosition().y * m_scene->GetPixelMeterRatio());
 		}
 		if (m_parent->GetBody()) {
-			return sf::Vector2f(m_parent->GetBody()->GetPosition().x * m_scene->GetPixelMeterRatio() + getPosition().x, getPosition().y + m_parent->GetBody()->GetPosition().y * m_scene->GetPixelMeterRatio());
+			return sf::Vector2f(m_parent->GetBody()->GetPosition().x * m_scene->GetPixelMeterRatio() + getPosition().x,
+								getPosition().y + m_parent->GetBody()->GetPosition().y * m_scene->GetPixelMeterRatio());
 		}
 		return GetGlobalTransform().transformPoint(getOrigin());
 	}
@@ -124,7 +127,7 @@ namespace engine {
 		if (m_body) {
 			UpdatePhysicsTransform();
 		}
-		m_despawnTime-=interval.asSeconds();
+		m_despawnTime -= interval.asSeconds();
 		if (m_despawnTime < 0) {
 			Delete();
 			return;
@@ -137,8 +140,8 @@ namespace engine {
 
 	void Node::UpdatePhysicsTransform() {
 		std::lock_guard<std::recursive_mutex> lg(m_mutex);
-		m_physicsTransform.rot = m_body->GetAngle()*180 / fPI;
-		m_physicsTransform.rotVel = m_body->GetAngularVelocity()*180 / fPI;
+		m_physicsTransform.rot = m_body->GetAngle() * 180 / fPI;
+		m_physicsTransform.rotVel = m_body->GetAngularVelocity() * 180 / fPI;
 		m_physicsTransform.pos = m_body->GetPosition();
 		m_physicsTransform.pos *= m_scene->GetPixelMeterRatio();
 		m_physicsTransform.vel = m_body->GetLinearVelocity();
@@ -181,7 +184,7 @@ namespace engine {
 					setOrigin(0, 0);
 				} else if (sorigin == "top-center") {
 					m_originType = OT_TOPCENTER;
-					setOrigin(m_size.x/2, 0);
+					setOrigin(m_size.x / 2, 0);
 				} else if (sorigin == "top-right") {
 					m_originType = OT_TOPRIGHT;
 					setOrigin(m_size.x, 0);
@@ -190,7 +193,7 @@ namespace engine {
 					setOrigin(0, m_size.y);
 				} else if (sorigin == "bottom-center") {
 					m_originType = OT_BOTTOMCENTER;
-					setOrigin(m_size.x/2, m_size.y);
+					setOrigin(m_size.x / 2, m_size.y);
 				} else if (sorigin == "bottom-right") {
 					m_originType = OT_BOTTOMRIGHT;
 					setOrigin(m_size.x, m_size.y);
@@ -287,11 +290,11 @@ namespace engine {
 							float width = shapes[i].get("width", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();
 							float height = shapes[i].get("height", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();
 							poly.SetAsBox(width, height,
-									b2Vec2(
-											shapes[i].get("x", 0).asFloat()/ m_scene->GetPixelMeterRatio(),
-											shapes[i].get("y", 0).asFloat() / m_scene->GetPixelMeterRatio()
-									),
-									shapes[i].get("angle", 0.0f).asFloat() * fPI / 180 * (m_flipped ? -1 : 1));
+										  b2Vec2(
+												  shapes[i].get("x", 0).asFloat() / m_scene->GetPixelMeterRatio(),
+												  shapes[i].get("y", 0).asFloat() / m_scene->GetPixelMeterRatio()
+										  ),
+										  shapes[i].get("angle", 0.0f).asFloat() * fPI / 180 * (m_flipped ? -1 : 1));
 							def.shape = &poly;
 						} else if (shapeType == "polygon") {
 							auto points = shapes[i]["points"];
@@ -345,13 +348,17 @@ namespace engine {
 							// ghost vert
 							if (!shapes[i]["prev"].empty()) {
 								edge.m_hasVertex0 = true;
-								edge.m_vertex0.x = shapes[i]["prev"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
-								edge.m_vertex0.y = shapes[i]["prev"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+								edge.m_vertex0.x =
+										shapes[i]["prev"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+								edge.m_vertex0.y =
+										shapes[i]["prev"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
 							}
 							if (!shapes[i]["next"].empty()) {
 								edge.m_hasVertex3 = true;
-								edge.m_vertex3.x = shapes[i]["next"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
-								edge.m_vertex3.y = shapes[i]["next"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+								edge.m_vertex3.x =
+										shapes[i]["next"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
+								edge.m_vertex3.y =
+										shapes[i]["next"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
 							}
 							def.shape = &edge;
 						} else if (shapeType == "chain") {
@@ -370,10 +377,16 @@ namespace engine {
 								chain.CreateChain(points, p.size());
 								// ghost vert
 								if (!shapes[i]["prev"].empty()) {
-									chain.SetPrevVertex(b2Vec2(shapes[i]["prev"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio(), shapes[i]["prev"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio()));
+									chain.SetPrevVertex(b2Vec2(shapes[i]["prev"].get("x", 0.0f).asFloat() /
+															   m_scene->GetPixelMeterRatio(),
+															   shapes[i]["prev"].get("y", 0.0f).asFloat() /
+															   m_scene->GetPixelMeterRatio()));
 								}
 								if (!shapes[i]["next"].empty()) {
-									chain.SetPrevVertex(b2Vec2(shapes[i]["next"].get("x", 0.0f).asFloat() / m_scene->GetPixelMeterRatio(), shapes[i]["next"].get("y", 0.0f).asFloat() / m_scene->GetPixelMeterRatio()));
+									chain.SetPrevVertex(b2Vec2(shapes[i]["next"].get("x", 0.0f).asFloat() /
+															   m_scene->GetPixelMeterRatio(),
+															   shapes[i]["next"].get("y", 0.0f).asFloat() /
+															   m_scene->GetPixelMeterRatio()));
 								}
 								def.shape = &chain;
 
@@ -390,14 +403,21 @@ namespace engine {
 							std::string jtype = joint.get("type", "revolute").asString();
 							b2Vec2 anchorA = m_parent->GetBody()->GetPosition();
 							b2Vec2 anchorB = m_body->GetPosition();
-							if (joint["anchor"].isArray() && joint["anchor"].size() == 2 && (joint["anchor"][0u].isArray() || joint["anchor"][0u].isObject())) {
-								anchorA.x = m_parent->GetBody()->GetPosition().x + joint["anchor"][0u].get(0u, 0).asFloat() / m_scene->GetPixelMeterRatio();
-								anchorA.y = m_parent->GetBody()->GetPosition().y + joint["anchor"][0u].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio();
-								anchorB.x = m_body->GetPosition().x + joint["anchor"][1u].get(0u, 0).asFloat() / m_scene->GetPixelMeterRatio();
-								anchorB.y = m_body->GetPosition().y + joint["anchor"][1u].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+							if (joint["anchor"].isArray() && joint["anchor"].size() == 2 &&
+								(joint["anchor"][0u].isArray() || joint["anchor"][0u].isObject())) {
+								anchorA.x = m_parent->GetBody()->GetPosition().x +
+											joint["anchor"][0u].get(0u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+								anchorA.y = m_parent->GetBody()->GetPosition().y +
+											joint["anchor"][0u].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+								anchorB.x = m_body->GetPosition().x +
+											joint["anchor"][1u].get(0u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+								anchorB.y = m_body->GetPosition().y +
+											joint["anchor"][1u].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio();
 							} else {
-								anchorA.x = m_parent->GetBody()->GetPosition().x + joint["anchor"].get(0u, 0).asFloat() / m_scene->GetPixelMeterRatio();
-								anchorA.y = m_parent->GetBody()->GetPosition().y + joint["anchor"].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+								anchorA.x = m_parent->GetBody()->GetPosition().x +
+											joint["anchor"].get(0u, 0).asFloat() / m_scene->GetPixelMeterRatio();
+								anchorA.y = m_parent->GetBody()->GetPosition().y +
+											joint["anchor"].get(1u, 0).asFloat() / m_scene->GetPixelMeterRatio();
 							}
 							// TODO: Expand on this as needed
 							if (jtype == "revolute") {
@@ -441,7 +461,8 @@ namespace engine {
 	void Node::SetPosition(float x, float y) {
 		std::lock_guard<std::recursive_mutex> lg(m_mutex);
 		if (m_body) {
-			m_body->SetTransform(b2Vec2(x / m_scene->GetPixelMeterRatio(), y / m_scene->GetPixelMeterRatio()), m_body->GetAngle());
+			m_body->SetTransform(b2Vec2(x / m_scene->GetPixelMeterRatio(), y / m_scene->GetPixelMeterRatio()),
+								 m_body->GetAngle());
 		} else {
 			setPosition(x, y);
 		}
@@ -449,7 +470,8 @@ namespace engine {
 
 	sf::Vector2f Node::GetPosition() const {
 		if (m_body) {
-			return sf::Vector2f(m_body->GetPosition().x * m_scene->GetPixelMeterRatio(), m_body->GetPosition().y * m_scene->GetPixelMeterRatio());
+			return sf::Vector2f(m_body->GetPosition().x * m_scene->GetPixelMeterRatio(),
+								m_body->GetPosition().y * m_scene->GetPixelMeterRatio());
 		} else {
 			return getPosition();
 		}
@@ -495,7 +517,7 @@ namespace engine {
 				case OT_TOPCENTER:
 				case OT_CENTERCENTER:
 				case OT_BOTTOMCENTER:
-					setOrigin(size.x/2, origin.y);
+					setOrigin(size.x / 2, origin.y);
 					break;
 			}
 			origin = getOrigin();
@@ -508,7 +530,7 @@ namespace engine {
 				case OT_CENTERLEFT:
 				case OT_CENTERCENTER:
 				case OT_CENTERRIGHT:
-					setOrigin(origin.x, size.y/2);
+					setOrigin(origin.x, size.y / 2);
 					break;
 				case OT_BOTTOMLEFT:
 				case OT_BOTTOMCENTER:
@@ -555,7 +577,7 @@ namespace engine {
 
 	float Node::GetRotation() {
 		if (m_body) {
-			return m_body->GetAngle()*180 / fPI;
+			return m_body->GetAngle() * 180 / fPI;
 		}
 		return getRotation();
 	}

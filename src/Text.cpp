@@ -7,14 +7,15 @@
 
 #include "Text.hpp"
 #include <iostream>
-namespace engine{
-	Text::Text(Scene* scene): Node(scene), m_align(ALIGN_LEFT) {
+
+namespace engine {
+	Text::Text(Scene* scene) : Node(scene), m_align(ALIGN_LEFT) {
 	}
 
 	Text::~Text() {
 	}
 
-	void Text::SetText(std::string text){
+	void Text::SetText(std::string text) {
 		m_text.setString(text);
 		switch (m_align) {
 			case ALIGN_LEFT:
@@ -24,50 +25,53 @@ namespace engine{
 				m_text.setOrigin(m_text.getGlobalBounds().width, 0);
 				break;
 			case ALIGN_CENTER:
-				m_text.setOrigin(m_text.getGlobalBounds().width/2, 0);
+				m_text.setOrigin(m_text.getGlobalBounds().width / 2, 0);
 				break;
 			default:
 				std::cerr << "Unknown alignment (" << m_align << ")" << std::endl;
 		}
 	}
-	void Text::OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta){
+
+	void Text::OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
 		target.draw(m_text, states);
 	}
-	bool Text::initialize(Json::Value& root){
-		if (!Node::initialize(root)){
+
+	bool Text::initialize(Json::Value& root) {
+		if (!Node::initialize(root)) {
 			return false;
 		}
 		auto text = root["text"];
-		if (text.isObject()){
+		if (text.isObject()) {
 			m_font.loadFromFile(text.get("font", "").asString());
 			m_text.setFont(m_font);
 			m_text.setCharacterSize(text.get("size", 30).asInt());
 			auto color = text["color"];
-			if (color.isArray()){
-				m_text.setColor(sf::Color(color.get(0u, 0).asInt(), color.get(1u, 0).asInt(), color.get(2u, 0).asInt(), color.get(3u, 255).asInt()));
+			if (color.isArray()) {
+				m_text.setColor(sf::Color(color.get(0u, 0).asInt(), color.get(1u, 0).asInt(), color.get(2u, 0).asInt(),
+										  color.get(3u, 255).asInt()));
 			}
 			auto align = text["align"];
 			if (align.isString()) {
 				const std::string& a = align.asString();
 				if (a == "left") {
 					m_align = ALIGN_LEFT;
-				}else if (a == "center") {
+				} else if (a == "center") {
 					m_align = ALIGN_CENTER;
-				}else if (a == "right") {
+				} else if (a == "right") {
 					m_align = ALIGN_RIGHT;
 				}
 			}
 			uint32_t style = 0;
-			if (text.get("bold", false).asBool()){
+			if (text.get("bold", false).asBool()) {
 				style |= sf::Text::Bold;
 			}
-			if (text.get("italic", false).asBool()){
+			if (text.get("italic", false).asBool()) {
 				style |= sf::Text::Italic;
 			}
-			if (text.get("underlined", false).asBool()){
+			if (text.get("underlined", false).asBool()) {
 				style |= sf::Text::Underlined;
 			}
-			if (text.get("strikethrough", false).asBool()){
+			if (text.get("strikethrough", false).asBool()) {
 				style |= sf::Text::StrikeThrough;
 			}
 			m_text.setStyle(style);

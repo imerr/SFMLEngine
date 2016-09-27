@@ -77,8 +77,8 @@ namespace engine {
 		return m_currentTime > m_speed;
 	}
 
-	SpriteNode::SpriteNode(Scene* scene) : Node(scene), m_texture(0), 
-			m_currentAnimation("default"), m_animated(false), m_vFlipped(false) {
+	SpriteNode::SpriteNode(Scene* scene) : Node(scene), m_texture(0),
+										   m_currentAnimation("default"), m_animated(false), m_vFlipped(false) {
 	}
 
 	SpriteNode::~SpriteNode() {
@@ -119,10 +119,10 @@ namespace engine {
 		float right = left + m_textureRect.width;
 		float top = static_cast<float> (m_textureRect.top);
 		float bottom = top + m_textureRect.height;
-		m_vertices[0].texCoords = sf::Vector2f(m_flipped?right:left , m_vFlipped?bottom:top   );
-		m_vertices[1].texCoords = sf::Vector2f(m_flipped?right:left , m_vFlipped?top   :bottom);
-		m_vertices[2].texCoords = sf::Vector2f(m_flipped?left :right, m_vFlipped?bottom:top   );
-		m_vertices[3].texCoords = sf::Vector2f(m_flipped?left :right, m_vFlipped?top   :bottom);
+		m_vertices[0].texCoords = sf::Vector2f(m_flipped ? right : left, m_vFlipped ? bottom : top);
+		m_vertices[1].texCoords = sf::Vector2f(m_flipped ? right : left, m_vFlipped ? top : bottom);
+		m_vertices[2].texCoords = sf::Vector2f(m_flipped ? left : right, m_vFlipped ? bottom : top);
+		m_vertices[3].texCoords = sf::Vector2f(m_flipped ? left : right, m_vFlipped ? top : bottom);
 
 	}
 
@@ -160,7 +160,7 @@ namespace engine {
 		if (root.isMember("sprite")) {
 			auto sprite = root["sprite"];
 			auto color = sprite["color"];
-			if (color.isArray()){
+			if (color.isArray()) {
 				SetColor(sf::Color(static_cast<uint8_t>(color.get(0u, 0).asUInt()),
 								   static_cast<uint8_t>(color.get(1u, 0).asUInt()),
 								   static_cast<uint8_t>(color.get(2u, 0).asUInt()),
@@ -188,7 +188,7 @@ namespace engine {
 					} else if (sprite["randomIndex"].isArray()) {
 						float chance = 0;
 						for (auto r : sprite["randomIndex"]) {
-							 chance += r[1u].asFloat();
+							chance += r[1u].asFloat();
 						}
 						RandomFloat<float> r(0, chance);
 						float result = r();
@@ -223,7 +223,8 @@ namespace engine {
 							for (size_t o = 0; o < anim["frames"].size(); o++) {
 								auto text = sheet["sprites"][anim["frames"][o].asInt()];
 								if (text.isNull()) {
-									std::cerr << "Frame " << o << "is invalid. Frame " << anim["frames"][o].asInt() << " doesnt exist." << std::endl;
+									std::cerr << "Frame " << o << "is invalid. Frame " << anim["frames"][o].asInt()
+											  << " doesnt exist." << std::endl;
 									continue;
 								}
 								sf::IntRect rect = rectFromJson<int>(text);
@@ -270,10 +271,12 @@ namespace engine {
 		m_flipped = flipped;
 		UpdateTexCoords();
 	}
+
 	void SpriteNode::SetVFlipped(bool flipped) {
 		m_vFlipped = flipped;
 		UpdateTexCoords();
 	}
+
 	void SpriteNode::SetSize(sf::Vector2f size) {
 		Node::SetSize(size);
 		UpdatePosition();

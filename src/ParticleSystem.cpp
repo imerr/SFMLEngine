@@ -15,7 +15,7 @@
 
 namespace engine {
 
-	ParticleSystem::ParticleSystem(Scene *scene) : Node(scene), m_particleCount(0), m_currentIndex(0), m_rate(0),
+	ParticleSystem::ParticleSystem(Scene* scene) : Node(scene), m_particleCount(0), m_currentIndex(0), m_rate(0),
 												   m_burst(false), m_angle(0), m_spread(fPI * 2),
 												   m_minVelocity(.5, .5, 0), m_maxVelocity(1, 1, 0), m_toRelease(0),
 												   m_done(false) {
@@ -73,7 +73,7 @@ namespace engine {
 			}
 		} else if (m_particleCount > m_particles.size()) {
 			while (m_particleCount > m_particles.size()) {
-				Node *particle = Factory::CreateChild(m_particleConfig, this);
+				Node* particle = Factory::CreateChild(m_particleConfig, this);
 				if (!particle) {
 					std::cerr << "Failed to create particle from config." << std::endl;
 					return;
@@ -108,8 +108,8 @@ namespace engine {
 		RandomFloat<float> rx(m_minVelocity.x, m_maxVelocity.x);
 		RandomFloat<float> ry(m_minVelocity.y, m_maxVelocity.y);
 		RandomFloat<float> rr(m_minVelocity.z, m_maxVelocity.z);
-		RandomFloat<float> sx(-m_emitterSize.x/2, m_emitterSize.x/2);
-		RandomFloat<float> sy(-m_emitterSize.y/2, m_emitterSize.y/2);
+		RandomFloat<float> sx(-m_emitterSize.x / 2, m_emitterSize.x / 2);
+		RandomFloat<float> sy(-m_emitterSize.y / 2, m_emitterSize.y / 2);
 
 		if (m_burst) {
 			if (m_particles.size() != m_particleCount) {
@@ -124,8 +124,8 @@ namespace engine {
 			float a = angle();
 			m_particles[m_currentIndex]->SetActive(true);
 			m_particles[m_currentIndex]->GetBody()->SetTransform(
-				b2Vec2((sx() + GetGlobalPosition().x) / m_scene->GetPixelMeterRatio(),
-					   (sy() + GetGlobalPosition().y) / m_scene->GetPixelMeterRatio()), a);
+					b2Vec2((sx() + GetGlobalPosition().x) / m_scene->GetPixelMeterRatio(),
+						   (sy() + GetGlobalPosition().y) / m_scene->GetPixelMeterRatio()), a);
 			m_particles[m_currentIndex]->GetBody()->SetLinearVelocity(b2Vec2(cosf(a) * rx(), sinf(a) * ry()));
 			m_particles[m_currentIndex]->GetBody()->SetAngularVelocity(rr());
 			m_currentIndex++;
@@ -135,7 +135,7 @@ namespace engine {
 		}
 	}
 
-	bool ParticleSystem::initialize(Json::Value &root) {
+	bool ParticleSystem::initialize(Json::Value& root) {
 		if (!Node::initialize(root)) {
 			return false;
 		}
@@ -147,8 +147,8 @@ namespace engine {
 		m_rate = root.get("rate", 1).asFloat();
 		m_burst = root.get("burst", false).asBool();
 		if (!m_burst) {
-			RandomFloat<float> r(m_rate/2, m_rate);
-			m_toRelease = 1/r();
+			RandomFloat<float> r(m_rate / 2, m_rate);
+			m_toRelease = 1 / r();
 		}
 		if (!m_burst || root.get("load", false).asBool()) {
 			// performance optimization if burst and the system never gets used
@@ -182,6 +182,7 @@ namespace engine {
 	uint8_t ParticleSystem::GetType() const {
 		return NT_PARTICLESYSTEM;
 	}
+
 	void ParticleSystem::Reset() {
 		m_done = false;
 		// Reset individual particles
@@ -189,6 +190,7 @@ namespace engine {
 			p->SetActive(false);
 		}
 	}
+
 	void ParticleSystem::SetActive(bool active) {
 		engine::Node::SetActive(active);
 		if (!active) {

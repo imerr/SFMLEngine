@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <vector>
+
 namespace engine {
 	sf::Color FromB2Color(b2Color c) {
 		return sf::Color(

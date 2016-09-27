@@ -6,12 +6,15 @@
  */
 
 #ifndef BOX2DDEBUGDRAW_HPP
-#define	BOX2DDEBUGDRAW_HPP
+#define    BOX2DDEBUGDRAW_HPP
+
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include "Box2D/Box2D.h"
+
 namespace engine {
-    class Scene;
+	class Scene;
+
 	class Box2dDebugDraw : public sf::NonCopyable, public b2Draw, public sf::Drawable {
 	protected:
 		Scene* m_scene;
@@ -20,11 +23,17 @@ namespace engine {
 		bool m_isInitialized;
 	public:
 		Box2dDebugDraw(Scene* scene);
+
 		virtual ~Box2dDebugDraw();
+
 		void Begin();
+
 		void End();
+
 		bool IsInitialized() const;
+
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
 	private:
 		/// Draw a closed polygon provided in CCW order.
 		virtual void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);

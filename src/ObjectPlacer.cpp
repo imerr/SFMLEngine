@@ -10,6 +10,7 @@
 #include "Game.hpp"
 #include "Factory.hpp"
 #include "util/misc.hpp"
+
 namespace engine {
 
 	ObjectPlacer::MouseHandler::MouseHandler(ObjectPlacer* placer) : m_placer(placer) {
@@ -73,13 +74,13 @@ namespace engine {
 			if (e.code == sf::Keyboard::Right) {
 				obj->SetPosition(p.x + 1, p.y);
 			}
-			if (e.code == sf::Keyboard::Multiply){
-				obj->SetRotation(obj->GetRotation()+15);
+			if (e.code == sf::Keyboard::Multiply) {
+				obj->SetRotation(obj->GetRotation() + 15);
 			}
-			if (e.code == sf::Keyboard::Divide){
-				obj->SetRotation(obj->GetRotation()-15);
+			if (e.code == sf::Keyboard::Divide) {
+				obj->SetRotation(obj->GetRotation() - 15);
 			}
-			if (e.code == sf::Keyboard::Comma){
+			if (e.code == sf::Keyboard::Comma) {
 				obj->SetRotation(0);
 			}
 		}
@@ -136,7 +137,7 @@ namespace engine {
 			m_root["children"][i]["childData"] = m_currentNode->GetFilename();
 			m_root["children"][i]["position"][0u] = static_cast<int>(m_currentNode->GetPosition().x);
 			m_root["children"][i]["position"][1u] = static_cast<int>(m_currentNode->GetPosition().y);
-			if (m_currentNode->GetRotation()){
+			if (m_currentNode->GetRotation()) {
 				m_root["children"][i]["rotation"] = m_currentNode->GetRotation();
 			}
 			m_currentNode->OnDelete.RemoveHandler(&m_deleteHandler);
@@ -185,6 +186,7 @@ namespace engine {
 			std::cout << "Successfully saved to out.json" << std::endl;
 		}
 	}
+
 	void ObjectPlacer::OnUpdate(sf::Time interval) {
 		if (m_movement) {
 			auto pos = GetPosition();
@@ -205,8 +207,8 @@ namespace engine {
 			auto windowSize = m_scene->GetGame()->GetWindow()->getSize();
 			auto sceneSize = m_scene->GetSize();
 
-			pos.x = clamp(windowSize.x / 2.0f, pos.x, m_scene->GetSize().x - windowSize.x/2);
-			pos.y = clamp(windowSize.y / 2.0f, pos.y, m_scene->GetSize().y - windowSize.y/2);
+			pos.x = clamp(windowSize.x / 2.0f, pos.x, m_scene->GetSize().x - windowSize.x / 2);
+			pos.y = clamp(windowSize.y / 2.0f, pos.y, m_scene->GetSize().y - windowSize.y / 2);
 			SetPosition(pos);
 
 			sf::Vector2f center(pos);
