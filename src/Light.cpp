@@ -7,7 +7,6 @@
 
 #include "Light.hpp"
 #include "Scene.hpp"
-#include "util/math.hpp"
 #include "util/misc.hpp"
 #include <iostream>
 #include "Game.hpp"

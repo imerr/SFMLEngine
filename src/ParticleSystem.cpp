@@ -6,10 +6,8 @@
  */
 
 #include "ParticleSystem.hpp"
-#include "util/math.hpp"
 #include "Scene.hpp"
 #include "Factory.hpp"
-#include <random>
 #include <Engine/util/json.hpp>
 #include "util/Random.hpp"
 

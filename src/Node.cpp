@@ -6,11 +6,8 @@
  */
 
 #include "Node.hpp"
-#include "util/math.hpp"
 #include "Scene.hpp"
 #include <iostream>
-#include <limits>
-#include "Game.hpp"
 
 namespace engine {
 

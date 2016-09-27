@@ -7,10 +7,6 @@
 
 #include "Scene.hpp"
 #include "Game.hpp"
-#include "Light.hpp"
-#include <iostream>
-#include <mutex>
-#include "Light.hpp"
 #include "Engine/Factory.hpp"
 
 namespace engine {

@@ -6,10 +6,8 @@
  */
 
 #include "Button.hpp"
-#include "SpriteNode.hpp"
 #include "Scene.hpp"
 #include "Game.hpp"
-#include <iostream>
 
 namespace engine {
 

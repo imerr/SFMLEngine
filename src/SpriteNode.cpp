@@ -5,13 +5,10 @@
  * Created on 3. Juli 2014, 01:51
  */
 #include <iostream>
-#include <string.h>
 #include <Engine/util/Random.hpp>
 #include "SpriteNode.hpp"
 #include "ResourceManager.hpp"
-#include "SFML/Graphics.hpp"
 #include "Factory.hpp"
-#include "Game.hpp"
 #include "util/json.hpp"
 
 namespace engine {

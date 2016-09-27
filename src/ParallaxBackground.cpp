@@ -1,7 +1,6 @@
 #include <Engine/ParallaxBackground.hpp>
 #include <Engine/Game.hpp>
 #include <Engine/util/misc.hpp>
-#include <iostream>
 
 namespace engine {
 

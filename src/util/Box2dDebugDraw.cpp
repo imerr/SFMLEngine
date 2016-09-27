@@ -1,11 +1,7 @@
 #include "Scene.hpp"
 #include "Game.hpp"
 #include "util/misc.hpp"
-#include "util/Box2dDebugDraw.hpp"
 
-
-#include <iostream>
-#include <vector>
 
 namespace engine {
 	sf::Color FromB2Color(b2Color c) {
