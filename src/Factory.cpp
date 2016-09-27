@@ -121,8 +121,8 @@ namespace engine {
 			Node* nchild = CreateChild(child, parent->GetScene());
 			if (nchild) {
 				parent->AddNode(nchild);
+				nchild->OnInitializeDone();
 			}
-			nchild->OnInitializeDone();
 		}
 		return true;
 	}

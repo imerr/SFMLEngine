@@ -9,6 +9,7 @@
 #include "Scene.hpp"
 #include "util/misc.hpp"
 #include <iostream>
+#include <Engine/util/json.hpp>
 #include "Game.hpp"
 
 namespace engine {
@@ -316,16 +317,7 @@ namespace engine {
 		if (!Node::initialize(root)) {
 			return false;
 		}
-		if (root["color"].isArray()) {
-			m_lightColor.r = root["color"].get(0u, 255).asInt();
-			m_lightColor.g = root["color"].get(1u, 255).asInt();
-			m_lightColor.b = root["color"].get(2u, 255).asInt();
-			m_lightColor.a = root["color"].get(3u, 255).asInt();
-			SetLightColor(m_lightColor);
-		} else if (root["color"].isInt()) {
-			unsigned int lc = root["color"].asInt();
-			m_lightColor = sf::Color(lc & 0xFF0000 >> 16, lc & 0xFF00 >> 8, lc & 0xFF, lc & 0xFF000000 >> 24);
-		}
+		m_lightColor = jsonNodeAs<sf::Color>(root["color"]);
 		m_radius = root.get("radius", 200).asFloat();
 		m_angle = root.get("angle", 0).asFloat() * fPI / 180;
 		// min prevents overdrawing

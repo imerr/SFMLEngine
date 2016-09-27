@@ -5,6 +5,7 @@
  * Created on 3. Juli 2014, 01:01
  */
 
+#include <Engine/util/json.hpp>
 #include "Scene.hpp"
 #include "Game.hpp"
 #include "Engine/Factory.hpp"
@@ -139,14 +140,7 @@ namespace engine {
 		auto light = root["light"];
 		if (!light.empty() && !light.isNull()) {
 			m_lightSystem.SetEnabled(light.get("enabled", true).asBool());
-			if (light["ambient"].isArray()) {
-				m_lightSystem.SetAmbientColor(
-						sf::Color(light["ambient"].get(0u, 255).asInt(), light["ambient"].get(1u, 255).asInt(),
-								  light["ambient"].get(2u, 255).asInt(), light["ambient"].get(3u, 255).asInt()));
-			} else if (light["ambient"].isInt()) {
-				unsigned int lc = light["ambient"].asInt();
-				m_lightSystem.SetAmbientColor(sf::Color(lc & 0xFF0000, lc & 0xFF00, lc & 0xFF, lc & 0xFF000000));
-			}
+			m_lightSystem.SetAmbientColor(jsonNodeAs<sf::Color>(light["ambient"]));
 		}
 		// Easy way to fill the ui layer
 		auto ui = root["ui"];

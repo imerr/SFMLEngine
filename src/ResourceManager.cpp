@@ -20,8 +20,8 @@ namespace engine {
 		for (int x = 0; x < 11; x++) {
 			for (int y = 0; y < 11; y++) {
 				if (checker) {
-					for (int x2 = 0; x2 < 10; x2++) {
-						for (int y2 = 0; y2 < 10; y2++) {
+					for (unsigned int x2 = 0; x2 < 10; x2++) {
+						for (unsigned int y2 = 0; y2 < 10; y2++) {
 							missing.setPixel(x * 10 + x2, y * 10 + y2, sf::Color(0, 0, 0));
 						}
 					}

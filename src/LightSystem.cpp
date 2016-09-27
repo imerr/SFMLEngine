@@ -13,7 +13,8 @@
 namespace engine {
 
 	void applyShader(const sf::Shader& shader, sf::RenderTarget& output) {
-		sf::Vector2f outputSize = static_cast<sf::Vector2f> (output.getSize());
+		sf::Vector2f outputSize(static_cast<float>(output.getSize().x),
+								static_cast<float>(output.getSize().y));
 		sf::VertexArray vertices(sf::TrianglesStrip, 4);
 		vertices[0] = sf::Vertex(sf::Vector2f(0, 0), sf::Vector2f(0, 1));
 		vertices[1] = sf::Vertex(sf::Vector2f(outputSize.x, 0), sf::Vector2f(1, 1));

@@ -6,6 +6,7 @@
 #define ENGINE_UTIL_JSON_HPP
 
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include <json/value.h>
 #include <stdint.h>
 
@@ -39,6 +40,9 @@ namespace engine {
 
 	template<>
 	std::string jsonNodeAs<std::string>(const Json::Value& node);
+
+	template<>
+	sf::Color jsonNodeAs<sf::Color>(const Json::Value& node);
 
 
 	template<class T>

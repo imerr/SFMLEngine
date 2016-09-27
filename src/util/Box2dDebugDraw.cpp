@@ -13,7 +13,7 @@ namespace engine {
 
 	Box2dDebugDraw::Box2dDebugDraw(Scene* scene) : m_scene(scene), m_isInitialized(false) {
 		auto size = m_scene->GetGame()->GetWindow()->getView().getSize();
-		m_texture.create(size.x, size.y);
+		m_texture.create(static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y));
 	}
 
 	Box2dDebugDraw::~Box2dDebugDraw() {

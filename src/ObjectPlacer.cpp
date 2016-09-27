@@ -1,10 +1,3 @@
-/*
- * File:   ObjectPlacer.cpp
- * Author: iMer
- *
- * Created on 7. Dezember 2014, 14:38
- */
-
 #include "ObjectPlacer.hpp"
 #include "Scene.hpp"
 #include "Game.hpp"
@@ -21,9 +14,9 @@ namespace engine {
 		auto m = m_placer->GetScene()->GetGame()->GetMousePosition();
 		if (e.button == sf::Mouse::Left) {
 			// round due to having fractions of a pixel being stupid
-			m_placer->Place(round(m.x), round(m.y));
+			m_placer->Place(roundf(m.x), roundf(m.y));
 		} else if (e.button == sf::Mouse::Right) {
-			m_placer->New(round(m.x), round(m.y));
+			m_placer->New(roundf(m.x), roundf(m.y));
 		} else if (e.button == sf::Mouse::Middle) {
 			m_placer->Remove();
 		}
@@ -46,7 +39,7 @@ namespace engine {
 			}
 			m_placer->Remove();
 			m_placer->Next();
-			m_placer->New(round(p.x), round(p.y));
+			m_placer->New(roundf(p.x), roundf(p.y));
 		}
 		if (e.code == sf::Keyboard::Subtract) {
 			sf::Vector2f p;
@@ -57,7 +50,7 @@ namespace engine {
 			}
 			m_placer->Remove();
 			m_placer->Prev();
-			m_placer->New(round(p.x), round(p.y));
+			m_placer->New(roundf(p.x), roundf(p.y));
 		}
 		Node* obj = m_placer->GetCurrentNode();
 		if (obj) {
@@ -212,15 +205,15 @@ namespace engine {
 			SetPosition(pos);
 
 			sf::Vector2f center(pos);
-			if (center.x < windowSize.x / 2) {
-				center.x = windowSize.x / 2;
+			if (center.x < windowSize.x / 2.f) {
+				center.x = windowSize.x / 2.f;
 			} else if (center.x > sceneSize.x - windowSize.x / 2) {
-				center.x = sceneSize.x - windowSize.x / 2;
+				center.x = sceneSize.x - windowSize.x / 2.f;
 			}
 			if (center.y < windowSize.y / 2) {
-				center.y = windowSize.y / 2;
+				center.y = windowSize.y / 2.f;
 			} else if (center.y > sceneSize.y - windowSize.y / 2) {
-				center.y = sceneSize.y - windowSize.y / 2;
+				center.y = sceneSize.y - windowSize.y / 2.f;
 			}
 			view.setCenter(center);
 			m_scene->GetGame()->GetWindow()->setView(view);

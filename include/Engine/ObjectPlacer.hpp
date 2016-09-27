@@ -1,12 +1,5 @@
-/* 
- * File:   ObjectPlacer.hpp
- * Author: iMer
- *
- * Created on 7. Dezember 2014, 14:38
- */
-
 #ifndef ENGINE_OBJECTPLACER_HPP
-#define    ENGINE_OBJECTPLACER_HPP
+#define ENGINE_OBJECTPLACER_HPP
 
 #include "Node.hpp"
 #include <SFML/Window.hpp>

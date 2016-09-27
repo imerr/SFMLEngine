@@ -114,7 +114,7 @@ namespace engine {
 				SetParticleCount(m_particleCount);
 			}
 			m_done = true;
-			m_toRelease = m_particleCount;
+			m_toRelease = static_cast<float>(m_particleCount);
 		} else {
 			m_toRelease += interval.asSeconds() * m_rate;
 		}

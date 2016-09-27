@@ -8,6 +8,7 @@
 #include "Node.hpp"
 #include "Scene.hpp"
 #include <iostream>
+#include <Engine/util/json.hpp>
 
 namespace engine {
 
@@ -153,16 +154,7 @@ namespace engine {
 
 	bool Node::initialize(Json::Value& root) {
 		m_opaque = root.get("opaque", true).asBool();
-		if (root.isMember("size")) {
-			auto size = root["size"];
-			if (size.isArray()) {
-				m_size.x = size.get(0u, 0).asFloat();
-				m_size.y = size.get(1u, 0).asFloat();
-			} else {
-				m_size.x = size.get("x", 0).asFloat();
-				m_size.y = size.get("y", 0).asFloat();
-			}
-		}
+		m_size = vector2FromJson<float>(root["size"]);
 		m_despawnTime = root.get("despawn", std::numeric_limits<float>::infinity()).asFloat();
 		m_render = root.get("render", true).asBool();
 		m_active = root.get("active", true).asBool();
@@ -274,15 +266,15 @@ namespace engine {
 						std::string shapeType = shapes[i].get("type", "box").asString();
 						b2PolygonShape poly;
 						b2FixtureDef def;
-						def.filter.categoryBits = shapes[i].get("category", 1).asInt();
-						def.filter.maskBits = ~shapes[i].get("mask", 0).asInt();
+						def.filter.categoryBits = static_cast<uint16_t>(shapes[i].get("category", 1).asUInt());
+						def.filter.maskBits = ~static_cast<uint16_t>(shapes[i].get("mask", 0).asUInt());
 						b2ChainShape chain;
 						b2CircleShape circle;
 						b2EdgeShape edge;
 						def.density = shapes[i].get("density", 0.0f).asFloat();
 						def.friction = shapes[i].get("friction", 0.2f).asFloat();
 						def.restitution = shapes[i].get("restitution", 0.0f).asFloat();
-						def.isSensor = shapes[i].get("isSensor", false).asFloat();
+						def.isSensor = shapes[i].get("isSensor", false).asBool();
 						if (shapeType == "box") {
 							float width = shapes[i].get("width", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();
 							float height = shapes[i].get("height", 1.0f).asFloat() / 2 / m_scene->GetPixelMeterRatio();

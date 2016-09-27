@@ -73,4 +73,22 @@ namespace engine {
 		}
 		return node.asString();
 	}
+
+	template<>
+	sf::Color jsonNodeAs<sf::Color>(const Json::Value& node) {
+		sf::Color c = sf::Color::White;
+		if (node.isArray()) {
+			c.r = static_cast<uint8_t>(node.get(0u, 255).asUInt());
+			c.g = static_cast<uint8_t>(node.get(1u, 255).asUInt());
+			c.b = static_cast<uint8_t>(node.get(2u, 255).asUInt());
+			c.a = static_cast<uint8_t>(node.get(3u, 255).asUInt());
+		} else if (node.isInt()) {
+			unsigned int ic = node.asUInt();
+			c.r = static_cast<uint8_t>(ic & 0xFF0000 >> 16);
+			c.g = static_cast<uint8_t>(ic & 0xFF00 >> 8);
+			c.b = static_cast<uint8_t>(ic & 0xFF);
+			c.a = static_cast<uint8_t>(ic & 0xFF000000 >> 24);
+		}
+		return c;
+	}
 }

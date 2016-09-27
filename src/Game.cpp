@@ -21,8 +21,8 @@ namespace engine {
 																	  m_multithreaded(multithreaded) {
 		m_window.setVerticalSyncEnabled(true);
 		sf::View view = m_window.getDefaultView();
-		view.setSize(width, height);
-		view.setCenter(width / 2, height / 2);
+		view.setSize(static_cast<float>(width), static_cast<float>(height));
+		view.setCenter(width / 2.f, height / 2.f);
 		m_window.setView(view);
 	}
 
