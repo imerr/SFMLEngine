@@ -7,14 +7,19 @@ namespace engine {
 	class LoadingScene : public Scene {
 	protected:
 		Scene* m_old;
-		Scene* m_new;
+		std::atomic<Scene*> m_new;
 		std::atomic<bool> m_done;
+		bool m_deleteAfterSwitch;
 	public:
 		LoadingScene(Game* game);
 
 		virtual ~LoadingScene();
 
-		void Switch(Scene* old, Scene* new_);
+		void Switch(Scene* old, Scene* newScene);
+
+		void SetDeleteAfterSwitch(bool deleteAfter) {
+			m_deleteAfterSwitch = deleteAfter;
+		};
 
 	protected:
 		virtual void OnUpdate(sf::Time interval);
