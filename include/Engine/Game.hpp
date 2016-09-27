@@ -22,7 +22,7 @@ namespace engine {
 
 	protected:
 		sf::RenderWindow m_window;
-		Scene* m_scene;
+		std::atomic<Scene*> m_scene;
 		std::atomic<bool> m_running;
 		sf::Clock m_lastLogicUpdate;
 		sf::Mutex m_lastLogicUpdateMutex;
@@ -69,7 +69,7 @@ namespace engine {
 		}
 
 		void SwitchScene(Scene* scene) {
-			if (!m_scene) {
+			if (!m_scene.load()) {
 				m_scene = scene;
 				return;
 			}

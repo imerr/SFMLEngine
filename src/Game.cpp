@@ -49,8 +49,8 @@ namespace engine {
 			m_window.setActive(true);
 			while (m_running) {
 				m_window.clear(m_clearColor);
-				if (m_scene) {
-					m_scene->draw(m_window, sf::RenderStates::Default, t.restart().asSeconds());
+				if (m_scene.load()) {
+					m_scene.load()->draw(m_window, sf::RenderStates::Default, t.restart().asSeconds());
 				}
 				m_window.display();
 				m_fps++;
@@ -87,12 +87,12 @@ namespace engine {
 					}
 				}
 			}
-			m_scene->update(interval);
+			m_scene.load()->update(interval);
 			OnUpdate();
 			if (!m_multithreaded) {
 				m_window.clear(sf::Color::White);
-				if (m_scene) {
-					m_scene->draw(m_window, sf::RenderStates::Default, interval.asSeconds());
+				if (m_scene.load()) {
+					m_scene.load()->draw(m_window, sf::RenderStates::Default, interval.asSeconds());
 				}
 				m_window.display();
 				m_fps++;
@@ -130,6 +130,6 @@ namespace engine {
 	}
 
 	Scene* Game::GetScene() const {
-		return m_scene;
+		return m_scene.load();
 	}
 }
