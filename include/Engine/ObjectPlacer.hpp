@@ -12,25 +12,25 @@ namespace engine {
 	class ObjectPlacer : public Node {
 	public:
 
-		class MouseHandler : public EventHandler<const sf::Event::MouseButtonEvent&> {
+		class MouseHandler : public EventHandler<bool, const sf::Event::MouseButtonEvent&, bool> {
 		protected:
 			ObjectPlacer* m_placer;
 		public:
 			MouseHandler(ObjectPlacer* placer);
 
-			virtual void handle(const sf::Event::MouseButtonEvent&);
+			virtual bool handle(const sf::Event::MouseButtonEvent&, bool);
 		};
 
-		class KeyHandler : public EventHandler<const sf::Event::KeyEvent&> {
+		class KeyHandler : public EventHandler<bool, const sf::Event::KeyEvent&, bool> {
 		protected:
 			ObjectPlacer* m_placer;
 		public:
 			KeyHandler(ObjectPlacer* placer);
 
-			virtual void handle(const sf::Event::KeyEvent&);
+			virtual bool handle(const sf::Event::KeyEvent&, bool);
 		};
 
-		class DeleteHandler : public EventHandler<const Node*> {
+		class DeleteHandler : public EventHandler<void, const Node*> {
 		protected:
 			ObjectPlacer* m_placer;
 		public:

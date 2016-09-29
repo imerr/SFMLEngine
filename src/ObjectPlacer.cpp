@@ -10,7 +10,10 @@ namespace engine {
 
 	}
 
-	void ObjectPlacer::MouseHandler::handle(const sf::Event::MouseButtonEvent& e) {
+	bool ObjectPlacer::MouseHandler::handle(const sf::Event::MouseButtonEvent& e, bool down) {
+		if (!down) {
+			return true;
+		}
 		auto m = m_placer->GetScene()->GetGame()->GetMousePosition();
 		if (e.button == sf::Mouse::Left) {
 			// round due to having fractions of a pixel being stupid
@@ -20,13 +23,17 @@ namespace engine {
 		} else if (e.button == sf::Mouse::Middle) {
 			m_placer->Remove();
 		}
+		return true;
 	}
 
 	ObjectPlacer::KeyHandler::KeyHandler(ObjectPlacer* placer) : m_placer(placer) {
 
 	}
 
-	void ObjectPlacer::KeyHandler::handle(const sf::Event::KeyEvent& e) {
+	bool ObjectPlacer::KeyHandler::handle(const sf::Event::KeyEvent& e, bool down) {
+		if (!down) {
+			return true;
+		}
 		if (e.code == sf::Keyboard::Numpad0) {
 			m_placer->Save();
 		}
@@ -77,7 +84,7 @@ namespace engine {
 				obj->SetRotation(0);
 			}
 		}
-
+		return true;
 	}
 
 	ObjectPlacer::DeleteHandler::DeleteHandler(ObjectPlacer* placer) : m_placer(placer) {
@@ -94,7 +101,7 @@ namespace engine {
 											   m_keyHandler(this), m_deleteHandler(this), m_movement(true) {
 		m_root["children"] = Json::arrayValue;
 		scene->GetGame()->OnMouseClick.AddHandler(&m_mouseHandler);
-		scene->GetGame()->OnKeyDown.AddHandler(&m_keyHandler);
+		scene->GetGame()->OnKeyPress.AddHandler(&m_keyHandler);
 	}
 
 	ObjectPlacer::~ObjectPlacer() {
@@ -102,7 +109,7 @@ namespace engine {
 			m_currentNode->OnDelete.RemoveHandler(&m_deleteHandler);
 		}
 		m_scene->GetGame()->OnMouseClick.RemoveHandler(&m_mouseHandler);
-		m_scene->GetGame()->OnKeyDown.RemoveHandler(&m_keyHandler);
+		m_scene->GetGame()->OnKeyPress.RemoveHandler(&m_keyHandler);
 		Save();
 	}
 

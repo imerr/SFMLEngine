@@ -28,11 +28,12 @@ namespace engine {
 		LoadingScene m_loadingScene;
 		bool m_multithreaded;
 	public:
-		Event<const sf::Event::KeyEvent&> OnKeyDown;
-		Event<const sf::Event::MouseButtonEvent&> OnMouseClick;
+		CancelableEvent<const sf::Event::KeyEvent&, bool> OnKeyPress;
+		CancelableEvent<const sf::Event::MouseButtonEvent&, bool> OnMouseClick;
+		CancelableEvent<const sf::Event::MouseWheelScrollEvent&> OnMouseScroll;
 	public:
 		Game(uint32_t width = 1024, uint32_t height = 576, bool multithreaded =
-		/* TODO(imer): android crashes with a draw thread - still need to debug that*/
+		// TODO(imer): android crashes with a draw thread - still need to debug that
 #ifdef SFML_SYSTEM_ANDROID
 		false
 #else

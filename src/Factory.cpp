@@ -1,16 +1,10 @@
-/*
- * File:   Factory.cpp
- * Author: iMer
- *
- * Created on 19. August 2014, 18:40
- */
-
-#include "Factory.hpp"
-#include "ParticleSystem.hpp"
-#include "Text.hpp"
-#include "Button.hpp"
-#include "ObjectPlacer.hpp"
-#include "ParallaxBackground.hpp"
+#include <Engine/Scrollable.hpp>
+#include <Engine/Factory.hpp>
+#include <Engine/ParticleSystem.hpp>
+#include <Engine/Text.hpp>
+#include <Engine/Button.hpp>
+#include <Engine/ObjectPlacer.hpp>
+#include <Engine/ParallaxBackground.hpp>
 
 namespace engine {
 	std::map<std::string, std::function<Node*(Json::Value& root, Node* parent) >> Factory::m_types = {
@@ -29,6 +23,8 @@ namespace engine {
 								   Factory::CreateChildNode<ObjectPlacer>)),
 			std::make_pair(std::string("parallaxBackground"), std::function<Node*(Json::Value& root, Node* parent)>(
 					Factory::CreateChildNode<ParallaxBackground>)),
+			std::make_pair(std::string("scrollable"),
+						   std::function<Node*(Json::Value& root, Node* parent)>(Factory::CreateChildNode<Scrollable>)),
 			std::make_pair(std::string("particlesystem"),
 						   std::function<Node*(Json::Value& root, Node* parent)>(
 								   Factory::CreateChildNode<ParticleSystem>))

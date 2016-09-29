@@ -27,6 +27,12 @@ namespace engine {
 	}
 
 	Game::~Game() {
+		// loading scene children need to be deleted since they might rely
+		// on game state that could get destroyed before the scene
+		auto& loadingSceneChildren =  m_loadingScene.GetChildren();
+		while (loadingSceneChildren.size()) {
+			delete loadingSceneChildren.front();
+		}
 	}
 
 	void Game::run() {
@@ -69,21 +75,61 @@ namespace engine {
 			m_lastLogicUpdateMutex.unlock();
 			sf::Event event;
 			while (m_window.pollEvent(event)) {
+				/*
+				 * TODO unhandled events:
+				 * Resized,                ///< The window was resized (data in event.size)
+				 * TextEntered,            ///< A character was entered (data in event.text)
+				 * MouseWheelMoved,        ///< The mouse wheel was scrolled (data in event.mouseWheel) (deprecated)
+				 * MouseMoved,             ///< The mouse cursor moved (data in event.mouseMove)
+				 *
+				 * imer: MouseEntered & MouseLeft seem kinda unneeded to me, focus is the important part
+				 * MouseEntered,           ///< The mouse cursor entered the area of the window (no data)
+				 * MouseLeft,              ///< The mouse cursor left the area of the window (no data)
+				 *
+				 * JoystickButtonPressed,  ///< A joystick button was pressed (data in event.joystickButton)
+				 * JoystickButtonReleased, ///< A joystick button was released (data in event.joystickButton)
+				 * JoystickMoved,          ///< The joystick moved along an axis (data in event.joystickMove)
+				 * JoystickConnected,      ///< A joystick was connected (data in event.joystickConnect)
+				 * JoystickDisconnected,   ///< A joystick was disconnected (data in event.joystickConnect)
+				 *
+				 * TouchBegan,             ///< A touch event began (data in event.touch)
+				 * TouchMoved,             ///< A touch moved (data in event.touch)
+				 * TouchEnded,             ///< A touch event ended (data in event.touch)
+				 *
+				 * SensorChanged,          ///< A sensor value changed (data in event.sensor)
+				 */
 				if (event.type == sf::Event::Closed) {
-					// TODO: implement events/callbacks
 					m_window.close();
 					m_running = false;
 				} else if (event.type == sf::Event::LostFocus) {
 					m_focus = false;
 				} else if (event.type == sf::Event::GainedFocus) {
 					m_focus = true;
-				} else if (event.type == sf::Event::KeyPressed) {
-					if (m_focus) {
-						OnKeyDown.Fire(event.key);
-					}
-				} else if (event.type == sf::Event::MouseButtonPressed) {
-					if (m_focus) {
-						OnMouseClick.Fire(event.mouseButton);
+				} else if (m_focus) {
+					// Don't handle input events if we're not in focus
+
+					if (event.type == sf::Event::KeyPressed) {
+						OnKeyPress.Fire(m_scene, event.key, true);
+					} else if (event.type == sf::Event::KeyReleased) {
+						// try to give the handler for the down event the up event as well
+						if (OnKeyPress.GetLastHandler() &&
+								OnKeyPress.GetLastHandler()->CanHandle(event.key, false) &&
+								OnKeyPress.GetLastHandler()->handle(event.key, false)) {
+							continue;
+						}
+						OnKeyPress.Fire(m_scene, event.key, false);
+					} else if (event.type == sf::Event::MouseButtonPressed) {
+						OnMouseClick.Fire(m_scene, event.mouseButton, true);
+					} else if (event.type == sf::Event::MouseButtonReleased) {
+						// try to give the handler for the down event the up event as well
+						if (OnMouseClick.GetLastHandler() &&
+								OnMouseClick.GetLastHandler()->CanHandle(event.mouseButton, false) &&
+								OnMouseClick.GetLastHandler()->handle(event.mouseButton, false)) {
+							continue;
+						}
+						OnMouseClick.Fire(m_scene, event.mouseButton, true);
+					} else if (event.type == sf::Event::MouseWheelScrolled) {
+						OnMouseScroll.Fire(m_scene, event.mouseWheelScroll);
 					}
 				}
 			}
