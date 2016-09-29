@@ -102,7 +102,7 @@ namespace engine {
 			return sf::Vector2f(m_body->GetPosition().x * m_scene->GetPixelMeterRatio(),
 								m_body->GetPosition().y * m_scene->GetPixelMeterRatio());
 		}
-		if (m_parent->GetBody()) {
+		if (m_parent && m_parent->GetBody()) {
 			return sf::Vector2f(m_parent->GetBody()->GetPosition().x * m_scene->GetPixelMeterRatio() + getPosition().x,
 								getPosition().y + m_parent->GetBody()->GetPosition().y * m_scene->GetPixelMeterRatio());
 		}
