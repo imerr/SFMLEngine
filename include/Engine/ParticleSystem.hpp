@@ -1,12 +1,5 @@
-/*
- * File:   ParticleSystem.hpp
- * Author: iMer
- *
- * Created on 22. August 2014, 21:18
- */
-
-#ifndef PARTICLESYSTEM_HPP
-#define    PARTICLESYSTEM_HPP
+#ifndef ENGINE_PARTICLESYSTEM_HPP
+#define ENGINE_PARTICLESYSTEM_HPP
 
 #include "SpriteNode.hpp"
 #include <SFML/System.hpp>
@@ -32,10 +25,6 @@ namespace engine {
 		ParticleSystem(Scene* scene);
 
 		virtual ~ParticleSystem();
-
-		void SetVelocity(sf::Vector2f velocity);
-
-		sf::Vector2f GetVelocity() const;
 
 		void SetSpread(float spread);
 
@@ -86,5 +75,5 @@ namespace engine {
 	};
 }
 
-#endif	/* PARTICLESYSTEM_HPP */
+#endif
 

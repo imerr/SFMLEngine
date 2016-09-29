@@ -1,12 +1,5 @@
-/* 
- * File:   ResourceManager.hpp
- * Author: iMer
- *
- * Created on 3. Juli 2014, 14:47
- */
-
-#ifndef RESOURCEMANAGER_HPP
-#define    RESOURCEMANAGER_HPP
+#ifndef ENGINE_RESOURCEMANAGER_HPP
+#define ENGINE_RESOURCEMANAGER_HPP
 
 #include "util/singleton.hpp"
 #include <map>
@@ -23,7 +16,6 @@ namespace engine {
 		sf::Texture m_textureMissing;
 	public:
 		ResourceManager();
-
 		virtual ~ResourceManager();
 
 		sf::Texture* GetTexture(std::string path);
@@ -33,5 +25,5 @@ namespace engine {
 
 }
 
-#endif	/* RESOURCEMANAGER_HPP */
+#endif
 

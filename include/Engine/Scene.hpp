@@ -1,12 +1,5 @@
-/* 
- * File:   Scene.hpp
- * Author: iMer
- *
- * Created on 3. Juli 2014, 01:01
- */
-
 #ifndef ENGINE_SCENE_HPP
-#define    ENGINE_SCENE_HPP
+#define ENGINE_SCENE_HPP
 
 #include "Node.hpp"
 #include "util/Event.hpp"
@@ -65,10 +58,6 @@ namespace engine {
 
 		float GetPixelMeterRatio() const;
 
-		void AddLight(Light* light);
-
-		void RemoveLight(Light* light);
-
 		LightSystem* GetLightSystem();
 
 		void SetDebug(bool debug);
@@ -94,5 +83,5 @@ namespace engine {
 	};
 }
 
-#endif	/* ENGINE_SCENE_HPP */
+#endif
 

@@ -1,12 +1,5 @@
-/*
- * File:   Node.hpp
- * Author: iMer
- *
- * Created on 3. Juli 2014, 01:00
- */
-
 #ifndef ENGINE_NODE_HPP
-#define    ENGINE_NODE_HPP
+#define ENGINE_NODE_HPP
 
 #include <list>
 #include <mutex>
@@ -209,5 +202,5 @@ namespace engine {
 
 }
 
-#endif	/* ENGINE_NODE_HPP */
+#endif
 

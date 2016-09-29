@@ -21,4 +21,4 @@ namespace engine {
 }
 
 
-#endif //ENGINE_PARALLAXBACKGROUND_HPP
+#endif

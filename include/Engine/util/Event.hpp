@@ -1,12 +1,5 @@
-/* 
- * File:   Event.hpp
- * Author: iMer
- *
- * Created on 23. August 2014, 17:44
- */
-
 #ifndef ENGINE_UTIL_EVENT_HPP
-#define    ENGINE_UTIL_EVENT_HPP
+#define ENGINE_UTIL_EVENT_HPP
 
 #include <list>
 

@@ -28,5 +28,5 @@ namespace engine {
 	}
 }
 
-#endif	/* MATH_HPP */
+#endif
 

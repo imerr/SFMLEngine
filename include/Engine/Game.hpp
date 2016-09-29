@@ -1,12 +1,5 @@
-/*
- * File:   Game.hpp
- * Author: iMer
- *
- * Created on 2. Juli 2014, 23:50
- */
-
 #ifndef ENGINE_GAME_HPP
-#define    ENGINE_GAME_HPP
+#define ENGINE_GAME_HPP
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -87,5 +80,5 @@ namespace engine {
 
 }
 
-#endif	/* ENGINE_GAME_HPP */
+#endif
 

@@ -1,12 +1,5 @@
-/*
- * File:   misc.hpp
- * Author: iMer
- *
- * Created on 12. August 2014, 06:17
- */
-
 #ifndef ENGINE_UTIL_MISC_HPP
-#define    ENGINE_UTIL_MISC_HPP
+#define ENGINE_UTIL_MISC_HPP
 namespace engine {
 	template<typename T>
 	T clamp(T min, T value, T max) {
@@ -54,5 +47,5 @@ namespace engine {
 		return RayCastCallback<T>(func);
 	}
 }
-#endif	/* ENGINE_UTIL_MISC_HPP */
+#endif
 

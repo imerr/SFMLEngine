@@ -1,12 +1,5 @@
-/*
- * File:   SpriteNode.hpp
- * Author: iMer
- *
- * Created on 3. Juli 2014, 01:51
- */
-
-#ifndef SPRITENODE_HPP
-#define    SPRITENODE_HPP
+#ifndef ENGINE_SPRITENODE_HPP
+#define ENGINE_SPRITENODE_HPP
 
 #include "Node.hpp"
 #include "SFML/Graphics/Texture.hpp"
@@ -108,5 +101,5 @@ namespace engine {
 		virtual void OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta);
 	};
 }
-#endif	/* SPRITENODE_HPP */
+#endif
 

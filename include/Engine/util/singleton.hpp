@@ -1,12 +1,5 @@
-/* 
- * File:   singleton.hpp
- * Author: iMer
- *
- * Created on 3. Juli 2014, 16:34
- */
-
-#ifndef SINGLETON_HPP
-#define    SINGLETON_HPP
+#ifndef ENGINE_UTIL_SINGLETON_HPP
+#define ENGINE_UTIL_SINGLETON_HPP
 namespace engine {
 	template<typename T>
 	class singleton {
@@ -32,5 +25,5 @@ namespace engine {
 }
 
 
-#endif	/* SINGLETON_HPP */
+#endif
 

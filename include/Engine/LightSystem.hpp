@@ -1,12 +1,5 @@
-/*
- * File:   LightSystem.hpp
- * Author: iMer
- *
- * Created on 17. August 2014, 10:39
- */
-
-#ifndef LIGHTSYSTEM_HPP
-#define    LIGHTSYSTEM_HPP
+#ifndef ENGINE_LIGHTSYSTEM_HPP
+#define ENGINE_LIGHTSYSTEM_HPP
 
 #include <SFML/Graphics.hpp>
 #include "Light.hpp"
@@ -58,5 +51,4 @@ namespace engine {
 	};
 }
 
-#endif	/* LIGHTSYSTEM_HPP */
-
+#endif

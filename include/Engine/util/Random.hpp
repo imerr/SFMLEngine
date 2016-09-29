@@ -1,12 +1,5 @@
-/*
- * File:   Random.hpp
- * Author: iMer
- *
- * Created on 22. August 2014, 22:57
- */
-
-#ifndef UTIL_RANDOM_HPP
-#define    UTIL_RANDOM_HPP
+#ifndef ENGINE_UTIL_RANDOM_HPP
+#define ENGINE_UTIL_RANDOM_HPP
 
 #include <random>
 
@@ -45,5 +38,5 @@ namespace engine {
 }
 
 
-#endif	/* RANDOM_HPP */
+#endif
 

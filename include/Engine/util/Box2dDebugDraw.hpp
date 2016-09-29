@@ -1,12 +1,5 @@
-/* 
- * File:   Box2dDebugDraw.hpp
- * Author: iMer
- *
- * Created on 15. August 2014, 04:29
- */
-
-#ifndef BOX2DDEBUGDRAW_HPP
-#define    BOX2DDEBUGDRAW_HPP
+#ifndef ENGINE_UTIL_BOX2DDEBUGDRAW_HPP
+#define ENGINE_UTIL_BOX2DDEBUGDRAW_HPP
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
@@ -58,5 +51,5 @@ namespace engine {
 	};
 }
 
-#endif	/* BOX2DDEBUGDRAW_HPP */
+#endif
 

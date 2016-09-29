@@ -1,12 +1,5 @@
-/* 
- * File:   Button.hpp
- * Author: iMer
- *
- * Created on 23. August 2014, 07:57
- */
-
-#ifndef BUTTON_HPP
-#define    BUTTON_HPP
+#ifndef ENGINE_BUTTON_HPP
+#define ENGINE_BUTTON_HPP
 
 #include "SpriteNode.hpp"
 
@@ -36,5 +29,5 @@ namespace engine {
 
 }
 
-#endif	/* BUTTON_HPP */
+#endif
 

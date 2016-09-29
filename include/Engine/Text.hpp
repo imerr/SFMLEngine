@@ -1,12 +1,5 @@
-/*
- * File:   Text.hpp
- * Author: iMer
- *
- * Created on 7. Dezember 2014, 00:48
- */
-
 #ifndef ENGINE_TEXT_HPP
-#define    ENGINE_TEXT_HPP
+#define ENGINE_TEXT_HPP
 
 #include "Node.hpp"
 #include <SFML/Graphics.hpp>
@@ -74,5 +67,5 @@ namespace engine {
 	};
 }
 
-#endif	/* TEXT_HPP */
+#endif
 

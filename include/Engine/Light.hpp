@@ -1,12 +1,5 @@
-/* 
- * File:   Light.hpp
- * Author: iMer
- *
- * Created on 17. August 2014, 07:31
- */
-
 #ifndef LIGHT_HPP
-#define    LIGHT_HPP
+#define LIGHT_HPP
 
 #include "Node.hpp"
 
@@ -68,5 +61,5 @@ namespace engine {
 	};
 }
 
-#endif	/* LIGHT_HPP */
+#endif
 

@@ -1,12 +1,5 @@
-/*
- * File:   Factory.hpp
- * Author: iMer
- *
- * Created on 19. August 2014, 18:40
- */
-
-#ifndef FACTORY_HPP
-#define    FACTORY_HPP
+#ifndef ENGINE_FACTORY_HPP
+#define ENGINE_FACTORY_HPP
 
 #include "Scene.hpp"
 #include "SpriteNode.hpp"
@@ -98,5 +91,5 @@ namespace engine {
 	};
 }
 
-#endif	/* FACTORY_HPP */
+#endif
 

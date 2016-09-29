@@ -1,5 +1,5 @@
 #ifndef ENGINE_LOADINGSCENE_HPP
-#define    ENGINE_LOADINGSCENE_HPP
+#define ENGINE_LOADINGSCENE_HPP
 
 #include "Scene.hpp"
 
@@ -29,5 +29,5 @@ namespace engine {
 
 }
 
-#endif	/* ENGINE_LOADINGSCENE_HPP */
+#endif
 

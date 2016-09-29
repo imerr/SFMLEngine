@@ -1,7 +1,3 @@
-//
-// Created by iMer on 22.08.2015.
-//
-
 #ifndef ENGINE_UTIL_JSON_HPP
 #define ENGINE_UTIL_JSON_HPP
 
@@ -77,4 +73,4 @@ namespace engine {
 	}
 }
 
-#endif //ENGINE_UTIL_JSON_HPP
+#endif
