@@ -58,7 +58,9 @@ set(SOURCE_FILES src/Button.cpp
         include/Engine/util/misc.hpp
         include/Engine/util/singleton.hpp
         include/Engine/Scrollable.hpp
-        src/util/Event.cpp)
+        src/util/Event.cpp
+        include/Engine/util/Tween.hpp
+        )
 add_library(Engine STATIC ${SOURCE_FILES})
 target_link_libraries(Engine jsoncpp_lib_static
 							   Box2D

@@ -31,6 +31,15 @@ namespace engine {
 		while (m_children.size()) {
 			delete m_children.front();
 		}
+		for (auto tween : m_logicTweens) {
+			delete tween;
+		}
+		m_logicTweens.clear();
+
+		for (auto tween : m_graphicTweens) {
+			delete tween;
+		}
+		m_graphicTweens.clear();
 	}
 
 	void Node::draw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
@@ -45,6 +54,9 @@ namespace engine {
 		}
 		states.transform *= getTransform();
 		if (m_render) {
+			for (auto it = m_graphicTweens.begin(); it != m_graphicTweens.end();) {
+				(*it++)->Update(delta);
+			}
 			OnDraw(target, states, delta);
 		}
 		for (auto& child : m_children) {
@@ -130,7 +142,14 @@ namespace engine {
 			Delete();
 			return;
 		}
+
+		const float intervalS = interval.asSeconds();
+		for (auto it = m_logicTweens.begin(); it != m_logicTweens.end();) {
+			(*it++)->Update(intervalS);
+		}
+
 		OnUpdate(interval);
+
 		for (auto& child : m_children) {
 			child->update(interval);
 		}

@@ -1,17 +1,22 @@
 #ifndef ENGINE_NODE_HPP
 #define ENGINE_NODE_HPP
 
-#include <list>
-#include <mutex>
-#include "SFML/Graphics/Drawable.hpp"
-#include "SFML/Graphics/Transformable.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-#include "SFML/Graphics/RenderStates.hpp"
-#include "SFML/System/Time.hpp"
-#include "Box2D/Box2D.h"
-#include "util/Event.hpp"
-#include "util/math.hpp"
+#include <Engine/util/Event.hpp>
+#include <Engine/util/math.hpp>
+#include <Engine/util/Tween.hpp>
+
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Transformable.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/System/Time.hpp>
+
+#include <Box2D/Box2D.h>
 #include <json/json.h>
+
+#include <list>
+#include <forward_list>
+#include <mutex>
 
 namespace engine {
 	class Scene;
@@ -77,6 +82,9 @@ namespace engine {
 		// Update origin based on size
 		OriginType m_originType;
 		float m_despawnTime;
+		// Tween containers, logic tweens will be updated in logic loop, graphic tweens in graphic loop
+		std::forward_list<BaseTween*> m_logicTweens;
+		std::forward_list<BaseTween*> m_graphicTweens;
 	public:
 		Node(Scene* scene);
 
@@ -177,6 +185,50 @@ namespace engine {
 
 		Event<const Light*> OnLightRay;
 
+		template<typename T>
+		void MakeValueTween(bool logic, T& from, T to, float duration,
+							EasingFunction easing = EasingLinear,
+							bool loop = false, bool loopReverse = true) {
+			auto t = engine::MakeValueTween<T>(from, to, duration, easing, loop, loopReverse);
+			if (logic) {
+				m_logicTweens.push_front(t);
+				t->OnDone = [this](Tween<T>* tween) {
+					m_logicTweens.remove(tween);
+					delete tween;
+				};
+			} else {
+				m_graphicTweens.push_front(t);
+				t->OnDone = [this](Tween<T>* tween) {
+					m_graphicTweens.remove(tween);
+					delete tween;
+				};
+			}
+		}
+
+		/*
+		 * You might have to explicitly specify T on some compilers
+		 * VS2013 gets tripped up on the function for some reason
+		 */
+		template<typename T>
+		void MakeTween(bool logic, T& from, T to, float duration,
+					   std::function<void(const T&)> callback,
+					   EasingFunction easing = EasingLinear,
+					   bool loop = false, bool loopReverse = true) {
+			auto t = new Tween<T>(from, to, duration, callback, easing, loop, loopReverse);
+			if (logic) {
+				m_logicTweens.push_front(t);
+				t->OnDone = [this](Tween<T>* tween) {
+					m_logicTweens.remove(tween);
+					delete tween;
+				};
+			} else {
+				m_graphicTweens.push_front(t);
+				t->OnDone = [this](Tween<T>* tween) {
+					m_graphicTweens.remove(tween);
+					delete tween;
+				};
+			}
+		}
 
 	protected:
 		friend Factory;
