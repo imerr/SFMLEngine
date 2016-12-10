@@ -45,9 +45,6 @@ namespace engine {
 							continue;
 						}
 						Node* nchild = CreateChild(child, thing);
-						if (nchild) {
-							thing->AddNode(nchild);
-						}
 					}
 				}
 				thing->OnInitializeDone();
@@ -68,7 +65,6 @@ namespace engine {
 						std::cerr << "Failed to make children" << std::endl;
 					}
 				}
-				thing->OnInitializeDone();
 				return thing;
 			}
 			delete thing;

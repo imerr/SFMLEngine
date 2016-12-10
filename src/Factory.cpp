@@ -79,6 +79,8 @@ namespace engine {
 		if (root["childData"].isString()) {
 			c->SetFilename(root["childData"].asString());
 		}
+		parent->AddNode(c);
+		c->OnInitializeDone();
 		return c;
 	}
 

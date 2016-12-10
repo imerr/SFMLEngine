@@ -66,8 +66,8 @@ namespace engine {
 			m_deletedGraphicTweens.clear();
 			OnDraw(target, states, delta);
 		}
-		for (auto& child : m_children) {
-			child->draw(target, states, delta);
+		for (size_t i = 0; i < m_children.size(); i++) {
+			m_children[i]->draw(target, states, delta);
 		}
 		PostDraw(target, states, delta);
 	}
@@ -131,7 +131,6 @@ namespace engine {
 	bool Node::update(sf::Time interval) {
 		if (m_destroy) {
 			if (m_parent) {
-				std::lock_guard<std::recursive_mutex> lg(m_parent->m_deleteMutex);
 				return true;
 			} else {
 				delete this;
@@ -167,10 +166,13 @@ namespace engine {
 				deleteList.push_back(child);
 			}
 		}
-		for (auto& child : deleteList) {
-			delete child;
+		if (deleteList.size()){
+			std::lock_guard<std::recursive_mutex> lg(m_deleteMutex);
+			for (auto& child : deleteList) {
+				delete child;
+			}
+			deleteList.clear();
 		}
-		deleteList.clear();
 		return false;
 	}
 
