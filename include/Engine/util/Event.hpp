@@ -11,7 +11,7 @@ namespace engine {
 		void* owner;
 	public:
 		BaseEventHandler(void* owner = nullptr) : owner(owner) {};
-
+		virtual ~BaseEventHandler() {};
 		void* GetOwner() {
 			return owner;
 		}
@@ -21,6 +21,7 @@ namespace engine {
 	class EventHandler : public BaseEventHandler {
 	public:
 		EventHandler(void* owner = nullptr) : BaseEventHandler(owner) {};
+		virtual ~EventHandler() {}
 
 		virtual ReturnType handle(T...) = 0;
 
@@ -39,6 +40,7 @@ namespace engine {
 		EventHandlerWrapper(std::function<ReturnType(T...)> canFunc,
 							std::function<ReturnType(T...)> handleFunc,
 							void* owner = nullptr) : EventHandler(owner), canFunc(canFunc), func(handleFunc) {}
+		virtual ~EventHandlerWrapper() {}
 
 		virtual ReturnType handle(T... args) {
 			return func(args...);
@@ -105,9 +107,9 @@ namespace engine {
 			m_callbacks.push_back(handler);
 		}
 
-		template<class D>
-		EventHandler<bool, T...>* MakeHandler(D canHandle, D handler, void* owner, bool front = false) {
-			EventHandler<bool, T...>* wrap = new EventHandlerWrapper<T...>(canHandle, handler, owner);
+		template<class D, class F>
+		EventHandler<bool, T...>* MakeHandler(D canHandle, F handler, void* owner, bool front = false) {
+			EventHandler<bool, T...>* wrap = new EventHandlerWrapper<bool, T...>(canHandle, handler, owner);
 			if (front) {
 				m_callbacks.insert(m_callbacks.begin(), wrap);
 			} else {
