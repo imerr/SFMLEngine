@@ -17,6 +17,7 @@
 #include <list>
 #include <forward_list>
 #include <mutex>
+#include <iostream>
 
 namespace engine {
 	class Scene;
@@ -33,6 +34,21 @@ namespace engine {
 		float rotVel;
 
 		physicsTransform() : pos(0, 0), vel(0, 0), rot(0), rotVel(0) {
+		}
+	};
+
+	template <typename T>
+	struct TweenDoneCallback : public EventHandler<void , Tween<T>*> {
+		Node* m_node;
+		bool m_logic;
+		TweenDoneCallback(Node* node, bool logic) : m_node(node), m_logic(logic) {
+
+		}
+
+		virtual void handle(Tween<T>* param) {
+			param->OnDone.RemoveHandler(this);
+			m_node->TweenDone(param, m_logic);
+			delete this;
 		}
 	};
 
@@ -84,7 +100,9 @@ namespace engine {
 		float m_despawnTime;
 		// Tween containers, logic tweens will be updated in logic loop, graphic tweens in graphic loop
 		std::forward_list<BaseTween*> m_logicTweens;
+		std::vector<BaseTween*> m_deletedLogicTweens;
 		std::forward_list<BaseTween*> m_graphicTweens;
+		std::vector<BaseTween*> m_deletedGraphicTweens;
 	public:
 		Node(Scene* scene);
 
@@ -104,7 +122,7 @@ namespace engine {
 
 		sf::Vector2f GetGlobalPosition();
 
-		virtual void update(sf::Time interval);
+		virtual bool update(sf::Time interval);
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states, float delta);
 
@@ -186,23 +204,18 @@ namespace engine {
 		Event<const Light*> OnLightRay;
 
 		template<typename T>
-		void MakeValueTween(bool logic, T& from, T to, float duration,
-							EasingFunction easing = EasingLinear,
-							bool loop = false, bool loopReverse = true) {
+		Tween<T>* MakeValueTween(bool logic, T& from, T to, float duration,
+								 EasingFunction easing = EasingLinear,
+								 bool loop = false, bool loopReverse = true) {
 			auto t = engine::MakeValueTween<T>(from, to, duration, easing, loop, loopReverse);
 			if (logic) {
 				m_logicTweens.push_front(t);
-				t->OnDone = [this](Tween<T>* tween) {
-					m_logicTweens.remove(tween);
-					delete tween;
-				};
 			} else {
 				m_graphicTweens.push_front(t);
-				t->OnDone = [this](Tween<T>* tween) {
-					m_graphicTweens.remove(tween);
-					delete tween;
-				};
 			}
+			auto handler = new TweenDoneCallback<T>(this, logic);
+			t->OnDone.AddHandler(handler);
+			return t;
 		}
 
 		/*
@@ -210,23 +223,25 @@ namespace engine {
 		 * VS2013 gets tripped up on the function for some reason
 		 */
 		template<typename T>
-		void MakeTween(bool logic, T& from, T to, float duration,
-					   std::function<void(const T&)> callback,
-					   EasingFunction easing = EasingLinear,
-					   bool loop = false, bool loopReverse = true) {
+		Tween<T>* MakeTween(bool logic, T from, T to, float duration,
+							std::function<void(const T&)> callback,
+							EasingFunction easing = EasingLinear,
+							bool loop = false, bool loopReverse = true) {
 			auto t = new Tween<T>(from, to, duration, callback, easing, loop, loopReverse);
 			if (logic) {
 				m_logicTweens.push_front(t);
-				t->OnDone = [this](Tween<T>* tween) {
-					m_logicTweens.remove(tween);
-					delete tween;
-				};
 			} else {
 				m_graphicTweens.push_front(t);
-				t->OnDone = [this](Tween<T>* tween) {
-					m_graphicTweens.remove(tween);
-					delete tween;
-				};
+			}
+			auto handler = new TweenDoneCallback<T>(this, logic);
+			t->OnDone.AddHandler(handler);
+			return t;
+		}
+		void TweenDone(BaseTween* tween, bool logic) {
+			if (logic) {
+				m_deletedLogicTweens.push_back(tween);
+			} else {
+				m_deletedGraphicTweens.push_back(tween);
 			}
 		}
 

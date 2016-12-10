@@ -32,7 +32,7 @@ namespace engine {
 	template<typename ReturnType, typename... T>
 	class EventHandlerWrapper : public EventHandler<ReturnType, T...> {
 		std::function<ReturnType(T...)> func;
-		std::function<ReturnType(T...)> canFunc;
+		std::function<bool(T...)> canFunc;
 	public:
 		EventHandlerWrapper(std::function<ReturnType(T...)> t, void* owner = nullptr) : EventHandler(owner), func(t) {}
 
@@ -64,9 +64,13 @@ namespace engine {
 		}
 
 		template<class D>
-		EventHandler<void, T...>* MakeHandler(D handler, void* owner = nullptr) {
+		EventHandler<void, T...>* MakeHandler(D handler, void* owner = nullptr, bool front = false) {
 			EventHandler<void, T...>* wrap = new EventHandlerWrapper<void, T...>(handler, owner);
-			m_callbacks.push_back(wrap);
+			if (front) {
+				m_callbacks.insert(m_callbacks.begin(), wrap);
+			} else {
+				m_callbacks.push_back(wrap);
+			}
 			return wrap;
 		}
 
@@ -102,9 +106,13 @@ namespace engine {
 		}
 
 		template<class D>
-		EventHandler<bool, T...>* MakeHandler(D canHandle, D handler, void* owner) {
+		EventHandler<bool, T...>* MakeHandler(D canHandle, D handler, void* owner, bool front = false) {
 			EventHandler<bool, T...>* wrap = new EventHandlerWrapper<T...>(canHandle, handler, owner);
-			m_callbacks.push_back(wrap);
+			if (front) {
+				m_callbacks.insert(m_callbacks.begin(), wrap);
+			} else {
+				m_callbacks.push_back(wrap);
+			}
 			return wrap;
 		}
 

@@ -46,8 +46,9 @@ namespace engine {
 	LightSystem::~LightSystem() {
 	}
 
-	void LightSystem::update(sf::Time interval) {
+	bool LightSystem::update(sf::Time interval) {
 		m_needsUpdate = true;
+		return false;
 	}
 
 	void LightSystem::draw(sf::RenderTarget& target, sf::RenderStates states) {

@@ -47,7 +47,7 @@ namespace engine {
 		bool m_loop;
 		bool m_loopReverse;
 	public:
-		std::function<void(Tween<T>*)> OnDone;
+		Event<Tween<T>*> OnDone;
 	public:
 		Tween(const T& from, const T& to, float duration,
 			  std::function<void(const T&)> callback,
@@ -83,7 +83,7 @@ namespace engine {
 			if (m_time > m_duration) {
 				if (!m_loop) {
 					m_callback(m_to);
-					OnDone(this);
+					OnDone.Fire(this);
 					return;
 				} else {
 					m_time -= m_duration;
@@ -97,7 +97,11 @@ namespace engine {
 			m_callback(blendValueWithEasing(m_from, m_to, m_time, m_duration, m_easingFunction));
 		}
 
-		virtual ~Tween() {}
+		virtual ~Tween() {
+			// Fire OnDone so we can delete this properly
+			// The handlers are responsible for not messing up
+			OnDone.Fire(this);
+		}
 	};
 
 	template<typename T>

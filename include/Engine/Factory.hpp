@@ -68,6 +68,7 @@ namespace engine {
 						std::cerr << "Failed to make children" << std::endl;
 					}
 				}
+				thing->OnInitializeDone();
 				return thing;
 			}
 			delete thing;

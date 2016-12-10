@@ -30,7 +30,7 @@ namespace engine {
 
 		void RemoveLight(Light* light);
 
-		virtual void update(sf::Time interval);
+		virtual bool update(sf::Time interval);
 
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates state);
 

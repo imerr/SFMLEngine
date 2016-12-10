@@ -35,11 +35,13 @@ namespace engine {
 			delete tween;
 		}
 		m_logicTweens.clear();
+		m_deletedLogicTweens.clear();
 
 		for (auto tween : m_graphicTweens) {
 			delete tween;
 		}
 		m_graphicTweens.clear();
+		m_deletedGraphicTweens.clear();
 	}
 
 	void Node::draw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
@@ -57,6 +59,11 @@ namespace engine {
 			for (auto it = m_graphicTweens.begin(); it != m_graphicTweens.end();) {
 				(*it++)->Update(delta);
 			}
+			for (auto tween : m_deletedGraphicTweens) {
+				m_graphicTweens.remove(tween);
+				delete tween;
+			}
+			m_deletedGraphicTweens.clear();
 			OnDraw(target, states, delta);
 		}
 		for (auto& child : m_children) {
@@ -121,18 +128,18 @@ namespace engine {
 		return GetGlobalTransform().transformPoint(getOrigin());
 	}
 
-	void Node::update(sf::Time interval) {
+	bool Node::update(sf::Time interval) {
 		if (m_destroy) {
 			if (m_parent) {
 				std::lock_guard<std::recursive_mutex> lg(m_parent->m_deleteMutex);
-				delete this;
+				return true;
 			} else {
 				delete this;
 			}
-			return;
+			return false;
 		}
 		if (!m_active) {
-			return;
+			return false;
 		}
 		if (m_body) {
 			UpdatePhysicsTransform();
@@ -140,19 +147,31 @@ namespace engine {
 		m_despawnTime -= interval.asSeconds();
 		if (m_despawnTime < 0) {
 			Delete();
-			return;
+			return false;
 		}
 
 		const float intervalS = interval.asSeconds();
 		for (auto it = m_logicTweens.begin(); it != m_logicTweens.end();) {
 			(*it++)->Update(intervalS);
 		}
+		for (auto& tween: m_deletedLogicTweens) {
+			m_logicTweens.remove(tween);
+			delete tween;
+		}
+		m_deletedLogicTweens.clear();
 
 		OnUpdate(interval);
-
+		std::vector<Node*> deleteList;
 		for (auto& child : m_children) {
-			child->update(interval);
+			if (child->update(interval)) {
+				deleteList.push_back(child);
+			}
 		}
+		for (auto& child : deleteList) {
+			delete child;
+		}
+		deleteList.clear();
+		return false;
 	}
 
 	void Node::UpdatePhysicsTransform() {
