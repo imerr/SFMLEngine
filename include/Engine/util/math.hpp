@@ -26,6 +26,16 @@ namespace engine {
 		to -= from;
 		return atan2f(to.y, to.x);
 	}
+
+	template<typename T>
+	inline float distance(sf::Vector2<T> from, sf::Vector2<T> to) {
+		return static_cast<T>(sqrt(
+				static_cast<double>(
+						(to.x - from.x) * (to.x - from.x) +
+						(to.y - from.y) * (to.y - from.y)
+				)
+		));
+	}
 }
 
 #endif
