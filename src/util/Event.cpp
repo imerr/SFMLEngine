@@ -1,5 +1,6 @@
 #include "util/Event.hpp"
 #include "Node.hpp"
+#include "Scene.hpp"
 
 namespace engine {
 	namespace {
@@ -22,7 +23,7 @@ namespace engine {
 	void SortHandlerVector(Node* node, std::vector<BaseEventHandler*>& canHandle) {
 		std::vector<BaseEventHandler*> sorted;
 		sorted.reserve(canHandle.size());
-		WalkNode(node, [&sorted, &canHandle](Node* n) {
+		auto inserter = [&sorted, &canHandle](Node* n) {
 			for (auto it = canHandle.begin(); it != canHandle.end(); it++) {
 				if (n == (*it)->GetOwner()) {
 					sorted.push_back(*it);
@@ -30,8 +31,13 @@ namespace engine {
 					break;
 				}
 			}
-		});
-		// fill in all the remaining ones that dont match any node
+		};
+		if (node->GetScene() && node->GetScene()->GetUi()) {
+			// UI always gets the first pick
+			WalkNode(node->GetScene()->GetUi(), inserter, false /* dont iterate over scene, thats done below*/);
+		}
+		WalkNode(node, inserter);
+		// fill in all the remaining ones that don't match any node
 		for (auto h : canHandle) {
 			sorted.push_back(h);
 		}
