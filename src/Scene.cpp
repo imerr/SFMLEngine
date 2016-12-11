@@ -18,7 +18,14 @@ namespace engine {
 	}
 
 	void SceneContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold) {
-		m_scene->OnContactPreSolve.Fire(contact, oldManifold);
+		// work around box2d not leaving bodies inactive
+		Node* a  = static_cast<Node*>(contact->GetFixtureA()->GetBody()->GetUserData());
+		Node* b  = static_cast<Node*>(contact->GetFixtureB()->GetBody()->GetUserData());
+		if ((!a || a->IsActive()) && (!b || b->IsActive())) {
+			m_scene->OnContactPreSolve.Fire(contact, oldManifold);
+		} else {
+			contact->SetEnabled(false);
+		}
 	}
 
 	void SceneContactListener::BeginContact(b2Contact* contact) {
