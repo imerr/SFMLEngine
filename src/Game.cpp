@@ -127,7 +127,7 @@ namespace engine {
 								OnMouseClick.GetLastHandler()->handle(event.mouseButton, false)) {
 							continue;
 						}
-						OnMouseClick.Fire(m_scene, event.mouseButton, true);
+						OnMouseClick.Fire(m_scene, event.mouseButton, false);
 					} else if (event.type == sf::Event::MouseWheelScrolled) {
 						OnMouseScroll.Fire(m_scene, event.mouseWheelScroll);
 					}
