@@ -161,7 +161,8 @@ namespace engine {
 
 		OnUpdate(interval);
 		std::vector<Node*> deleteList;
-		for (auto& child : m_children) {
+		for (size_t i = 0; i < m_children.size(); i++) {
+			auto child = m_children[i];
 			if (child->update(interval)) {
 				deleteList.push_back(child);
 			}
