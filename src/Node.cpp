@@ -523,7 +523,7 @@ namespace engine {
 	}
 
 	bool Node::IsActive() const {
-		return m_active;
+		return m_active && (!GetParent() || GetParent()->IsActive());
 	}
 
 	std::vector<Node*>& Node::GetChildren() {
