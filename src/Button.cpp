@@ -12,26 +12,39 @@
 namespace engine {
 
 	Button::Button(Scene* scene) : SpriteNode(scene), m_state(BUTTON_NONE) {
-		OnClick = [](Button*, sf::Vector2f) {};
+		m_clickHandler = m_scene->GetGame()->OnMouseClick.MakeHandler(
+				[this](const sf::Event::MouseButtonEvent& event, bool down) -> bool {
+					return event.button == sf::Mouse::Left && (IsMouseIn() || m_state == BUTTON_ACTIVE);
+				}, [this](const sf::Event::MouseButtonEvent&, bool down) -> bool {
+					bool in = IsMouseIn();
+					if (m_state != BUTTON_ACTIVE && in) {
+						m_state = BUTTON_ACTIVE;
+						PlayAnimation("active");
+					}
+					if (!down) {
+						m_state = BUTTON_HOVER;
+						PlayAnimation("hover");
+						if (in) {
+							OnClick.Fire(this, m_scene->GetGame()->GetMousePosition());
+						}
+					}
+					return true;
+				}, this);
 	}
 
 	Button::~Button() {
 	}
 
-	void Button::OnUpdate(sf::Time interval) {
+	bool Button::IsMouseIn() {
+		return sf::FloatRect(GetGlobalPosition() - getOrigin(), m_size).contains(
+				m_scene->GetGame()->GetMousePosition().x,
+				m_scene->GetGame()->GetMousePosition().y
+		);
+	}
 
-		if (sf::FloatRect(GetGlobalPosition() - getOrigin(), m_size).contains(m_scene->GetGame()->GetMousePosition().x,
-																			  m_scene->GetGame()->GetMousePosition().y)) {
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-				if (m_state != BUTTON_ACTIVE) {
-					m_state = BUTTON_ACTIVE;
-					PlayAnimation("active");
-				}
-			} else if (m_state == BUTTON_ACTIVE) {
-				OnClick(this, m_scene->GetGame()->GetMousePosition());
-				PlayAnimation("hover");
-				m_state = BUTTON_HOVER;
-			} else if (m_state != BUTTON_HOVER) {
+	void Button::OnUpdate(sf::Time interval) {
+		if (IsMouseIn()) {
+			if (m_state != BUTTON_HOVER && m_state != BUTTON_ACTIVE) {
 				m_state = BUTTON_HOVER;
 				PlayAnimation("hover");
 			}

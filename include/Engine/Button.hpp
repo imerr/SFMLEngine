@@ -8,6 +8,7 @@ namespace engine {
 	class Button : public SpriteNode {
 	protected:
 		uint8_t m_state;
+		BaseEventHandler* m_clickHandler;
 	public:
 		enum ButtonStates {
 			BUTTON_NONE,
@@ -22,9 +23,11 @@ namespace engine {
 
 		virtual uint8_t GetType() const;
 
-		std::function<void(Button*, sf::Vector2f)> OnClick;
+		Event<Button*, sf::Vector2f> OnClick;
 	protected:
 		virtual void OnUpdate(sf::Time interval);
+
+		bool IsMouseIn();
 	};
 
 }
