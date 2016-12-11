@@ -220,7 +220,7 @@ namespace engine {
 							for (size_t o = 0; o < anim["frames"].size(); o++) {
 								auto text = sheet["sprites"][anim["frames"][o].asInt()];
 								if (text.isNull()) {
-									std::cerr << "Frame " << o << "is invalid. Frame " << anim["frames"][o].asInt()
+									std::cerr << "Frame " << o << " is invalid. Frame " << anim["frames"][o].asInt()
 											  << " doesnt exist." << std::endl;
 									continue;
 								}
