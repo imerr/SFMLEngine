@@ -81,7 +81,6 @@ namespace engine {
 					delete particle;
 					return;
 				}
-				this->AddNode(particle);
 				particle->GetBody()->SetTransform(b2Vec2(getPosition().x / m_scene->GetPixelMeterRatio(),
 														 getPosition().y / m_scene->GetPixelMeterRatio()), 0);
 				particle->SetActive(false);
