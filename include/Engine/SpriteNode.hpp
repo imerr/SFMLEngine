@@ -38,6 +38,10 @@ namespace engine {
 		bool IsOver();
 
 		std::function<void(void)> OnOver;
+
+		size_t GetCurrentFrame() {
+			return m_currentFrame;
+		}
 	};
 
 	class SpriteNode : public Node {
