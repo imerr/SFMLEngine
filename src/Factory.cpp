@@ -76,11 +76,13 @@ namespace engine {
 		if (!c) {
 			return nullptr;
 		}
+		c->SetRender(false);
 		if (root["childData"].isString()) {
 			c->SetFilename(root["childData"].asString());
 		}
 		parent->AddNode(c);
 		c->OnInitializeDone();
+		c->SetRender(true);
 		return c;
 	}
 
@@ -99,9 +101,11 @@ namespace engine {
 		if (!c) {
 			return nullptr;
 		}
+		c->SetRender(false);
 		c->SetFilename(file);
 		parent->AddNode(c);
 		c->OnInitializeDone();
+		c->SetRender(true);
 		return c;
 	}
 
