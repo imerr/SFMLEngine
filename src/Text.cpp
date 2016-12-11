@@ -38,7 +38,7 @@ namespace engine {
 		if (text.isObject()) {
 			m_font.loadFromFile(text.get("font", "").asString());
 			m_text.setFont(m_font);
-			m_text.setCharacterSize(text.get("size", 30).asInt());
+			m_text.setCharacterSize(text.get("size", 30).asUInt());
 			m_text.setColor(jsonNodeAs<sf::Color>(text["color"]));
 			auto align = text["align"];
 			if (align.isString()) {
