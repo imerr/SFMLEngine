@@ -116,11 +116,7 @@ namespace engine {
 				std::cerr << "Child has to be object" << std::endl;
 				continue;
 			}
-			Node* nchild = CreateChild(child, parent->GetScene());
-			if (nchild) {
-				parent->AddNode(nchild);
-				nchild->OnInitializeDone();
-			}
+			CreateChild(child, parent);
 		}
 		return true;
 	}
