@@ -5,7 +5,8 @@
 namespace engine {
 	namespace {
 		void WalkNode(Node* node, std::function<void(Node*)> f, bool up = true, Node* startNode = nullptr) {
-			for (auto child : node->GetChildren()) {
+			for (auto it = node->GetChildren().rbegin(); it != node->GetChildren().rend(); it++) {
+				auto child = *it;
 				if (child == startNode) {
 					continue;
 				}
