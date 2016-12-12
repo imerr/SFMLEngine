@@ -26,6 +26,9 @@ namespace engine {
 
 	class Light;
 
+	template <typename T>
+	struct TweenDoneCallback;
+
 	struct physicsTransform {
 	public:
 		b2Vec2 pos;
@@ -37,20 +40,7 @@ namespace engine {
 		}
 	};
 
-	template <typename T>
-	struct TweenDoneCallback : public EventHandler<void , Tween<T>*> {
-		Node* m_node;
-		bool m_logic;
-		TweenDoneCallback(Node* node, bool logic) : m_node(node), m_logic(logic) {
 
-		}
-
-		virtual void handle(Tween<T>* param) {
-			param->OnDone.RemoveHandler(this);
-			m_node->TweenDone(param, m_logic);
-			delete this;
-		}
-	};
 
 	enum NodeType {
 		NT_NONE,
@@ -266,7 +256,20 @@ namespace engine {
 		virtual void OnRemoveNode(Node* node) {
 		}
 	};
+	template <typename T>
+	struct TweenDoneCallback : public EventHandler<void , Tween<T>*> {
+		Node* m_node;
+		bool m_logic;
+		TweenDoneCallback(Node* node, bool logic) : m_node(node), m_logic(logic) {
 
+		}
+
+		virtual void handle(Tween<T>* param) {
+			param->OnDone.RemoveHandler(this);
+			m_node->TweenDone(param, m_logic);
+			delete this;
+		}
+	};
 }
 
 #endif
