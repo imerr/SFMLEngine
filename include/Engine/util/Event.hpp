@@ -35,11 +35,11 @@ namespace engine {
 		std::function<ReturnType(T...)> func;
 		std::function<bool(T...)> canFunc;
 	public:
-		EventHandlerWrapper(std::function<ReturnType(T...)> t, void* owner = nullptr) : EventHandler(owner), func(t) {}
+		EventHandlerWrapper(std::function<ReturnType(T...)> t, void* owner = nullptr) : EventHandler<ReturnType, T...>(owner), func(t) {}
 
 		EventHandlerWrapper(std::function<ReturnType(T...)> canFunc,
 							std::function<ReturnType(T...)> handleFunc,
-							void* owner = nullptr) : EventHandler(owner), canFunc(canFunc), func(handleFunc) {}
+							void* owner = nullptr) : EventHandler<ReturnType, T...>(owner), canFunc(canFunc), func(handleFunc) {}
 		virtual ~EventHandlerWrapper() {}
 
 		virtual ReturnType handle(T... args) {
