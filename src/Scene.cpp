@@ -19,8 +19,8 @@ namespace engine {
 
 	void SceneContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold) {
 		// work around box2d not leaving bodies inactive
-		Node* a  = static_cast<Node*>(contact->GetFixtureA()->GetBody()->GetUserData());
-		Node* b  = static_cast<Node*>(contact->GetFixtureB()->GetBody()->GetUserData());
+		Node* a = static_cast<Node*>(contact->GetFixtureA()->GetBody()->GetUserData());
+		Node* b = static_cast<Node*>(contact->GetFixtureB()->GetBody()->GetUserData());
 		if ((!a || a->IsActive()) && (!b || b->IsActive())) {
 			m_scene->OnContactPreSolve.Fire(contact, oldManifold);
 		} else {
@@ -81,8 +81,19 @@ namespace engine {
 		return m_world;
 	}
 
+	float Scene::PixelToMeter(float m) {
+		return m / m_pixToM;
+	}
+
 	float Scene::MeterToPixel(float m) {
 		return m_pixToM * m;
+	}
+	b2Vec2 Scene::PixelToMeter(sf::Vector2f m) {
+		return b2Vec2(PixelToMeter(m.x), PixelToMeter(m.y));
+	}
+
+	sf::Vector2f Scene::MeterToPixel(b2Vec2 m) {
+		return sf::Vector2f(MeterToPixel(m.x), MeterToPixel(m.y));
 	}
 
 	float Scene::GetPixelMeterRatio() const {
@@ -159,5 +170,6 @@ namespace engine {
 		}
 		return true;
 	}
+
 }
 

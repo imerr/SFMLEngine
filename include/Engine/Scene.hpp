@@ -54,7 +54,10 @@ namespace engine {
 
 		b2World* GetWorld();
 
+		float PixelToMeter(float m);
+		b2Vec2 PixelToMeter(sf::Vector2f m);
 		float MeterToPixel(float m);
+		sf::Vector2f MeterToPixel(b2Vec2 m);
 
 		float GetPixelMeterRatio() const;
 
