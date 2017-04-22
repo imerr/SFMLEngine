@@ -611,5 +611,22 @@ namespace engine {
 		}
 		return getRotation();
 	}
+
+	bool Node::IsIn(float x, float y) {
+		if (m_body) {
+			auto f = m_body->GetFixtureList();
+			while (f) {
+				if (f->TestPoint(b2Vec2(x / m_scene->GetPixelMeterRatio(), y / m_scene->GetPixelMeterRatio()))) {
+					return true;
+				}
+				f = f->GetNext();
+			}
+		} else {
+			sf::Rect<float> r(0, 0, GetSize().x, GetSize().y);
+			r = GetGlobalTransform().transformRect(r);
+			r.contains(x, y);
+		}
+		return false;
+	}
 }
 

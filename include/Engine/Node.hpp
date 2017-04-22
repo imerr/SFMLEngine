@@ -235,6 +235,7 @@ namespace engine {
 			}
 		}
 
+		bool IsIn(float x, float y);
 	protected:
 		friend Factory;
 
