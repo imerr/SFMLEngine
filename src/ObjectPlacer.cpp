@@ -91,7 +91,7 @@ namespace engine {
 
 	}
 
-	void ObjectPlacer::DeleteHandler::handle(const Node* n) {
+	void ObjectPlacer::DeleteHandler::handle(Node* n) {
 		if (m_placer->GetCurrentNode() == n) {
 			m_placer->SetCurrentNode(nullptr);
 		}

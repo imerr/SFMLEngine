@@ -167,7 +167,7 @@ namespace engine {
 			return m_render;
 		}
 
-		Event<const Node*> OnDelete;
+		Event<Node*> OnDelete;
 
 		Node* GetChildByID(std::string);
 

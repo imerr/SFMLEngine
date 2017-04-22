@@ -30,13 +30,13 @@ namespace engine {
 			virtual bool handle(const sf::Event::KeyEvent&, bool);
 		};
 
-		class DeleteHandler : public EventHandler<void, const Node*> {
+		class DeleteHandler : public EventHandler<void, Node*> {
 		protected:
 			ObjectPlacer* m_placer;
 		public:
 			DeleteHandler(ObjectPlacer* placer);
 
-			virtual void handle(const Node*);
+			virtual void handle(Node*);
 		};
 
 	protected:
