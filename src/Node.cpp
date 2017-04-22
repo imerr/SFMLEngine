@@ -312,7 +312,7 @@ namespace engine {
 						b2ChainShape chain;
 						b2CircleShape circle;
 						b2EdgeShape edge;
-						def.density = shapes[i].get("density", 0.0f).asFloat();
+						def.density = shapes[i].get("density", 1.0f).asFloat();
 						def.friction = shapes[i].get("friction", 0.2f).asFloat();
 						def.restitution = shapes[i].get("restitution", 0.0f).asFloat();
 						def.isSensor = shapes[i].get("isSensor", false).asBool();
