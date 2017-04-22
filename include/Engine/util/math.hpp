@@ -36,6 +36,16 @@ namespace engine {
 				)
 		));
 	}
+
+	inline float NormalizeAngleDeg(float deg) {
+		while (deg < 0) {
+			deg += 360;
+		}
+		while (deg > 360) {
+			deg -= 360;
+		}
+		return deg;
+	}
 }
 
 #endif
