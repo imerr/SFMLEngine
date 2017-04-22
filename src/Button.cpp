@@ -13,9 +13,9 @@ namespace engine {
 
 	Button::Button(Scene* scene) : SpriteNode(scene), m_state(BUTTON_NONE) {
 		m_clickHandler = m_scene->GetGame()->OnMouseClick.MakeHandler(
-				[this](const sf::Event::MouseButtonEvent& event, bool down) -> bool {
-					return IsActive() && event.button == sf::Mouse::Left && (IsMouseIn() || m_state == BUTTON_ACTIVE);
-				}, [this](const sf::Event::MouseButtonEvent&, bool down) -> bool {
+				[this](const sf::Mouse::Button& button, const sf::Vector2f& position, bool down) -> bool {
+					return IsActive() && button == sf::Mouse::Left && (IsMouseIn() || m_state == BUTTON_ACTIVE);
+				}, [this](const sf::Mouse::Button& button, const sf::Vector2f& position, bool down) -> bool {
 					bool in = IsMouseIn();
 					if (m_state != BUTTON_ACTIVE && in) {
 						m_state = BUTTON_ACTIVE;

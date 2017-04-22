@@ -10,17 +10,16 @@ namespace engine {
 
 	}
 
-	bool ObjectPlacer::MouseHandler::handle(const sf::Event::MouseButtonEvent& e, bool down) {
+	bool ObjectPlacer::MouseHandler::handle(const sf::Mouse::Button& button, const sf::Vector2f& m, bool down) {
 		if (!down) {
 			return true;
 		}
-		auto m = m_placer->GetScene()->GetGame()->GetMousePosition();
-		if (e.button == sf::Mouse::Left) {
+		if (button == sf::Mouse::Left) {
 			// round due to having fractions of a pixel being stupid
 			m_placer->Place(roundf(m.x), roundf(m.y));
-		} else if (e.button == sf::Mouse::Right) {
+		} else if (button == sf::Mouse::Right) {
 			m_placer->New(roundf(m.x), roundf(m.y));
-		} else if (e.button == sf::Mouse::Middle) {
+		} else if (button == sf::Mouse::Middle) {
 			m_placer->Remove();
 		}
 		return true;

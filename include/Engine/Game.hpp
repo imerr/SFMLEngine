@@ -29,7 +29,7 @@ namespace engine {
 		bool m_multithreaded;
 	public:
 		CancelableEvent<const sf::Event::KeyEvent&, bool> OnKeyPress;
-		CancelableEvent<const sf::Event::MouseButtonEvent&, bool> OnMouseClick;
+		CancelableEvent<const sf::Mouse::Button&, const sf::Vector2f&, bool> OnMouseClick;
 		CancelableEvent<const sf::Event::MouseWheelScrollEvent&> OnMouseScroll;
 	public:
 		Game(uint32_t width = 1024, uint32_t height = 576, bool multithreaded =

@@ -29,7 +29,7 @@ namespace engine {
 	Game::~Game() {
 		// loading scene children need to be deleted since they might rely
 		// on game state that could get destroyed before the scene
-		auto& loadingSceneChildren =  m_loadingScene.GetChildren();
+		auto& loadingSceneChildren = m_loadingScene.GetChildren();
 		while (loadingSceneChildren.size()) {
 			delete loadingSceneChildren.front();
 		}
@@ -113,21 +113,25 @@ namespace engine {
 					} else if (event.type == sf::Event::KeyReleased) {
 						// try to give the handler for the down event the up event as well
 						if (OnKeyPress.GetLastHandler() &&
-								OnKeyPress.GetLastHandler()->CanHandle(event.key, false) &&
-								OnKeyPress.GetLastHandler()->handle(event.key, false)) {
+							OnKeyPress.GetLastHandler()->CanHandle(event.key, false) &&
+							OnKeyPress.GetLastHandler()->handle(event.key, false)) {
 							continue;
 						}
 						OnKeyPress.Fire(m_scene, event.key, false);
 					} else if (event.type == sf::Event::MouseButtonPressed) {
-						OnMouseClick.Fire(m_scene, event.mouseButton, true);
+						OnMouseClick.Fire(m_scene, event.mouseButton.button, m_window.mapPixelToCoords(
+								sf::Vector2i(event.mouseButton.x, event.mouseButton.y)), true);
 					} else if (event.type == sf::Event::MouseButtonReleased) {
 						// try to give the handler for the down event the up event as well
 						if (OnMouseClick.GetLastHandler() &&
-								OnMouseClick.GetLastHandler()->CanHandle(event.mouseButton, false) &&
-								OnMouseClick.GetLastHandler()->handle(event.mouseButton, false)) {
+							OnMouseClick.GetLastHandler()->CanHandle(event.mouseButton.button, m_window.mapPixelToCoords(
+									sf::Vector2i(event.mouseButton.x, event.mouseButton.y)), false) &&
+							OnMouseClick.GetLastHandler()->handle(event.mouseButton.button, m_window.mapPixelToCoords(
+									sf::Vector2i(event.mouseButton.x, event.mouseButton.y)), false)) {
 							continue;
 						}
-						OnMouseClick.Fire(m_scene, event.mouseButton, false);
+						OnMouseClick.Fire(m_scene, event.mouseButton.button, m_window.mapPixelToCoords(
+								sf::Vector2i(event.mouseButton.x, event.mouseButton.y)), false);
 					} else if (event.type == sf::Event::MouseWheelScrolled) {
 						OnMouseScroll.Fire(m_scene, event.mouseWheelScroll);
 					}
