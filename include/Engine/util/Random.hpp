@@ -27,7 +27,7 @@ namespace engine {
 		std::ranlux48 gen;
 		std::uniform_int_distribution<T> dis;
 	public:
-
+		// Min/max are inclusive
 		RandomInt(T min, T max) : gen(rd()), dis(min, max) {
 
 		}
