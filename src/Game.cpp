@@ -69,8 +69,8 @@ namespace engine {
 		sf::Time interval = sf::seconds(1.0f / 60.0f); // 60cycles/s
 		sf::Clock timer;
 		float sec = 0;
-		timer.restart();
 		while (m_running) {
+			timer.restart();
 			m_lastLogicUpdateMutex.lock();
 			m_lastLogicUpdate.restart();
 			m_lastLogicUpdateMutex.unlock();
