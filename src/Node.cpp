@@ -625,7 +625,7 @@ namespace engine {
 		} else {
 			sf::Rect<float> r(0, 0, GetSize().x, GetSize().y);
 			r = GetGlobalTransform().transformRect(r);
-			r.contains(x, y);
+			return r.contains(x, y);
 		}
 		return false;
 	}
