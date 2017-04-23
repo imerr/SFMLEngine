@@ -18,7 +18,8 @@ namespace engine {
 																	  m_tps(0),
 																	  m_focus(true), m_clearColor(sf::Color::White),
 																	  m_loadingScene(this),
-																	  m_multithreaded(multithreaded) {
+																	  m_multithreaded(multithreaded),
+																	  m_timeScale(1) {
 		m_window.setVerticalSyncEnabled(true);
 		sf::View view = m_window.getDefaultView();
 		view.setSize(static_cast<float>(width), static_cast<float>(height));
@@ -56,7 +57,7 @@ namespace engine {
 			while (m_running) {
 				m_window.clear(m_clearColor);
 				if (m_scene.load()) {
-					m_scene.load()->draw(m_window, sf::RenderStates::Default, m_timeScale *  t.restart().asSeconds());
+					m_scene.load()->draw(m_window, sf::RenderStates::Default, m_timeScale * t.restart().asSeconds());
 				}
 				m_window.display();
 				m_fps++;
@@ -124,8 +125,11 @@ namespace engine {
 					} else if (event.type == sf::Event::MouseButtonReleased) {
 						// try to give the handler for the down event the up event as well
 						if (OnMouseClick.GetLastHandler() &&
-							OnMouseClick.GetLastHandler()->CanHandle(event.mouseButton.button, m_window.mapPixelToCoords(
-									sf::Vector2i(event.mouseButton.x, event.mouseButton.y)), false) &&
+							OnMouseClick.GetLastHandler()->CanHandle(event.mouseButton.button,
+																	 m_window.mapPixelToCoords(
+																			 sf::Vector2i(event.mouseButton.x,
+																						  event.mouseButton.y)),
+																	 false) &&
 							OnMouseClick.GetLastHandler()->handle(event.mouseButton.button, m_window.mapPixelToCoords(
 									sf::Vector2i(event.mouseButton.x, event.mouseButton.y)), false)) {
 							continue;
