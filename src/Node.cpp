@@ -174,6 +174,7 @@ namespace engine {
 			}
 			deleteList.clear();
 		}
+		PostUpdate(interval);
 		return false;
 	}
 

@@ -244,6 +244,9 @@ namespace engine {
 		virtual void OnUpdate(sf::Time interval) {
 		}
 
+		virtual void PostUpdate(sf::Time interval) {
+		}
+
 		virtual void OnDraw(sf::RenderTarget& target, sf::RenderStates states, float delta) {
 		}
 
