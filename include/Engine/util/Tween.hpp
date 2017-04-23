@@ -3,6 +3,7 @@
 
 #include <Engine/util/Event.hpp>
 #include <functional>
+#include <SFML/Graphics/Color.hpp>
 
 namespace engine {
 	typedef std::function<float(float from, float to, float time, float duration)> EasingFunction;
@@ -10,7 +11,7 @@ namespace engine {
 	template<typename T>
 	typename std::enable_if<std::is_arithmetic<T>::value, T>::type
 	inline blendValueWithEasing(const T& from, const T& to, float time, float duration, const EasingFunction& f) {
-		// We're potentially using precision here, float should be more than good enough for any of our cases though
+		// We're potentially losing precision here, float should be more than good enough for any of our cases though
 		return static_cast<T>(f(static_cast<float>(from), static_cast<float>(to), time, duration));
 	};
 
@@ -23,6 +24,16 @@ namespace engine {
 		return res;
 	};
 
+	template<typename T>
+	typename std::enable_if<std::is_same<T, sf::Color>::value, T>::type
+	inline blendValueWithEasing(const T& from, const T& to, float time, float duration, const EasingFunction& f) {
+		sf::Color res;
+		res.r = blendValueWithEasing(from.r, to.r, time, duration, f);
+		res.g = blendValueWithEasing(from.g, to.g, time, duration, f);
+		res.b = blendValueWithEasing(from.b, to.b, time, duration, f);
+		res.a = blendValueWithEasing(from.a, to.a, time, duration, f);
+		return res;
+	};
 
 	// TODO(imer): move these away, they won't/can't be inlined anyways since we're storing pointers to them
 	inline float EasingLinear(float from, float to, float time, float duration) {
