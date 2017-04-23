@@ -56,7 +56,7 @@ namespace engine {
 			while (m_running) {
 				m_window.clear(m_clearColor);
 				if (m_scene.load()) {
-					m_scene.load()->draw(m_window, sf::RenderStates::Default, t.restart().asSeconds());
+					m_scene.load()->draw(m_window, sf::RenderStates::Default, m_timeScale *  t.restart().asSeconds());
 				}
 				m_window.display();
 				m_fps++;
@@ -137,12 +137,13 @@ namespace engine {
 					}
 				}
 			}
-			m_scene.load()->update(interval);
+			sf::Time scaledInterval = sf::seconds(interval.asSeconds() * m_timeScale);
+			m_scene.load()->update(scaledInterval);
 			OnUpdate();
 			if (!m_multithreaded) {
 				m_window.clear(sf::Color::White);
 				if (m_scene.load()) {
-					m_scene.load()->draw(m_window, sf::RenderStates::Default, interval.asSeconds());
+					m_scene.load()->draw(m_window, sf::RenderStates::Default, scaledInterval.asSeconds());
 				}
 				m_window.display();
 				m_fps++;

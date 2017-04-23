@@ -27,6 +27,9 @@ namespace engine {
 		sf::Color m_clearColor;
 		LoadingScene m_loadingScene;
 		bool m_multithreaded;
+		float m_timeScale;
+
+
 	public:
 		CancelableEvent<const sf::Event::KeyEvent&, bool> OnKeyPress;
 		CancelableEvent<const sf::Mouse::Button&, const sf::Vector2f&, bool> OnMouseClick;
@@ -75,6 +78,13 @@ namespace engine {
 			return &m_loadingScene;
 		}
 
+		float GetTimeScale() const {
+			return m_timeScale;
+		}
+
+		void SetTimeScale(float timeScale) {
+			m_timeScale = timeScale;
+		}
 	protected:
 		virtual void OnUpdate() {};
 	};
