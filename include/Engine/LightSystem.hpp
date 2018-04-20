@@ -24,8 +24,6 @@ namespace engine {
 	public:
 		LightSystem(Scene*);
 
-		virtual ~LightSystem();
-
 		void AddLight(Light* light);
 
 		void RemoveLight(Light* light);

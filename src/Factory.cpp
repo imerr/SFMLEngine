@@ -114,7 +114,7 @@ namespace engine {
 			std::cerr << "Children is expected to be an array";
 			return false;
 		}
-		for (size_t i = 0; i < children.size(); i++) {
+		for (Json::ArrayIndex i = 0; i < children.size(); i++) {
 			auto child = children[i];
 			if (!child.isObject()) {
 				std::cerr << "Child has to be object" << std::endl;

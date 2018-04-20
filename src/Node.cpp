@@ -335,7 +335,7 @@ namespace engine {
 									continue;
 								}
 								b2Vec2 b2points[b2_maxPolygonVertices];
-								for (size_t o = 0; o < points.size(); o++) {
+								for (Json::ArrayIndex o = 0; o < points.size(); o++) {
 									b2points[o].x = points[o].get(0u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
 									b2points[o].y = points[o].get(1u, 0.0f).asFloat() / m_scene->GetPixelMeterRatio();
 								}

@@ -131,7 +131,7 @@ namespace engine {
 
 	void ObjectPlacer::New(float x, float y, bool saveOld) {
 		if (saveOld && m_currentNode) {
-			size_t i = m_root["children"].size();
+			Json::ArrayIndex i = m_root["children"].size();
 			m_root["children"][i] = Json::objectValue;
 			m_root["children"][i]["childData"] = m_currentNode->GetFilename();
 			m_root["children"][i]["position"][0u] = static_cast<int>(m_currentNode->GetPosition().x);

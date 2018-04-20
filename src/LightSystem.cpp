@@ -37,13 +37,10 @@ namespace engine {
 
 		}
 		auto size = m_scene->GetGame()->GetWindow()->getView().getSize();
-		m_buffer.create(size.x, size.y);
-		m_pingPongBuffer.create(size.x, size.y);
+		m_buffer.create(static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y));
+		m_pingPongBuffer.create(static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y));
 		m_buffer.setActive(false);
 		m_pingPongBuffer.setActive(false);
-	}
-
-	LightSystem::~LightSystem() {
 	}
 
 	bool LightSystem::update(sf::Time interval) {

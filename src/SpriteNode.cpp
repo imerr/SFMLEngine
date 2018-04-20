@@ -207,7 +207,7 @@ namespace engine {
 					}
 					if (sprite["animations"].isObject()) {
 						auto m = sprite["animations"].getMemberNames();
-						for (size_t i = 0; i < m.size(); i++) {
+						for (Json::ArrayIndex i = 0; i < m.size(); i++) {
 							std::string aname = m[i];
 							auto anim = sprite["animations"][aname];
 							if (!anim["frames"].isArray()) {
@@ -217,7 +217,7 @@ namespace engine {
 							Animation* a = new Animation();
 							a->SetSpeed(anim.get("speed", 1).asFloat());
 							a->SetLooping(anim.get("loop", true).asBool());
-							for (size_t o = 0; o < anim["frames"].size(); o++) {
+							for (Json::ArrayIndex o = 0; o < anim["frames"].size(); o++) {
 								auto text = sheet["sprites"][anim["frames"][o].asInt()];
 								if (text.isNull()) {
 									std::cerr << "Frame " << o << " is invalid. Frame " << anim["frames"][o].asInt()
