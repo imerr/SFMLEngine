@@ -96,6 +96,10 @@ namespace engine {
 			m_vertices[3].color = color;
 		}
 
+		sf::Color GetColor() {
+			return m_vertices[0].color;
+		}
+
 	protected:
 		void UpdatePosition();
 
