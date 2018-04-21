@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <memory>
 #include <thread>
 #include "Game.hpp"
 #include <sstream>
@@ -17,7 +18,6 @@ namespace engine {
 																	  m_scene(nullptr), m_running(true), m_fps(0),
 																	  m_tps(0),
 																	  m_focus(true), m_clearColor(sf::Color::White),
-																	  m_loadingScene(this),
 																	  m_multithreaded(multithreaded),
 																	  m_timeScale(1) {
 		m_window.setVerticalSyncEnabled(true);
@@ -25,15 +25,17 @@ namespace engine {
 		view.setSize(static_cast<float>(width), static_cast<float>(height));
 		view.setCenter(width / 2.f, height / 2.f);
 		m_window.setView(view);
+		m_loadingScene = std::make_unique<LoadingScene>(this);
 	}
 
 	Game::~Game() {
 		// loading scene children need to be deleted since they might rely
 		// on game state that could get destroyed before the scene
-		auto& loadingSceneChildren = m_loadingScene.GetChildren();
+		auto& loadingSceneChildren = m_loadingScene->GetChildren();
 		while (loadingSceneChildren.size()) {
 			delete loadingSceneChildren.front();
 		}
+		m_loadingScene.release();
 	}
 
 	void Game::run() {

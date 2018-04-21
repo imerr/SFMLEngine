@@ -23,6 +23,7 @@ namespace engine {
 		std::recursive_mutex m_drawLock;
 	public:
 		LightSystem(Scene*);
+		~LightSystem();
 
 		void AddLight(Light* light);
 

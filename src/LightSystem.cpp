@@ -43,6 +43,9 @@ namespace engine {
 		m_pingPongBuffer.setActive(false);
 	}
 
+	LightSystem::~LightSystem() {
+	}
+
 	bool LightSystem::update(sf::Time interval) {
 		m_needsUpdate = true;
 		return false;

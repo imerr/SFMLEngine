@@ -25,7 +25,7 @@ namespace engine {
 		std::atomic<bool> m_focus;
 		std::string m_windowTitle;
 		sf::Color m_clearColor;
-		LoadingScene m_loadingScene;
+		std::unique_ptr<LoadingScene> m_loadingScene;
 		bool m_multithreaded;
 		float m_timeScale;
 
@@ -70,12 +70,12 @@ namespace engine {
 				m_scene = scene;
 				return;
 			}
-			m_loadingScene.Switch(m_scene, scene);
-			m_scene = &m_loadingScene;
+			m_loadingScene->Switch(m_scene, scene);
+			m_scene = m_loadingScene.get();
 		}
 
 		LoadingScene* GetLoadingScene() {
-			return &m_loadingScene;
+			return m_loadingScene.get();
 		}
 
 		float GetTimeScale() const {
