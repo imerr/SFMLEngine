@@ -38,7 +38,7 @@ namespace engine {
 			T* thing = new T(params...);
 			if (thing->initialize(root)) {
 				if (root.isMember("children") && root["children"].isArray()) {
-					for (size_t i = 0; i < root["children"].size(); i++) {
+					for (Json::ArrayIndex i = 0; i < root["children"].size(); i++) {
 						auto child = root["children"][i];
 						if (!child.isObject()) {
 							std::cerr << "Child has to be object" << std::endl;
