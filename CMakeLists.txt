@@ -70,7 +70,7 @@ target_link_libraries(Engine jsoncpp_lib_static
                                sfml-network
                                sfml-graphics)
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	target_link_libraries(Engine sfml-main)
+	target_link_libraries(Engine sfml-main OpenGL32.lib)
 endif()
 if (ANDROID)
 	set(BLA -Wl,--whole-archive sfml-main -Wl,--no-whole-archive)
