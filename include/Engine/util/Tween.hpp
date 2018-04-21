@@ -108,6 +108,10 @@ namespace engine {
 			m_callback(blendValueWithEasing(m_from, m_to, m_time, m_duration, m_easingFunction));
 		}
 
+		void Reset() {
+			m_time = 0;
+		}
+
 		virtual ~Tween() {
 			// Fire OnDone so we can delete this properly
 			// The handlers are responsible for not messing up
