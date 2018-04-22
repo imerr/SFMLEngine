@@ -10,8 +10,8 @@ namespace engine {
 				if (child == startNode) {
 					continue;
 				}
-				f(child);
 				WalkNode(child, f, false, startNode ? startNode : node);
+				f(child);
 			}
 			if (up) {
 				// walk up
