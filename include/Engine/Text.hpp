@@ -54,11 +54,11 @@ namespace engine {
 		}
 
 		const sf::Color& GetColor() {
-			return m_text.getColor();
+			return m_text.getFillColor();
 		}
 
 		void SetColor(const sf::Color& color) {
-			m_text.setColor(color);
+			m_text.setFillColor(color);
 		}
 
 	protected:

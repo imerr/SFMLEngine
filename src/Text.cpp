@@ -39,7 +39,11 @@ namespace engine {
 			m_font.loadFromFile(text.get("font", "").asString());
 			m_text.setFont(m_font);
 			m_text.setCharacterSize(text.get("size", 30).asUInt());
-			m_text.setColor(jsonNodeAs<sf::Color>(text["color"]));
+			m_text.setFillColor(jsonNodeAs<sf::Color>(text["color"]));
+			if (!text["outline"].isNull()) {
+				m_text.setOutlineColor(jsonNodeAs<sf::Color>(text["outline"]));
+				m_text.setOutlineThickness(text.get("outline_thickness", 1).asFloat());
+			}
 			auto align = text["align"];
 			if (align.isString()) {
 				const std::string& a = align.asString();
