@@ -123,8 +123,11 @@ namespace engine {
 
 	}
 
-	void SpriteNode::SetTexture(std::string path, const sf::IntRect* rect) {
+	void SpriteNode::SetTexture(const std::string& path, const sf::IntRect* rect) {
 		sf::Texture* t = engine::ResourceManager::instance()->GetTexture(path);
+		if (!t) {
+			return;
+		}
 		t->setRepeated(true);
 		SetTexture(t, rect);
 	}

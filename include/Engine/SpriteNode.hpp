@@ -59,7 +59,7 @@ namespace engine {
 
 		virtual ~SpriteNode();
 
-		void SetTexture(std::string path, const sf::IntRect* rect = nullptr);
+		void SetTexture(const std::string& path, const sf::IntRect* rect = nullptr);
 
 		void SetTexture(sf::Texture* texture, const sf::IntRect* rect = nullptr);
 
