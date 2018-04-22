@@ -33,6 +33,8 @@ namespace engine {
 	}
 
 	Button::~Button() {
+		m_scene->GetGame()->OnMouseClick.RemoveHandler(m_clickHandler);
+		delete m_clickHandler;
 	}
 
 	bool Button::IsMouseIn() {
