@@ -235,6 +235,22 @@ namespace engine {
 			}
 		}
 
+		void ClearTweens(bool logic = true) {
+			if (logic) {
+				for (auto& tween : m_logicTweens) {
+					delete tween;
+				}
+				m_logicTweens.clear();
+				m_deletedLogicTweens.clear();
+			} else {
+				for (auto& tween : m_graphicTweens) {
+					delete tween;
+				}
+				m_graphicTweens.clear();
+				m_deletedGraphicTweens.clear();
+			}
+		}
+
 		bool IsIn(float x, float y);
 	protected:
 		friend Factory;
