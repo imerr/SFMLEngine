@@ -28,6 +28,7 @@ namespace engine {
 
 	LightSystem::LightSystem(Scene* scene) : m_scene(scene), m_ambientColor(sf::Color::White), m_needsUpdate(true),
 											 m_enabled(true) {
+#ifndef DISABLE_LIGHTING
 		if (!sf::Shader::isAvailable()) {
 			std::cerr << "Shaders are not available" << std::endl;
 			m_available = false;
@@ -41,6 +42,9 @@ namespace engine {
 		m_pingPongBuffer.create(static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y));
 		m_buffer.setActive(false);
 		m_pingPongBuffer.setActive(false);
+#else
+		m_enabled = false;
+#endif
 	}
 
 	LightSystem::~LightSystem() {
